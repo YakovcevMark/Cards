@@ -1,0 +1,4 @@
+@import "src/assets/stylesheets/formsContainer";
+.content{
+  @include formContainer;
+}

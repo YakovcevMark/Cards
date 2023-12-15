@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
+import s from './App.module.scss';
 import {NavLink} from "react-router-dom";
 
 import {AppRoutes} from "../components/common/Routes/AppRoutes";
 
 function App() {
     return (
-        <div className="App">
+        <div className={s.app}>
             <NavLink to={'/login'}>Login</NavLink>&nbsp;
             <NavLink to={'/register'}>register</NavLink>&nbsp;
             <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
