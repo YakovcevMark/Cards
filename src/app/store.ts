@@ -21,13 +21,15 @@
 // @ts-ignore
 // window.store = store
 import {configureStore} from "@reduxjs/toolkit";
-import authReducer from "../components/authPages/authReducer";
-import appReducer from "./appReducer";
+import authReducer from "../components/authPages/authSlice";
+import appReducer from "./appSlice";
+import profileReducer from "../components/profile/profileSlice";
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        app: appReducer
+        app: appReducer,
+        profile: profileReducer
     }
 })
 export type RootState = ReturnType<typeof store.getState>

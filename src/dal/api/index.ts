@@ -1,13 +1,13 @@
-import axios from "axios/index";
+import axios from "axios";
 
-type UserDataResponse = {
+export type UserDataResponse = {
     _id: string;
     email: string;
     name: string;
     avatar?: string;
     publicCardPacksCount: number;
 };
-type RegisterFormData = {
+export type RegisterFormData = {
     email: string;
     password: string;
 };
@@ -23,31 +23,31 @@ const instance = axios.create({
 });
 export const authApi = {
     login(data: RegisterFormData & { rememberMe: boolean; }) {
-        instance.post<Response & UserDataResponse>('auth/login', data)
+        return instance.post<Response & UserDataResponse>('auth/login', data)
             .then(resp => resp.data)
     },
     register(data: RegisterFormData) {
-        instance.post<Response>('auth/register', data)
+        return instance.post<Response>('auth/register', data)
             .then(resp => resp.data)
     },
     getMe() {
-        instance.post<Response & UserDataResponse>('auth/me')
+        return instance.post<Response & UserDataResponse>('auth/me')
             .then(resp => resp.data)
     },
     updateMe(data: { name?: string; avatar?: string; }) {
-        instance.put<Response>('auth/me', data)
+        return instance.put<Response>('auth/me', data)
             .then(resp => resp.data)
     },
     logout() {
-        instance.delete<Response>('auth/me')
+        return instance.delete<Response>('auth/me')
             .then(resp => resp.data)
     },
     resetPassword(data: {email:string; from?:string; message?:string;}) {
-        instance.post<Response & { info?: string; }>('auth/forgot',data)
+        return instance.post<Response & { info?: string; }>('auth/forgot',data)
             .then(resp => resp.data)
     },
     setNewPassword(data: {password:string; resetPasswordToken?:string;}) {
-        instance.post<Response & { info?: string; }>('auth/set-new-password',data)
+        return instance.post<Response & { info?: string; }>('auth/set-new-password',data)
             .then(resp => resp.data)
     }
 };

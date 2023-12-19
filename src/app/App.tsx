@@ -1,14 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import s from './App.module.scss';
 import {NavLink} from "react-router-dom";
 
 import {AppRoutes} from "../components/common/Routes/AppRoutes";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {setAppStatus} from "./appReducer";
+import {setAppStatus} from "./appSlice";
+import {authorization} from "../components/authPages/authSlice";
+import HelperText from "../components/common/HelperText/HelperText";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
+    const error = useAppSelector(state => state.app.error)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(authorization())
+    }, [dispatch])
+    if (!isInitialized) {
+        return <div>Preloader</div>
+    }
     return (
         <div className={s.app}>
             <NavLink to={'/login'}>Login</NavLink>&nbsp;
@@ -17,9 +27,16 @@ function App() {
             <NavLink to={'/passwordNew'}>passwordNew</NavLink>&nbsp;
             <NavLink to={'/profile'}>profile</NavLink>
             <AppRoutes/>
-            <h1>APP STATUS: {status}</h1>
-            <button onClick={() => {dispatch(setAppStatus("loading"))}}>FETCH</button>
-            <button onClick={() => {dispatch(setAppStatus("succeeded"))}}>SUCCESS</button>
+            <HelperText>APP STATUS: {status}</HelperText>
+            <HelperText>APP ERROR: {error}</HelperText>
+            <button onClick={() => {
+                dispatch(setAppStatus("loading"))
+            }}>FETCH
+            </button>
+            <button onClick={() => {
+                dispatch(setAppStatus("succeeded"))
+            }}>SUCCESS
+            </button>
         </div>
     );
 }
