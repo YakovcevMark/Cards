@@ -2,11 +2,11 @@ import React, {useEffect} from 'react';
 import s from './App.module.scss';
 import {NavLink} from "react-router-dom";
 
-import {AppRoutes} from "../components/common/Routes/AppRoutes";
-import {useAppDispatch, useAppSelector} from "./hooks";
+import {AppRoutes} from "../common/components/Routes/AppRoutes";
+import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
 import {setAppStatus} from "./appSlice";
-import {authorization} from "../components/authPages/authSlice";
-import HelperText from "../components/common/HelperText/HelperText";
+import {authorization} from "../features/authPages/authSlice";
+import HelperText from "../common/components/HelperText/HelperText";
 
 function App() {
     const status = useAppSelector(state => state.app.status)

@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authorization} from "../components/authPages/authSlice";
+import {authorization} from "../features/authPages/authSlice";
 
 type AppStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 type AppError = string | null;

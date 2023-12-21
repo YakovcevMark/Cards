@@ -1,9 +1,9 @@
 import {Route, Routes} from "react-router-dom";
-import Login from "../../authPages/login/Login";
-import Register from "../../authPages/register/Register";
-import PasswordRecovery from "../../authPages/passwordRecovery/PasswordRecovery";
-import PasswordNew from "../../authPages/passwordNew/PasswordNew";
-import Profile from "../../profile/Profile";
+import Login from "../../../features/authPages/login/Login";
+import Register from "../../../features/authPages/register/Register";
+import PasswordRecovery from "../../../features/authPages/passwordRecovery/PasswordRecovery";
+import PasswordNew from "../../../features/authPages/passwordNew/PasswordNew";
+import Profile from "../../../features/profile/Profile";
 import React from "react";
 import {memo} from "react";
 export const LoginPath = "login";

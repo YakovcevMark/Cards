@@ -1,8 +1,8 @@
 
 import {configureStore} from "@reduxjs/toolkit";
-import authReducer from "../components/authPages/authSlice";
+import authReducer from "../features/authPages/authSlice";
 import appReducer from "./appSlice";
-import profileReducer from "../components/profile/profileSlice";
+import profileReducer from "../features/profile/profileSlice";
 import {apiSlice} from "../dal/api/apiSlice";
 
 export const store = configureStore({

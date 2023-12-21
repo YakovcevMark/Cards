@@ -7,7 +7,6 @@ const Text = styled.h6`
   letter-spacing: 0;
   text-align: left;
   opacity: 0.5;
-
 `
 const HelperText:React.FC<{children:React.ReactNode}> = ({children}) => {
     return (
