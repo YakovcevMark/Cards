@@ -8,11 +8,15 @@ import HelperLink from "../../../common/components/HelperLink/HelperLink";
 import {RegisterPath} from "../../../common/components/Routes/AppRoutes";
 const Login = () => {
     return (
-        <form className={s.content}>
+        <form
+            className={s.content}
+            autoComplete={"off"}>
             <Title>Sing In</Title>
             <Input
+                autoComplete={"off"}
                 placeholder={"Email"}/>
             <Input
+                autoComplete={"off"}
                 placeholder={"Password"}
                 type={"password"}/>
             <Button>Login</Button>

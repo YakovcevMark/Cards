@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import s from './App.module.scss';
 import {NavLink} from "react-router-dom";
 
 import {AppRoutes} from "../common/components/Routes/AppRoutes";
@@ -7,6 +6,8 @@ import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
 import {setAppStatus} from "./appSlice";
 import {authorization} from "../features/authPages/authSlice";
 import HelperText from "../common/components/HelperText/HelperText";
+import styled from "styled-components";
+import {backgroundColor} from "../assets/stylesheets/colors";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
@@ -20,7 +21,7 @@ function App() {
         return <div>Preloader</div>
     }
     return (
-        <div className={s.app}>
+        <Container>
             <NavLink to={'/login'}>Login</NavLink>&nbsp;
             <NavLink to={'/register'}>register</NavLink>&nbsp;
             <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
@@ -37,8 +38,16 @@ function App() {
                 dispatch(setAppStatus("succeeded"))
             }}>SUCCESS
             </button>
-        </div>
+        </Container>
     );
 }
-
+const Container = styled.div`
+  background: ${backgroundColor};
+  height:100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center ;
+`
 export default App;

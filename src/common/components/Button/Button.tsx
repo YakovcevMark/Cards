@@ -27,11 +27,11 @@ export const SuperButton: React.FC<SuperButtonPropsType> = (
     )
 }
 const Button = styled.button`
-  width: 347px;
+  width: 266px;
   height: 36px;
   border-radius: 30px;
   border: 0;
-  background:${secondColor};
+  background: ${secondColor};
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -39,8 +39,9 @@ const Button = styled.button`
   letter-spacing: 0.01em;
   text-align: center;
   color: ${mainColor};
-  box-shadow: 0px 4px 18px 0px ${buttonShadow};
-  &:hover{
+  box-shadow: 0 4px 18px 0 ${buttonShadow};
+
+  &:hover {
     border: ${antoColor} solid 1px;
     transition: 0.4s;
   }
