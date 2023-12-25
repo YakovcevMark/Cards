@@ -43,7 +43,7 @@ console.log(restProps)
             <input
                 type={finalType}
                 placeholder = {label}
-                {...register!(label)}
+                {...register!(label.toLowerCase())}
                 {...restProps}
             />
             <label
@@ -51,6 +51,7 @@ console.log(restProps)
                 {label}
             </label>
             {helperText && <span>{helperText}</span>}
+            {error && <span>{error}</span>}
             {type === "password" &&
                 <Eye
                     href="#"

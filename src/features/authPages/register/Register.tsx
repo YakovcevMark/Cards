@@ -15,7 +15,7 @@ export type RegisterFormValues = {
 }
 const Register = () => {
     const navigate = useNavigate()
-    const {register, handleSubmit} = useForm<RegisterFormValues>()
+    const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>()
     const cancelButtonHandler = () => {
         navigate(`/${LoginPath}`, {replace: true});
     }
@@ -26,14 +26,15 @@ const Register = () => {
     return (
         <AppForm onSubmit={handleSubmit(onSubmit)}>
             <Title>Sing Up</Title>
-            <input {...register("email")}/>
-            {/*<Input*/}
-            {/*    label={"Email"}*/}
-            {/*    {...register("email")}/>*/}
+            <Input
+                label={"Email"}
+                register = {register}
+                error={errors.email?.message}/>
             <Input
                 label={"Password"}
                 type={"password"}
                 register = {register}/>
+
             <Input
                 label={"Confirm password"}
                 type={"password"}
