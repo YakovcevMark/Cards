@@ -1,51 +1,34 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent, useState} from 'react'
+import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'react'
 import styled from "styled-components";
 import view from '../../../assets/img/view.svg'
 import noView from '../../../assets/img/noView.svg'
 import {antoColor, backgroundColor, secondColor} from "../../../assets/stylesheets/colors";
+import {Path, UseFormRegister} from "react-hook-form";
 
-// тип пропсов обычного инпута
+
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-// здесь мы говорим что у нашего инпута будут такие же пропсы как у обычного инпута
-// (чтоб не писать value: string, onChange: ...; они уже все описаны в DefaultInputPropsType)
-type SuperInputTextPropsType = DefaultInputPropsType & { // и + ещё пропсы которых нет в стандартном инпуте
-    onChangeText?: (value: string) => void
-    onEnter?: () => void
-    error?: string
-    spanClassName?: string
-    helperText?: string
 
+type SuperInputTextPropsType = DefaultInputPropsType & {
+    label: Path<any>
+    register?: UseFormRegister<any>
+    error?: string
+    helperText?: string
 }
 
-const SuperInputText: React.FC<SuperInputTextPropsType> = (
+const SuperInput: React.FC<SuperInputTextPropsType> = (
     {
-
+        label,
+        register,
         type,
-        onChange, onChangeText,
-        onKeyPress, onEnter,
         error,
-        className, spanClassName,
-        placeholder,
         helperText,
         ...restProps// все остальные пропсы попадут в объект restProps
     }
 ) => {
     const [seeMode, setSeeMode] = useState<boolean>(false)
 
-    const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange // если есть пропс onChange
-        && onChange(e) // то передать ему е (поскольку onChange не обязателен)
-
-        onChangeText && onChangeText(e.currentTarget.value)
-    }
-    const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
-        onKeyPress && onKeyPress(e);
-
-        onEnter // если есть пропс onEnter
-        && e.key === 'Enter' // и если нажата кнопка Enter
-        && onEnter() // то вызвать его
-    }
+console.log(restProps)
     const eyeHandle = (e: React.MouseEvent<SVGSVGElement>) => {
         e.preventDefault()
         setSeeMode(!seeMode)
@@ -59,16 +42,13 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
         <Input>
             <input
                 type={finalType}
-                name={placeholder}
-                placeholder = {placeholder}
-                onChange={onChangeCallback}
-                onKeyPress={onKeyPressCallback}
-                required={true}
-                {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
+                placeholder = {label}
+                {...register!(label)}
+                {...restProps}
             />
             <label
-                htmlFor={placeholder}>
-                {placeholder}
+                htmlFor={label}>
+                {label}
             </label>
             {helperText && <span>{helperText}</span>}
             {type === "password" &&
@@ -78,7 +58,6 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
                     isOpen={seeMode}>
                 </Eye>
             }
-
         </Input>
     )
 }
@@ -89,7 +68,7 @@ const Input = styled.div`
   position: relative;
   padding: 15px 0 20px;
   margin-top: 10px;
-  width: 80%;
+  width: 100%;
 
   
   input {
@@ -166,10 +145,10 @@ const Input = styled.div`
 const Eye = styled.svg<{ isOpen: boolean }>`
   position: absolute;
   top: 19px;
-  right: -1px;
+  right: 15px;
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url(${({isOpen}) => isOpen ? view : noView}) 0 0 no-repeat;
+  background: url(${({isOpen}) => isOpen ? noView : view }) 0 0 no-repeat;
 `
-export default SuperInputText
+export default memo(SuperInput);

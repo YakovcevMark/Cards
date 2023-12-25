@@ -4,13 +4,16 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
     baseQuery: fetchBaseQuery(
         {
-            baseUrl: '',
+            baseUrl: 'http://localhost:7542/2.0/',
             credentials: "include"
         }),
     endpoints: build => ({
-        login: build.query({
-            query: () => ''
+        Initialize: build.mutation({
+            query: () => ({
+                url:'auth/me',
+                method:'POST'
+            })
         })
     })
 })
-export const { useLoginQuery } = apiSlice
+export const { useInitializeMutation } = apiSlice

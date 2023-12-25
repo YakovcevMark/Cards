@@ -3,23 +3,39 @@ import {NavLink} from "react-router-dom";
 
 import {AppRoutes} from "../common/components/Routes/AppRoutes";
 import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
-import {setAppStatus} from "./appSlice";
+import {setAppError, setAppStatus} from "./appSlice";
 import {authorization} from "../features/authPages/authSlice";
 import HelperText from "../common/components/HelperText/HelperText";
 import styled from "styled-components";
 import {backgroundColor} from "../assets/stylesheets/colors";
+import {useInitializeMutation} from "../dal/api/apiSlice";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
-    const error = useAppSelector(state => state.app.error)
-    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    // const error = useAppSelector(state => state.app.error)
+    // const isInitialized = useAppSelector(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
+    // useEffect(() => {
+    //     dispatch(authorization())
+    // }, [dispatch])
+    // if (!isInitialized) {
+    //     return <div>Preloader</div>
+    // }
+
+    const [getInitialized,{isLoading, isError, error}] = useInitializeMutation()
     useEffect(() => {
-        dispatch(authorization())
-    }, [dispatch])
-    if (!isInitialized) {
+        getInitialized({});
+    },[getInitialized])
+
+    if (isLoading) {
+        dispatch(setAppStatus("loading"))
         return <div>Preloader</div>
     }
+    if (isError){
+        dispatch(setAppStatus('failed'))
+        // console.log(error.data.error)
+    }
+
     return (
         <Container>
             <NavLink to={'/login'}>Login</NavLink>&nbsp;
@@ -27,9 +43,14 @@ function App() {
             <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
             <NavLink to={'/passwordNew'}>passwordNew</NavLink>&nbsp;
             <NavLink to={'/profile'}>profile</NavLink>
+            <header>
+            kek
+            </header>
             <AppRoutes/>
+
             <HelperText>APP STATUS: {status}</HelperText>
-            <HelperText>APP ERROR: {error}</HelperText>
+            {/*{isError && <HelperText>APP ERROR:<span>{error!.data?.error}</span></HelperText>}*/}
+
             <button onClick={() => {
                 dispatch(setAppStatus("loading"))
             }}>FETCH
