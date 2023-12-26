@@ -1,17 +1,18 @@
 import React, {useEffect} from 'react';
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink, useNavigate} from "react-router-dom";
 
-import {AppRoutes} from "../common/components/Routes/AppRoutes";
+import {AppRoutes, LoginPath, ProfilePath} from "../common/components/Routes/AppRoutes";
 import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
-import {setAppError, setAppStatus} from "./appSlice";
-import {authorization} from "../features/authPages/authSlice";
+import {setAppStatus} from "./appSlice";
 import HelperText from "../common/components/HelperText/HelperText";
 import styled from "styled-components";
 import {backgroundColor} from "../assets/stylesheets/colors";
 import {useInitializeMutation} from "../dal/api/apiSlice";
+import Profile from "../features/profile/Profile";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
+    const navigate = useNavigate()
     // const error = useAppSelector(state => state.app.error)
     // const isInitialized = useAppSelector(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
@@ -22,53 +23,53 @@ function App() {
     //     return <div>Preloader</div>
     // }
 
-    const [getInitialized,{isLoading, isError, error}] = useInitializeMutation()
+    const [getInitialized, {isLoading, isSuccess}] = useInitializeMutation()
     useEffect(() => {
         getInitialized({});
-    },[getInitialized])
+    }, [getInitialized])
+    // let content = isSuccess
+    //         ? <Navigate to={`/${ProfilePath}`}/>
+    //         : <Navigate to={`/${LoginPath}`}/>
 
     if (isLoading) {
-        dispatch(setAppStatus("loading"))
         return <div>Preloader</div>
-    }
-    if (isError){
-        dispatch(setAppStatus('failed'))
-        // console.log(error.data.error)
     }
 
     return (
         <Container>
-            <NavLink to={'/login'}>Login</NavLink>&nbsp;
-            <NavLink to={'/register'}>register</NavLink>&nbsp;
-            <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
-            <NavLink to={'/passwordNew'}>passwordNew</NavLink>&nbsp;
-            <NavLink to={'/profile'}>profile</NavLink>
             <header>
-            kek
+                kek <NavLink to={'/login'}>Login</NavLink>&nbsp;
+                <NavLink to={'/register'}>register</NavLink>&nbsp;
+                <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
+                <NavLink to={'/passwordNew'}>passwordNew</NavLink>&nbsp;
+                <NavLink to={'/profile'}>profile</NavLink>
             </header>
-            <AppRoutes/>
-
-            <HelperText>APP STATUS: {status}</HelperText>
-            {/*{isError && <HelperText>APP ERROR:<span>{error!.data?.error}</span></HelperText>}*/}
-
-            <button onClick={() => {
-                dispatch(setAppStatus("loading"))
-            }}>FETCH
-            </button>
-            <button onClick={() => {
-                dispatch(setAppStatus("succeeded"))
-            }}>SUCCESS
-            </button>
+            <Content>
+                <AppRoutes/>
+                {/*{content}*/}
+                <HelperText>APP STATUS: {status}</HelperText>
+                <HelperText>APP STATUS: {status}</HelperText>
+                {/*{isError && <HelperText>APP ERROR:<span>{error!.data?.error}</span></HelperText>}*/}
+            </Content>
         </Container>
     );
 }
+
 const Container = styled.div`
-  background: ${backgroundColor};
-  height:100vh;
+  width: 90%;
+  height: 100vh;
+  display: grid;
+  grid-template: 1fr 10fr/100%;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center ;
+
+  header {
+    background-color: burlywood;
+  }
+
+  background: ${backgroundColor};
+`
+const Content = styled.section`
+  align-self: center;
+  justify-self: center;
 `
 export default App;

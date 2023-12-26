@@ -14,6 +14,7 @@ export const ProfilePath = "profile";
 export const AppRoutes = memo(() => {
     return (
         <Routes>
+            <Route path={''} element={<Profile/>}/>
             <Route path={"/"}>
                 <Route path={LoginPath} element={<Login/>}/>
                 <Route path={RegisterPath} element={<Register/>}/>

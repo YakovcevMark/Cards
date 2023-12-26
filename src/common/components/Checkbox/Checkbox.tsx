@@ -1,43 +1,55 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes} from 'react'
-import s from './SuperCheckbox.module.css'
+import React, {DetailedHTMLProps, InputHTMLAttributes, memo} from 'react'
+import styled from "styled-components";
+import {UseFormRegister} from "react-hook-form";
 
 // тип пропсов обычного инпута
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 type SuperCheckboxPropsType = DefaultInputPropsType & {
+    register:UseFormRegister<any>
+    fieldName:string
     onChangeChecked?: (checked: boolean) => void
-    spanClassName?: string
+    error?: string
 }
 
 const SuperCheckbox: React.FC<SuperCheckboxPropsType> = (
     {
         type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
         onChange, onChangeChecked,
-        className, spanClassName,
+        register,
+        fieldName,
         children, // в эту переменную попадёт текст
-
         ...restProps// все остальные пропсы попадут в объект restProps
     }
 ) => {
-    const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange && onChange(e)
-        onChangeChecked && onChangeChecked(e.currentTarget.checked)
-    }
-
-    const finalInputClassName = `${s.checkbox} ${className ? className : ''}`
-
     return (
-        <label>
-            <input
-                type={'checkbox'}
-                onChange={onChangeCallback}
-                className={finalInputClassName}
-
-                {...restProps}
-            />
-            {children && <span className={s.spanClassName}>{children}</span>}
-        </label> // благодаря label нажатие на спан передастся в инпут
+        <Checkbox>
+            <label>
+                <input
+                    type={'checkbox'}
+                    {...restProps}
+                    {...register(fieldName)}
+                />
+                {children && <span>{children}</span>}
+            </label>
+        </Checkbox>
     )
 }
-
-export default SuperCheckbox
+const Checkbox = styled.div`
+  display:grid;
+  justify-self: start;
+  label {
+    display: grid;
+    grid-template-columns:1fr auto;
+    align-items: center;
+    span {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+    }
+    input {
+      width: 18px;
+      height: 18px;
+    }
+  }
+`
+export default memo(SuperCheckbox)
