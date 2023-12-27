@@ -12,6 +12,8 @@ import Checkbox from "../../../common/components/Checkbox/Checkbox";
 import {Navigate, NavLink} from "react-router-dom";
 import ControlSection from "../ControlSection/ControlSection";
 import {useLoginMutation} from "../../../dal/api/apiSlice";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {LoginSchema} from "../YupValidators/Validators";
 
 type LoginValues = {
     email: string
@@ -19,27 +21,34 @@ type LoginValues = {
     rememberMe: boolean
 }
 const Login = () => {
-    const {register, handleSubmit} = useForm<LoginValues>()
-    const [login, {isSuccess}] = useLoginMutation()
+    const {register, handleSubmit, formState: {errors}} = useForm<LoginValues>({
+        resolver: yupResolver(LoginSchema)
+    })
+    const [login, {isSuccess, isLoading}] = useLoginMutation()
     const onSubmit: SubmitHandler<LoginValues> = async (data) => {
         await login(data)
     }
+
     if (isSuccess) return <Navigate to={`/${ProfilePath}`}/>
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>
-
                 <Title>Sing In</Title>
                 <Input
                     label={"Email"}
+                    disabled={isLoading}
+                    error={errors.email?.message}
                     register={register}
                 />
                 <Input
                     label={"Password"}
                     type={"password"}
+                    disabled={isLoading}
+                    error={errors.password?.message}
                     register={register}
                 />
                 <Checkbox
+                    disabled={isLoading}
                     register={register}
                     fieldName={'rememberMe'}>
                     Remember me
@@ -51,7 +60,10 @@ const Login = () => {
                 </FP>
                 <ControlSection>
                     <ButtonControl>
-                        <Button>Login</Button>
+                        <Button
+                            disabled={isLoading}>
+                            Login
+                        </Button>
                     </ButtonControl>
                     <HelperText>Don't have an account?</HelperText>
                     <HelperLink path={RegisterPath}>Sing Up</HelperLink>

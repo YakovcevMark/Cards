@@ -7,16 +7,29 @@ import Button from "../../../common/components/Button/Button";
 import InputsSection from "../InputsSection/InputsSection";
 import ControlSection from "../ControlSection/ControlSection";
 import {SubmitHandler, useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {PasswordSchema} from "../YupValidators/Validators";
+import {useSetNewPasswordMutation} from "../../../dal/api/apiSlice";
+import {Navigate, useParams} from "react-router-dom";
+import {LoginPath} from "../../../common/components/Routes/AppRoutes";
 
 type NewPasswordValues = {
     password: string
 }
 const PasswordNew = () => {
-    const {register, handleSubmit} = useForm<NewPasswordValues>()
+
+    const {token} = useParams()
+    const [recoveryPassport, {isLoading, isSuccess}] = useSetNewPasswordMutation()
+    const {register, handleSubmit, formState: {errors}} = useForm<NewPasswordValues>({
+        resolver: yupResolver(PasswordSchema)
+    })
+
     const onSubmit: SubmitHandler<NewPasswordValues> = (data) => {
-        alert(JSON.stringify(data))
+        const {password} = data
+        recoveryPassport({password, resetPasswordToken: token!})
     }
-    return (
+
+    return isSuccess ? <Navigate to={`/${LoginPath}`}/> : (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>
                 <Title>Create new password</Title>
@@ -24,6 +37,8 @@ const PasswordNew = () => {
                     <Input
                         type={'password'}
                         label={"Password"}
+                        disabled={isLoading}
+                        error={errors.password?.message}
                         register={register}/>
                     <HelperText>
                         Create new password and we will send you
@@ -31,7 +46,10 @@ const PasswordNew = () => {
                     </HelperText>
                 </InputsSection>
                 <ControlSection>
-                    <Button>Create new password</Button>
+                    <Button
+                        disabled={isLoading}>
+                        Create new password
+                    </Button>
                 </ControlSection>
             </AppForm>
         </form>

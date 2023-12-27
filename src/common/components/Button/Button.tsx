@@ -42,12 +42,18 @@ const Button = styled.button<{color:string}>`
   text-align: center;
   color: ${({color}) => color === grayColor ? secondColor : mainColor};
   box-shadow: 0 4px 18px 0 ${buttonShadow};
-  
+  transition: 0.5s;
   &:hover {
     -webkit-box-shadow:inset 0 0 0 1px ${antoColor};
     -moz-box-shadow:inset 0 0 0 1px ${antoColor};
     box-shadow:inset 0 0 0 1px ${antoColor};
-    transition: 1s;
+    cursor: pointer;
+    &:disabled{
+      box-shadow: none;
+    }
+  }
+  &:disabled{
+    opacity: 0.7;
   }
 `
 export default SuperButton

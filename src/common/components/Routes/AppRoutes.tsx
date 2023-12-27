@@ -16,11 +16,11 @@ export const AppRoutes = memo(() => {
         <Routes>
             <Route path={''} element={<Profile/>}/>
             <Route path={"/"}>
-                <Route path={LoginPath} element={<Login/>}/>
-                <Route path={RegisterPath} element={<Register/>}/>
-                <Route path={PasswordRecoveryPath} element={<PasswordRecovery/>}/>
-                <Route path={PasswordNewPath} element={<PasswordNew/>}/>
-                <Route path={ProfilePath} element={<Profile/>}/>
+                <Route path={`${LoginPath}`} element={<Login/>}/>
+                <Route path={`${RegisterPath}`} element={<Register/>}/>
+                <Route path={`${PasswordRecoveryPath}`} element={<PasswordRecovery/>}/>
+                <Route path={`${PasswordNewPath}/:token?`} element={<PasswordNew/>}/>
+                <Route path={`${ProfilePath}`} element={<Profile/>}/>
             </Route>
         </Routes>
     );

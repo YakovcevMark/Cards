@@ -10,22 +10,34 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import Input from "../../../common/components/Input/Input";
 import InputsSection from "../InputsSection/InputsSection";
 import EmailRecovery from "./EmailRecovery/EmailRecovery";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {EmailSchema} from "../YupValidators/Validators";
+import {useRecoveryPasswordMutation} from "../../../dal/api/apiSlice";
 
 type RecoveryValues = { email: string }
 const PasswordRecovery = () => {
-    const [email, sEmail] = useState("")
-    const {register, handleSubmit} = useForm<RecoveryValues>()
+
+    const [recoveryPassport, {isLoading, isSuccess}] = useRecoveryPasswordMutation()
+    const [email, setEmail] = useState<string>("")
+    const {register, handleSubmit, formState: {errors}} = useForm<RecoveryValues>({
+        resolver: yupResolver(EmailSchema)
+
+    })
+
     const onSubmit: SubmitHandler<RecoveryValues> = (data) => {
-        sEmail(data.email)
+        recoveryPassport(data)
+        setEmail(data.email)
     }
-    return email ? <EmailRecovery email={email}/> : (
+
+    return isSuccess ? <EmailRecovery email={email}/> : (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>
                 <Title>Forgot your password?</Title>
                 <InputsSection>
-
                     <Input
                         label={'Email'}
+                        disabled={isLoading}
+                        error={errors.email?.message}
                         register={register}/>
                     <HelperText>
                         Enter your email address and we will send
@@ -33,7 +45,8 @@ const PasswordRecovery = () => {
                     </HelperText>
                 </InputsSection>
                 <ControlSection>
-                    <Button>
+                    <Button
+                        disabled={isLoading}>
                         Send Instructions
                     </Button>
                     <HelperText>

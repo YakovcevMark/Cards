@@ -1,8 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {RegisterFormData} from "./index";
 
 type Response = {
     error?: string;
+    info?: string
+};
+export type RegisterFormData = {
+    email: string;
+    password: string;
 };
 export const apiSlice = createApi({
     baseQuery: fetchBaseQuery(
@@ -31,12 +35,36 @@ export const apiSlice = createApi({
                 body: data
             })
         }),
-        logout: build.mutation<Response,any>({
-            query: (data) => ({
+        logout: build.mutation<Response, void>({
+            query: () => ({
                 url: 'auth/me',
                 method: 'DELETE',
             })
-        })
+        }),
+        recoveryPassword: build.mutation<Response, Pick<RegisterFormData, 'email'> & { from?: string, message?: string }>({
+            query: (data) => ({
+                url: 'auth/forgot',
+                method: 'POST',
+                body: {
+                    from: "",
+                    message: `<div style="background-color: lime; padding: 15px">
+                                password recovery link
+                                <a 
+                                    href='http://localhost:3000/#/set-new-password/$token$'>
+                                link
+                                </a>
+                             </div>`,
+                    ...data
+                }
+            })
+        }),
+        setNewPassword: build.mutation <Response, Pick<RegisterFormData, 'password'> & { resetPasswordToken: string }>({
+            query: (data) => ({
+                url: 'auth/set-new-password',
+                method: 'POST',
+                body: data
+            })
+        }),
     })
 })
 
@@ -45,4 +73,6 @@ export const {
     useRegisterMutation,
     useLoginMutation,
     useLogoutMutation,
+    useRecoveryPasswordMutation,
+    useSetNewPasswordMutation,
 } = apiSlice

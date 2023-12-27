@@ -4,12 +4,14 @@ import Input from "../../../common/components/Input/Input";
 import Button from "../../../common/components/Button/Button";
 import AppForm from "../AuthPagesContainer/AuthPagesContainer";
 import styled from "styled-components";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {LoginPath, ProfilePath} from "../../../common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../../../dal/api/apiSlice";
 import ControlSection from "../ControlSection/ControlSection";
 import InputsSection from "../InputsSection/InputsSection";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {RegisterSchema} from "../YupValidators/Validators";
 
 export type RegisterFormValues = {
     email: string
@@ -18,9 +20,12 @@ export type RegisterFormValues = {
 }
 
 const Register = () => {
+
     const navigate = useNavigate()
-    const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>()
-    const [getRegistered, {isSuccess}] = useRegisterMutation()
+    const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>({
+        resolver: yupResolver(RegisterSchema)
+    })
+    const [getRegistered, {isSuccess,isLoading}] = useRegisterMutation()
 
     const cancelButtonHandler = () => {
         navigate(`/${LoginPath}`, {replace: true});
@@ -29,9 +34,12 @@ const Register = () => {
         const {email, password} = data
         getRegistered({email, password});
     }
+
     if (isSuccess) {
-        return <Navigate to={ProfilePath}/>
+        navigate(`/${ProfilePath}`, {replace: true});
+        // return <Navigate to={ProfilePath}/>
     }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>
@@ -39,17 +47,22 @@ const Register = () => {
                     <Title>Sing Up</Title>
                     <Input
                         label={"Email"}
-                        register={register}
-                        error={errors.email?.message}/>
+                        disabled={isLoading}
+                        error={errors.email?.message}
+                        register={register}/>
                     <Input
                         label={"Password"}
                         type={"password"}
+                        disabled={isLoading}
+                        error={errors.password?.message}
                         register={register}/>
-
                     <Input
                         label={"Confirm password"}
                         type={"password"}
+                        disabled={isLoading}
+                        error={errors.confirmPassword?.message}
                         register={register}/>
+
                 </InputsSection>
                 <ControlSection>
                     <ButtonControl>

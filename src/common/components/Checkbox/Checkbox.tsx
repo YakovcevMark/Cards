@@ -36,17 +36,27 @@ const SuperCheckbox: React.FC<SuperCheckboxPropsType> = (
     )
 }
 const Checkbox = styled.div`
-  display:grid;
+
+  display: grid;
   justify-self: start;
+  transition: 0.5s;
+  :hover {
+    cursor: pointer;
+  }
+  
+
   label {
     display: grid;
     grid-template-columns:1fr auto;
     align-items: center;
+
     span {
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
     }
+
     input {
+      transition: 0.5s;
       width: 18px;
       height: 18px;
     }
