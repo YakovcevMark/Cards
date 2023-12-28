@@ -135,8 +135,6 @@ const Input = styled.div<{ error?: boolean, disabled?: boolean }>`
       color: ${secondColor};
       font-weight: 700;
     }
-
-
     padding-bottom: 6px;
     font-weight: 600;
     border-width: 3px;

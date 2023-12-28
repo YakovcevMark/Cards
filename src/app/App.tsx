@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
-import {Navigate, NavLink, useNavigate} from "react-router-dom";
+import React from 'react';
+import {useNavigate} from "react-router-dom";
 
-import {AppRoutes, LoginPath, ProfilePath} from "../common/components/Routes/AppRoutes";
+import {AppRoutes, LoginPath} from "../common/components/Routes/AppRoutes";
 import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
-import {setAppStatus} from "./appSlice";
-import HelperText from "../common/components/HelperText/HelperText";
 import styled from "styled-components";
-import {backgroundColor} from "../assets/stylesheets/colors";
+import {backgroundColor, secondColor} from "../assets/stylesheets/colors";
 import {useInitializeMutation} from "../dal/api/apiSlice";
-import Profile from "../features/profile/Profile";
+import {ReactComponent as RobotSVG} from '../assets/img/robot.svg'
+import Button from "../common/components/Button/Button";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
@@ -24,12 +23,14 @@ function App() {
     // }
 
     const [getInitialized, {isLoading, isSuccess}] = useInitializeMutation()
-    useEffect(() => {
-        getInitialized({});
-    }, [getInitialized])
+    // useEffect(() => {
+    //     getInitialized({});
+    // }, [getInitialized])
     // let content = isSuccess
     //         ? <Navigate to={`/${ProfilePath}`}/>
     //         : <Navigate to={`/${LoginPath}`}/>
+
+    const singInButtonHandler = () => navigate(`/${LoginPath}`)
 
     if (isLoading) {
         return <div>Preloader</div>
@@ -37,24 +38,47 @@ function App() {
 
     return (
         <Container>
-            <header>
-                kek <NavLink to={'/login'}>Login</NavLink>&nbsp;
-                <NavLink to={'/register'}>register</NavLink>&nbsp;
-                <NavLink to={'/passwordRecovery'}>passwordRecovery</NavLink>&nbsp;
-                <NavLink to={'/passwordNew'}>passwordNew</NavLink>&nbsp;
-                <NavLink to={'/profile'}>profile</NavLink>
-            </header>
+            <Header>
+                <RobotSVG/>
+                <Button onClick={singInButtonHandler}>Sing In</Button>
+                {/*<Button onClick={() => {*/}
+                {/*    navigate(`/${ProfilePath}`)*/}
+                {/*}}>profile</Button>*/}
+            </Header>
             <Content>
+                {/*<Profile*/}
+                {/*    email={"yakovcevmark.dev@gmail.com"}*/}
+                {/*    name={"Markusha"}*/}
+                {/*    _id={"343434"}*/}
+                {/*    publicCardPacksCount={3}*/}
+                {/*    avatar={""}/>*/}
                 <AppRoutes/>
-                {/*{content}*/}
-                <HelperText>APP STATUS: {status}</HelperText>
-                <HelperText>APP STATUS: {status}</HelperText>
-                {/*{isError && <HelperText>APP ERROR:<span>{error!.data?.error}</span></HelperText>}*/}
+                {/*<HelperText>APP STATUS: {status}</HelperText>*/}
             </Content>
         </Container>
     );
 }
 
+const Header = styled.header`
+  //background-color: burlywood;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  svg {
+    width: 10vh;
+    height: auto;
+
+    g {
+      fill: ${secondColor};
+    }
+  }
+
+  button {
+    margin-right: 10px;
+    justify-self: end;
+  }
+`
 const Container = styled.div`
   width: 90%;
   height: 100vh;
@@ -62,11 +86,7 @@ const Container = styled.div`
   grid-template: 1fr 10fr/100%;
   margin: 0 auto;
 
-  header {
-    background-color: burlywood;
-  }
-
-  background: ${backgroundColor};
+  //background: ${backgroundColor};
 `
 const Content = styled.section`
   align-self: center;

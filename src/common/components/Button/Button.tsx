@@ -1,4 +1,4 @@
-import React, {ButtonHTMLAttributes, DetailedHTMLProps} from 'react'
+import React, {ButtonHTMLAttributes, DetailedHTMLProps, memo} from 'react'
 import styled from "styled-components";
 import {antoColor, buttonShadow, grayColor, mainColor, secondColor} from "../../../assets/stylesheets/colors";
 
@@ -7,29 +7,49 @@ import {antoColor, buttonShadow, grayColor, mainColor, secondColor} from "../../
 type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
 type SuperButtonPropsType = DefaultButtonPropsType & {
-    red?:boolean
-    gray?:boolean
+    red?: boolean
+    gray?: boolean
+    icon?: boolean
+    color?:boolean
 }
 
 export const SuperButton: React.FC<SuperButtonPropsType> = (
     {
         red,
         gray,
+        color,
+        icon,
+        children,
         ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
     }
 ) => {
-    const color =  red ? 'red' : gray ? grayColor : secondColor;
-    return (
+    const finalColor = color ? color : red ? 'red' : gray ? grayColor : secondColor;
+    return !icon ? (
         <Button
-            color={color}
-            {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
-        />
+            color={finalColor}
+            {...restProps}>
+            {children}
+        </Button>
+    ) : (
+        <IconButton
+            color={finalColor}
+            {...restProps}>
+            {children}
+        </IconButton>
     )
 }
 
-const Button = styled.button<{color:string}>`
-  //width: 266px;
-  padding: 0 50px;
+const IconButton = styled.button<{ color: string }>`
+  border:none;
+  width: 4vh;
+  height: 4vh;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+`
+const Button = styled.button<{ color: string }>`
+  padding: 0 10px;
   height: 36px;
   border-radius: 30px;
   border: 0;
@@ -43,17 +63,20 @@ const Button = styled.button<{color:string}>`
   color: ${({color}) => color === grayColor ? secondColor : mainColor};
   box-shadow: 0 4px 18px 0 ${buttonShadow};
   transition: 0.5s;
+
   &:hover {
-    -webkit-box-shadow:inset 0 0 0 1px ${antoColor};
-    -moz-box-shadow:inset 0 0 0 1px ${antoColor};
-    box-shadow:inset 0 0 0 1px ${antoColor};
+    -webkit-box-shadow: inset 0 0 0 1px ${antoColor};
+    -moz-box-shadow: inset 0 0 0 1px ${antoColor};
+    box-shadow: inset 0 0 0 1px ${antoColor};
     cursor: pointer;
-    &:disabled{
+
+    &:disabled {
       box-shadow: none;
     }
   }
-  &:disabled{
+
+  &:disabled {
     opacity: 0.7;
   }
 `
-export default SuperButton
+export default memo(SuperButton)

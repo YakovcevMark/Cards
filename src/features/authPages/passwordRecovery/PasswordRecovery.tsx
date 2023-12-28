@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import AppForm from "../AuthPagesContainer/AuthPagesContainer";
+import AppForm from "../../../common/components/PagesContainer/AuthPagesContainer";
 import Title from "../../../common/components/Title/Title";
 import HelperText from "../../../common/components/HelperText/HelperText";
 import Button from "../../../common/components/Button/Button";
@@ -13,12 +13,16 @@ import EmailRecovery from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {EmailSchema} from "../YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../../../dal/api/apiSlice";
+import styled from "styled-components";
+import {ButtonControl} from "../login/Login";
 
 type RecoveryValues = { email: string }
 const PasswordRecovery = () => {
 
     const [recoveryPassport, {isLoading, isSuccess}] = useRecoveryPasswordMutation()
     const [email, setEmail] = useState<string>("")
+
+
     const {register, handleSubmit, formState: {errors}} = useForm<RecoveryValues>({
         resolver: yupResolver(EmailSchema)
 
@@ -29,7 +33,8 @@ const PasswordRecovery = () => {
         setEmail(data.email)
     }
 
-    return isSuccess ? <EmailRecovery email={email}/> : (
+    // return isSuccess ? <EmailRecovery email={email}/> : (
+    return email ? <EmailRecovery email={email}/> : (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>
                 <Title>Forgot your password?</Title>
@@ -45,10 +50,12 @@ const PasswordRecovery = () => {
                     </HelperText>
                 </InputsSection>
                 <ControlSection>
-                    <Button
-                        disabled={isLoading}>
-                        Send Instructions
-                    </Button>
+                    <ButtonControl>
+                        <Button
+                            disabled={isLoading}>
+                            Send Instructions
+                        </Button>
+                    </ButtonControl>
                     <HelperText>
                         Did you remember your password?
                     </HelperText>
@@ -60,5 +67,4 @@ const PasswordRecovery = () => {
         </form>
     );
 };
-
 export default PasswordRecovery;

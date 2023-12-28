@@ -4,8 +4,8 @@ import Register from "../../../features/authPages/register/Register";
 import PasswordRecovery from "../../../features/authPages/passwordRecovery/PasswordRecovery";
 import PasswordNew from "../../../features/authPages/passwordNew/PasswordNew";
 import Profile from "../../../features/profile/Profile";
-import React from "react";
-import {memo} from "react";
+import React, {memo} from "react";
+
 export const LoginPath = "login";
 export const RegisterPath = "register";
 export const PasswordRecoveryPath = "passwordRecovery";
@@ -20,7 +20,12 @@ export const AppRoutes = memo(() => {
                 <Route path={`${RegisterPath}`} element={<Register/>}/>
                 <Route path={`${PasswordRecoveryPath}`} element={<PasswordRecovery/>}/>
                 <Route path={`${PasswordNewPath}/:token?`} element={<PasswordNew/>}/>
-                <Route path={`${ProfilePath}`} element={<Profile/>}/>
+                <Route path={`${ProfilePath}`} element={<Profile
+                    email={"yakovcevmark.dev@gmail.com"}
+                    name={"Markusha"}
+                    _id={"343434"}
+                    publicCardPacksCount={3}
+                    avatar={""}/>}/>
             </Route>
         </Routes>
     );

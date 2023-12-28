@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import Title from "../../../common/components/Title/Title";
 import Button from "../../../common/components/Button/Button";
 import {PasswordRecoveryPath, ProfilePath, RegisterPath} from "../../../common/components/Routes/AppRoutes";
-import AppForm from "../AuthPagesContainer/AuthPagesContainer";
+import PagesContainer from "../../../common/components/PagesContainer/AuthPagesContainer";
 import HelperLink from "../../../common/components/HelperLink/HelperLink";
 import HelperText from "../../../common/components/HelperText/HelperText";
 import styled from "styled-components";
@@ -32,7 +32,7 @@ const Login = () => {
     if (isSuccess) return <Navigate to={`/${ProfilePath}`}/>
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <AppForm>
+            <PagesContainer>
                 <Title>Sing In</Title>
                 <Input
                     label={"Email"}
@@ -68,7 +68,7 @@ const Login = () => {
                     <HelperText>Don't have an account?</HelperText>
                     <HelperLink path={RegisterPath}>Sing Up</HelperLink>
                 </ControlSection>
-            </AppForm>
+            </PagesContainer>
         </form>
     );
 };
@@ -81,12 +81,10 @@ const FP = styled.div`
     text-decoration: none;
   }
 `
-const ButtonControl = styled.div`
+export const ButtonControl = styled.div`
   width: 80%;
-
   button {
     width: 100%;
   }
-
 `
 export default memo(Login);

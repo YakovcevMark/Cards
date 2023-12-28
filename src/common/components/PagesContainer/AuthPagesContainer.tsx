@@ -1,6 +1,6 @@
 import React, {memo, ReactNode} from 'react';
 import styled from "styled-components";
-const AuthPagesContainer: React.FC<{ children:ReactNode }> =
+const PagesContainer: React.FC<{ children:ReactNode }> =
     ({children}) => {
         return  (
             <SForm>
@@ -13,8 +13,8 @@ const AuthPagesContainer: React.FC<{ children:ReactNode }> =
 const SForm = styled.div`
   padding-top: 20px;
   border-radius: 10px;
-  width: 413px;
-  height:600px;
+  width: 50vh;
+  height: 65vh;
   background: white;
 `
 const Container = styled.div`
@@ -24,5 +24,4 @@ const Container = styled.div`
   display: grid;
   justify-items: center;
 `
-
-export default memo(AuthPagesContainer);
+export default memo(PagesContainer);
