@@ -2,7 +2,7 @@ import React from 'react';
 import Title from "../../../common/components/Title/Title";
 import Input from "../../../common/components/Input/Input";
 import Button from "../../../common/components/Button/Button";
-import AppForm from "../../../common/components/PagesContainer/AuthPagesContainer";
+import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {LoginPath, ProfilePath} from "../../../common/components/Routes/AppRoutes";

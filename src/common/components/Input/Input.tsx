@@ -26,6 +26,7 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
         label,
         register,
         type,
+        children,
         error,
         helperText,
         ...restProps// все остальные пропсы попадут в объект restProps
@@ -61,6 +62,13 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
                     isOpen={seeMode}>
                 </Eye>
             }
+            {children &&
+                <DifferentControl>
+                    {children}
+                </DifferentControl>
+            }
+
+
         </Input>
     )
 }
@@ -158,19 +166,25 @@ const Input = styled.div<{ error?: boolean, disabled?: boolean }>`
   }
 
 `
-
-const Eye = styled.svg<{ isOpen: boolean }>`
-
+const SameStyle = `
   position: absolute;
-  top: 19px;
-  right: 15px;
+  top: 15px;
+  right: 30px;
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url(${({isOpen}) => isOpen ? noView : view}) 0 0 no-repeat;
-
   &:hover {
     cursor: pointer;
   }
+`
+const DifferentControl = styled.div`
+  ${SameStyle}
+`
+
+const Eye = styled.svg<{ isOpen: boolean }>`
+  ${SameStyle};
+  top: 19px;
+  right: 15px;
+  background: url(${({isOpen}) => isOpen ? noView : view}) 0 0 no-repeat;
 `
 export default memo(SuperInput);

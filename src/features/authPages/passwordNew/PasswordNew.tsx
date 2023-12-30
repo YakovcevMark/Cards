@@ -1,5 +1,5 @@
 import React from 'react';
-import AppForm from "../../../common/components/PagesContainer/AuthPagesContainer";
+import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import Input from '../../../common/components/Input/Input';
 import Title from "../../../common/components/Title/Title";
 import HelperText from "../../../common/components/HelperText/HelperText";

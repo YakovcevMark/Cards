@@ -7,8 +7,7 @@ import ControlSection from "../../ControlSection/ControlSection";
 import Button from "../../../../common/components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {LoginPath} from "../../../../common/components/Routes/AppRoutes";
-import AppForm from "../../../../common/components/PagesContainer/AuthPagesContainer";
-import styled from "styled-components";
+import AppForm from "../../../../common/components/PagesContainer/PagesContainer";
 import {secondColor} from "../../../../assets/stylesheets/colors";
 import {ButtonControl} from "../../login/Login";
 

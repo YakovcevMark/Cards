@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import AppForm from "../../../common/components/PagesContainer/AuthPagesContainer";
+import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import Title from "../../../common/components/Title/Title";
 import HelperText from "../../../common/components/HelperText/HelperText";
 import Button from "../../../common/components/Button/Button";

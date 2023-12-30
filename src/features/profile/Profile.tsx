@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PagesContainer from "../../common/components/PagesContainer/AuthPagesContainer";
+import PagesContainer from "../../common/components/PagesContainer/PagesContainer";
 import Title from "../../common/components/Title/Title";
 import HelperText from "../../common/components/HelperText/HelperText";
 import Button from "../../common/components/Button/Button";
@@ -28,14 +28,17 @@ const Profile = ({_id, email, avatar, publicCardPacksCount, name}: Partial<UserD
     let content = !editMode
         ? (
             <>
-                {name}
-                <Button
-                    icon
-                    onClick={() => {
-                        setEditMode(mode => !mode)
-                    }}>
+                <span>
+                    {name}
+                    <Button
+                        icon
+                        onClick={() => {
+                            setEditMode(mode => !mode)
+                        }}>
                     <DriveFileRenameOutline/>
                 </Button>
+                </span>
+
             </>
         )
         : (
@@ -45,7 +48,13 @@ const Profile = ({_id, email, avatar, publicCardPacksCount, name}: Partial<UserD
                     // disabled={isLoading}
                     // error={errors.email?.message}
                     register={register}
-                />
+                >
+                    <Button>
+                        save
+                    </Button>
+                </Input>
+
+
             </>
         )
     return (
@@ -63,7 +72,6 @@ const Profile = ({_id, email, avatar, publicCardPacksCount, name}: Partial<UserD
                         </Button>
                     </Avatar>
                     <NickName>
-
                         {content}
                     </NickName>
 
@@ -82,15 +90,19 @@ const Profile = ({_id, email, avatar, publicCardPacksCount, name}: Partial<UserD
 const ProfileContainer = styled.div`
   display: grid;
   justify-items: center;
-  grid-template-rows: 15% 30% 10% 15% 30%;
+  grid-template-rows: 15% 30% 20% 15% 30%;
 `
 const Avatar = styled.div`
   position: relative;
+  overflow: hidden;
+  width: 15vh;
+  height: 15vh;
 
   img {
-    width: 15vh;
-    height: 15vh;
     border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 
   button {
@@ -98,6 +110,7 @@ const Avatar = styled.div`
     width: 5vh;
     height: 5vh;
     background-color: #b7b0b0;
+    object-fit: cover;
 
     svg {
       color: white;
@@ -108,20 +121,16 @@ const Avatar = styled.div`
     position: absolute;
     border-radius: 50%;
     left: 10vh;
-    bottom: 2.4vh;
+    bottom: 0;
   }
 `
 const NickName = styled.div`
-  padding-left: 20px;
   justify-self: center;
   display: grid;
-  grid-template-columns: 2fr 1fr;
   align-items: center;
   font-weight: bold;
-  
-  input {
-    align-self: center;
-    justify-self: center;
-  }
+`
+const NickNameSaveButton = styled.div`
+
 `
 export default Profile;

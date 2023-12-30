@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import Title from "../../../common/components/Title/Title";
 import Button from "../../../common/components/Button/Button";
 import {PasswordRecoveryPath, ProfilePath, RegisterPath} from "../../../common/components/Routes/AppRoutes";
-import PagesContainer from "../../../common/components/PagesContainer/AuthPagesContainer";
+import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
 import HelperLink from "../../../common/components/HelperLink/HelperLink";
 import HelperText from "../../../common/components/HelperText/HelperText";
 import styled from "styled-components";

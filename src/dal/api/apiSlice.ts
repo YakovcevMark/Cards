@@ -65,6 +65,13 @@ export const apiSlice = createApi({
                 body: data
             })
         }),
+        updateProfile: build.mutation <Response, { name: string, avatar: string }>({
+            query: (data) => ({
+                url: 'auth/me',
+                method: 'PUT',
+                body: data
+            })
+        }),
     })
 })
 
@@ -75,4 +82,5 @@ export const {
     useLogoutMutation,
     useRecoveryPasswordMutation,
     useSetNewPasswordMutation,
+    useUpdateProfileMutation,
 } = apiSlice

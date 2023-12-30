@@ -8,6 +8,8 @@ import {backgroundColor, secondColor} from "../assets/stylesheets/colors";
 import {useInitializeMutation} from "../dal/api/apiSlice";
 import {ReactComponent as RobotSVG} from '../assets/img/robot.svg'
 import Button from "../common/components/Button/Button";
+import Preloader from "../common/components/Preloader/Preloader";
+import Profile from "../features/profile/Profile";
 
 function App() {
     const status = useAppSelector(state => state.app.status)
@@ -33,7 +35,7 @@ function App() {
     const singInButtonHandler = () => navigate(`/${LoginPath}`)
 
     if (isLoading) {
-        return <div>Preloader</div>
+        return <Preloader/>
     }
 
     return (
@@ -46,12 +48,12 @@ function App() {
                 {/*}}>profile</Button>*/}
             </Header>
             <Content>
-                {/*<Profile*/}
-                {/*    email={"yakovcevmark.dev@gmail.com"}*/}
-                {/*    name={"Markusha"}*/}
-                {/*    _id={"343434"}*/}
-                {/*    publicCardPacksCount={3}*/}
-                {/*    avatar={""}/>*/}
+                <Profile
+                    email={"yakovcevmark.dev@gmail.com"}
+                    name={"Markusha"}
+                    _id={"343434"}
+                    publicCardPacksCount={3}
+                    avatar={"https://s0.rbk.ru/v6_top_pics/media/img/4/56/346924588693564.jpeg"}/>
                 <AppRoutes/>
                 {/*<HelperText>APP STATUS: {status}</HelperText>*/}
             </Content>
