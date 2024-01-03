@@ -1,10 +1,11 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'react'
 import styled from "styled-components";
-import view from '../../../assets/img/view.svg'
-import noView from '../../../assets/img/noView.svg'
 import {antoColor, backgroundColor, secondColor} from "../../../assets/stylesheets/colors";
 import {Path, UseFormRegister} from "react-hook-form";
 import HelperText from "../HelperText/HelperText";
+import {Visibility} from "@styled-icons/material"
+import {VisibilityOff} from "@styled-icons/material";
+
 
 const camelize = (s:string) => {
     return s.toLowerCase()
@@ -43,7 +44,7 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
 
     return (
         <Input
-            error={!!error}>
+            error={error}>
             <input
                 type={finalType}
                 placeholder={label}
@@ -58,8 +59,11 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
             {type === "password" &&
                 <Eye
                     href="#"
-                    onClick={eyeHandle}
-                    isOpen={seeMode}>
+                    onClick={eyeHandle}>
+                    {seeMode
+                        ? <VisibilityOff/>
+                        : <Visibility/>
+                    }
                 </Eye>
             }
             {children &&
@@ -79,10 +83,9 @@ const opacityRed = 'rgba(243,65,65,0.36)'
 
 
 const ErrorMessage = styled.span`
-  //position: absolute;
   color: ${red}
 `
-const Input = styled.div<{ error?: boolean, disabled?: boolean }>`
+const Input = styled.div<{ error?: string, disabled?: boolean }>`
     // $borderColor = ${({error}) => error ? red : gray};
 
   position: relative;
@@ -181,10 +184,9 @@ const DifferentControl = styled.div`
   ${SameStyle}
 `
 
-const Eye = styled.svg<{ isOpen: boolean }>`
+const Eye = styled.svg`
   ${SameStyle};
   top: 19px;
   right: 15px;
-  background: url(${({isOpen}) => isOpen ? noView : view}) 0 0 no-repeat;
 `
 export default memo(SuperInput);

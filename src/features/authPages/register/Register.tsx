@@ -5,7 +5,7 @@ import Button from "../../../common/components/Button/Button";
 import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {LoginPath, ProfilePath} from "../../../common/components/Routes/AppRoutes";
+import {LoginPath} from "../../../common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../../../dal/api/apiSlice";
 import ControlSection from "../ControlSection/ControlSection";
@@ -36,8 +36,7 @@ const Register = () => {
     }
 
     if (isSuccess) {
-        navigate(`/${ProfilePath}`, {replace: true});
-        // return <Navigate to={ProfilePath}/>
+        navigate(`/${LoginPath}`);
     }
 
     return (

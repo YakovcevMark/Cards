@@ -13,13 +13,12 @@ import EmailRecovery from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {EmailSchema} from "../YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../../../dal/api/apiSlice";
-import styled from "styled-components";
 import {ButtonControl} from "../login/Login";
 
 type RecoveryValues = { email: string }
 const PasswordRecovery = () => {
 
-    const [recoveryPassport, {isLoading, isSuccess}] = useRecoveryPasswordMutation()
+    const [recoveryPassport, {isLoading}] = useRecoveryPasswordMutation()
     const [email, setEmail] = useState<string>("")
 
 
@@ -33,7 +32,6 @@ const PasswordRecovery = () => {
         setEmail(data.email)
     }
 
-    // return isSuccess ? <EmailRecovery email={email}/> : (
     return email ? <EmailRecovery email={email}/> : (
         <form onSubmit={handleSubmit(onSubmit)}>
             <AppForm>

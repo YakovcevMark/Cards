@@ -11,7 +11,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import Checkbox from "../../../common/components/Checkbox/Checkbox";
 import {Navigate, NavLink} from "react-router-dom";
 import ControlSection from "../ControlSection/ControlSection";
-import {useLoginMutation} from "../../../dal/api/apiSlice";
+import {useInitializeMutation, useLoginMutation} from "../../../dal/api/apiSlice";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginSchema} from "../YupValidators/Validators";
 
@@ -24,12 +24,15 @@ const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<LoginValues>({
         resolver: yupResolver(LoginSchema)
     })
-    const [login, {isSuccess, isLoading}] = useLoginMutation()
+    const [login, {isLoading}] = useLoginMutation()
+    const [getInitializeApp, {isSuccess: isLoggedIn}] = useInitializeMutation({
+        fixedCacheKey: 'shared-postMe-post',
+    })
     const onSubmit: SubmitHandler<LoginValues> = async (data) => {
         await login(data)
+        await getInitializeApp();
     }
-
-    if (isSuccess) return <Navigate to={`/${ProfilePath}`}/>
+    if (isLoggedIn) return <Navigate to={`/${ProfilePath}`}/>
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <PagesContainer>
@@ -83,6 +86,7 @@ const FP = styled.div`
 `
 export const ButtonControl = styled.div`
   width: 80%;
+
   button {
     width: 100%;
   }

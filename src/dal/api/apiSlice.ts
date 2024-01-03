@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {UserDataResponse} from "./index";
 
 type Response = {
     error?: string;
@@ -15,7 +16,7 @@ export const apiSlice = createApi({
             credentials: "include"
         }),
     endpoints: build => ({
-        initialize: build.mutation({
+        initialize: build.mutation<UserDataResponse & Response, void>({
             query: () => ({
                 url: 'auth/me',
                 method: 'POST'
@@ -26,7 +27,7 @@ export const apiSlice = createApi({
                 url: 'auth/register',
                 method: 'POST',
                 body: data
-            })
+            }),
         }),
         login: build.mutation<Response, RegisterFormData & { rememberMe: boolean }>({
             query: (data) => ({
@@ -65,7 +66,7 @@ export const apiSlice = createApi({
                 body: data
             })
         }),
-        updateProfile: build.mutation <Response, { name: string, avatar: string }>({
+        updateProfile: build.mutation <Response, { name?: string, avatar?: string | ArrayBuffer }>({
             query: (data) => ({
                 url: 'auth/me',
                 method: 'PUT',

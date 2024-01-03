@@ -20,12 +20,7 @@ export const AppRoutes = memo(() => {
                 <Route path={`${RegisterPath}`} element={<Register/>}/>
                 <Route path={`${PasswordRecoveryPath}`} element={<PasswordRecovery/>}/>
                 <Route path={`${PasswordNewPath}/:token?`} element={<PasswordNew/>}/>
-                <Route path={`${ProfilePath}`} element={<Profile
-                    email={"yakovcevmark.dev@gmail.com"}
-                    name={"Markusha"}
-                    _id={"343434"}
-                    publicCardPacksCount={3}
-                    avatar={""}/>}/>
+                <Route path={`${ProfilePath}`} element={<Profile />}/>
             </Route>
         </Routes>
     );
