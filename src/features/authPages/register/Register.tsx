@@ -2,7 +2,6 @@ import React from 'react';
 import Title from "../../../common/components/Title/Title";
 import Input from "../../../common/components/Input/Input";
 import Button from "../../../common/components/Button/Button";
-import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
@@ -11,28 +10,28 @@ import {useRegisterMutation} from "../../../dal/api/apiSlice";
 import ControlSection from "../ControlSection/ControlSection";
 import InputsSection from "../InputsSection/InputsSection";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {RegisterSchema} from "../YupValidators/Validators";
-
+import {RegisterSchema} from "../../../utils/YupValidators/Validators";
+import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
+import {useApiErrorsHandler} from "../../../common/hooks/hooks";
 export type RegisterFormValues = {
     email: string
     password: string
     confirmPassword: string
 }
-
 const Register = () => {
-
     const navigate = useNavigate()
     const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>({
         resolver: yupResolver(RegisterSchema)
     })
-    const [getRegistered, {isSuccess,isLoading}] = useRegisterMutation()
+    const [getRegister, {isSuccess, isLoading}] = useRegisterMutation()
 
+    const getRegisterValidator = useApiErrorsHandler(getRegister)
     const cancelButtonHandler = () => {
         navigate(`/${LoginPath}`, {replace: true});
     }
-    const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const {email, password} = data
-        getRegistered({email, password});
+        await getRegisterValidator({email, password})
     }
 
     if (isSuccess) {
@@ -40,8 +39,8 @@ const Register = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <AppForm>
+        <PagesContainer>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <InputsSection>
                     <Title>Sing Up</Title>
                     <Input
@@ -61,7 +60,6 @@ const Register = () => {
                         disabled={isLoading}
                         error={errors.confirmPassword?.message}
                         register={register}/>
-
                 </InputsSection>
                 <ControlSection>
                     <ButtonControl>
@@ -74,8 +72,9 @@ const Register = () => {
                         </Button>
                     </ButtonControl>
                 </ControlSection>
-            </AppForm>
-        </form>
+            </form>
+        </PagesContainer>
+
     );
 };
 

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import AppForm from "../../../common/components/PagesContainer/PagesContainer";
 import Title from "../../../common/components/Title/Title";
 import HelperText from "../../../common/components/HelperText/HelperText";
 import Button from "../../../common/components/Button/Button";
@@ -11,9 +10,10 @@ import Input from "../../../common/components/Input/Input";
 import InputsSection from "../InputsSection/InputsSection";
 import EmailRecovery from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {EmailSchema} from "../YupValidators/Validators";
+import {EmailSchema} from "../../../utils/YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../../../dal/api/apiSlice";
 import {ButtonControl} from "../login/Login";
+import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
 
 type RecoveryValues = { email: string }
 const PasswordRecovery = () => {
@@ -33,8 +33,8 @@ const PasswordRecovery = () => {
     }
 
     return email ? <EmailRecovery email={email}/> : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <AppForm>
+            <PagesContainer>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Forgot your password?</Title>
                 <InputsSection>
                     <Input
@@ -61,8 +61,8 @@ const PasswordRecovery = () => {
                         Try logging in
                     </HelperLink>
                 </ControlSection>
-            </AppForm>
-        </form>
+                </form>
+            </PagesContainer>
     );
 };
 export default PasswordRecovery;

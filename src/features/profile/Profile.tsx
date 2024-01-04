@@ -13,10 +13,13 @@ import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from
 import {Navigate} from "react-router-dom";
 import {LoginPath} from "../../common/components/Routes/AppRoutes";
 import userPNG from "../../assets/img/user.png"
+import {yupResolver} from "@hookform/resolvers/yup";
+import {NameSchema} from "../../utils/YupValidators/Validators";
+import {useApiErrorsHandler} from "../../common/hooks/hooks";
 
 type ProfileFormValues = {
-    name: string
-    avatar: string
+    name?: string
+    avatar?: string
 }
 const Profile = () => {
 
@@ -24,26 +27,24 @@ const Profile = () => {
     const inputRef = useRef<HTMLInputElement>(null)
 
 
-    const [refetchMe, {data, isSuccess: isLoggedIn, isLoading: loadingInit}] = useInitializeMutation({
+    const [, {data, isSuccess: isLoggedIn, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
     const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
+    const onUpdateProfile = useApiErrorsHandler(updateProfile)
     const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-
-
-    const {register, handleSubmit} = useForm<ProfileFormValues>({
-        defaultValues:({
+    const logoutValidator = useApiErrorsHandler(logOut,true)
+    const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
+        defaultValues: ({
             name: loadingInit ? "" : data?.name
-        })
+        }),
+        resolver: yupResolver(NameSchema)
     })
-
     const logoutHandler = async () => {
-        await logOut()
-        await refetchMe()
+        await logoutValidator()
     }
     const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
-        await updateProfile({name: data.name})
-        await refetchMe()
+        await onUpdateProfile({name: data.name})
         setEditMode(false)
     }
 
@@ -61,8 +62,7 @@ const Profile = () => {
         reader.readAsDataURL(fileObj);
         reader.onload = async () => {
             if (reader.result) {
-                await updateProfile({avatar: reader.result});
-                await refetchMe()
+                await onUpdateProfile({avatar: reader.result});
             }
         };
         reader.onerror = (error) => {
@@ -93,7 +93,7 @@ const Profile = () => {
                 <Input
                     label={"Name"}
                     disabled={loadingUpdate}
-                    // error={errors.email?.message}
+                    error={errors.name?.message}
                     register={register}
                 >
                     <Button
@@ -105,8 +105,8 @@ const Profile = () => {
         )
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <PagesContainer>
+        <PagesContainer>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <ProfileContainer>
                     <Title>Personal Information</Title>
 
@@ -141,8 +141,8 @@ const Profile = () => {
                         </span>
                     </Button>
                 </ProfileContainer>
-            </PagesContainer>
-        </form>
+            </form>
+        </PagesContainer>
     );
 };
 const LogOutIcon = styled(Logout)`
@@ -186,7 +186,8 @@ const Avatar = styled.div`
   }
 `
 const NickName = styled.div`
-  justify-self: center;
+  width: 100%;
+  justify-items: center;
   display: grid;
   align-items: center;
   font-weight: bold;

@@ -11,11 +11,14 @@ const PagesContainer: React.FC<{ children:ReactNode }> =
         );
     };
 const SForm = styled.div`
+  align-self: center;
+  justify-self: center;
   padding-top: 20px;
   border-radius: 10px;
   width: 50vh;
   height: 65vh;
   background: white;
+  
 `
 const Container = styled.div`
   width: 90%;
@@ -23,5 +26,10 @@ const Container = styled.div`
   margin: 0 auto;
   display: grid;
   justify-items: center;
+  form {
+    display: grid;
+    width:100%;
+    height: 100%;
+  }
 `
 export default memo(PagesContainer);

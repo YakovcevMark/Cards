@@ -13,7 +13,8 @@ import {Navigate, NavLink} from "react-router-dom";
 import ControlSection from "../ControlSection/ControlSection";
 import {useInitializeMutation, useLoginMutation} from "../../../dal/api/apiSlice";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {LoginSchema} from "../YupValidators/Validators";
+import {LoginSchema} from "../../../utils/YupValidators/Validators";
+import {useApiErrorsHandler} from "../../../common/hooks/hooks";
 
 type LoginValues = {
     email: string
@@ -24,18 +25,23 @@ const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<LoginValues>({
         resolver: yupResolver(LoginSchema)
     })
+
     const [login, {isLoading}] = useLoginMutation()
-    const [getInitializeApp, {isSuccess: isLoggedIn}] = useInitializeMutation({
+    const [,{isSuccess: isLoggedIn}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
+    const loginValidator = useApiErrorsHandler(login,true)
     const onSubmit: SubmitHandler<LoginValues> = async (data) => {
-        await login(data)
-        await getInitializeApp();
+        await loginValidator(data)
     }
-    if (isLoggedIn) return <Navigate to={`/${ProfilePath}`}/>
+
+    if (isLoggedIn) {
+        return <Navigate to={`/${ProfilePath}`}/>
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <PagesContainer>
+        <PagesContainer>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Sing In</Title>
                 <Input
                     label={"Email"}
@@ -71,8 +77,8 @@ const Login = () => {
                     <HelperText>Don't have an account?</HelperText>
                     <HelperLink path={RegisterPath}>Sing Up</HelperLink>
                 </ControlSection>
-            </PagesContainer>
-        </form>
+            </form>
+        </PagesContainer>
     );
 };
 const FP = styled.div`

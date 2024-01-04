@@ -15,12 +15,28 @@ export const apiSlice = createApi({
             baseUrl: 'http://localhost:7542/2.0/',
             credentials: "include"
         }),
+
     endpoints: build => ({
         initialize: build.mutation<UserDataResponse & Response, void>({
             query: () => ({
                 url: 'auth/me',
                 method: 'POST'
-            })
+            }),
+            // transformErrorResponse: (
+            //     response: { status: string | number },
+            //     meta,
+            //     arg
+            // ) => meta,
+            // async onQueryStarted(
+            //     arg,
+            //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry}
+            // ) {
+            //     try {
+            //         await queryFulfilled
+            //     } catch (e:any) {
+            //         dispatch(setAppError(e.data.error))
+            //     }
+            // },
         }),
         register: build.mutation<Response, RegisterFormData>({
             query: (data) => ({
@@ -73,9 +89,8 @@ export const apiSlice = createApi({
                 body: data
             })
         }),
-    })
+    }),
 })
-
 export const {
     useInitializeMutation,
     useRegisterMutation,

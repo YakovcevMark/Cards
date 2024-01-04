@@ -30,3 +30,8 @@ export const PasswordSchema = yup
         ...password,
     })
     .required()
+export const NameSchema = yup
+    .object({
+        name: yup.string().min(1,"Name can't be empty").optional(),
+        avatar: yup.string().optional()
+    })

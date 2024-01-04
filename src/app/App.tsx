@@ -8,17 +8,19 @@ import {useInitializeMutation} from "../dal/api/apiSlice";
 import {ReactComponent as RobotSVG} from '../assets/img/robot.svg'
 import Button from "../common/components/Button/Button";
 import Preloader from "../common/components/Preloader/Preloader";
+import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
+import {setAppError} from "./appSlice";
+
 
 function App() {
     const nav = useNavigate()
-    const [getInitialized, {data, isLoading, isSuccess}] = useInitializeMutation({
+    const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-    useEffect(() => {
-        getInitialized();
+    // const validator = useApiErrorsHandler(getInitialized)
+    useEffect( () => {
+        getInitialized()
     }, [getInitialized])
-
-
     const singInButtonHandler = () => nav(`/${LoginPath}`)
 
     if (isLoading) {
@@ -34,26 +36,63 @@ function App() {
                          ? <Avatar>
                              <b>{data!.name}</b>
                              <img src={data!.avatar} alt="avatarka"/>
-                     </Avatar>
-                         :  <Button onClick={singInButtonHandler}>Sing In</Button>
+                         </Avatar>
+                         : <Button onClick={singInButtonHandler}>Sing In</Button>
                      }
                 </span>
             </Header>
             <Content>
                 <AppRoutes/>
+                <Message/>
             </Content>
         </Container>
     );
 }
+
+const Message = () => {
+    const error = useAppSelector(state => state.app.error)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (error) {
+            const id = setTimeout(() => {
+                dispatch(setAppError(null))
+            }, 3000)
+            return () => {
+                clearTimeout(id)
+            }
+        }
+    }, [error, dispatch])
+    return error ? <StyledMessage>
+            {/*<i className="fa fa-exclamation-triangle" aria-hidden="true"></i>*/}
+            {error}
+        </StyledMessage>
+        : <></>
+}
+const StyledMessage = styled.div`
+  position: absolute;
+  justify-self: end;
+  align-self: end;
+  color: #ffffff;
+  background-color: #FF8080;
+  font-family: 'Source Sans Pro', sans-serif;
+  border-radius: .5em;
+  border: 1px solid;
+  margin: 10px 0;
+  padding: 12px;
+  width: 400px;
+
+`
+
 const Avatar = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap:10px;
+  grid-gap: 10px;
   align-items: center;
+
   img {
     border-radius: 50%;
-    width:5vh;
-    height:5vh;
+    width: 5vh;
+    height: 5vh;
     object-fit: cover;
   }
 `
@@ -75,7 +114,7 @@ const Header = styled.header`
   span {
     margin-right: 10px;
     justify-self: end;
-    display:grid;
+    display: grid;
   }
 `
 const Container = styled.div`
@@ -88,7 +127,12 @@ const Container = styled.div`
     //background: ${backgroundColor};
 `
 const Content = styled.section`
-  align-self: center;
-  justify-self: center;
+  display: grid;
+  //form {
+  //  align-self: center;
+  //  justify-self: center;
+  //}
+  //  align-self: center;
+  //  justify-self: center;
 `
 export default App;

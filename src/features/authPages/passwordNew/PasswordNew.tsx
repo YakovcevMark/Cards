@@ -1,5 +1,5 @@
 import React from 'react';
-import AppForm from "../../../common/components/PagesContainer/PagesContainer";
+import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
 import Input from '../../../common/components/Input/Input';
 import Title from "../../../common/components/Title/Title";
 import HelperText from "../../../common/components/HelperText/HelperText";
@@ -8,7 +8,7 @@ import InputsSection from "../InputsSection/InputsSection";
 import ControlSection from "../ControlSection/ControlSection";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {PasswordSchema} from "../YupValidators/Validators";
+import {PasswordSchema} from "../../../utils/YupValidators/Validators";
 import {useSetNewPasswordMutation} from "../../../dal/api/apiSlice";
 import {Navigate, useParams} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
@@ -30,8 +30,8 @@ const PasswordNew = () => {
     }
 
     return isSuccess ? <Navigate to={`/${LoginPath}`}/> : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <AppForm>
+        <PagesContainer>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Create new password</Title>
                 <InputsSection>
                     <Input
@@ -51,8 +51,8 @@ const PasswordNew = () => {
                         Create new password
                     </Button>
                 </ControlSection>
-            </AppForm>
-        </form>
+            </form>
+        </PagesContainer>
     );
 };
 
