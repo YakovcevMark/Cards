@@ -18,7 +18,7 @@ const Link = styled.span`
 const HelperLink: React.FC<{ path: string, children: ReactNode }> = ({path, children}) => {
     return (
         <Link>
-            <NavLink to={`/${path}`}>
+            <NavLink to={path}>
                 {children}
             </NavLink>
         </Link>

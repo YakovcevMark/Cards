@@ -13,6 +13,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "../../../utils/YupValidators/Validators";
 import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
 import {useApiErrorsHandler} from "../../../common/hooks/hooks";
+
 export type RegisterFormValues = {
     email: string
     password: string
@@ -27,7 +28,7 @@ const Register = () => {
 
     const getRegisterValidator = useApiErrorsHandler(getRegister)
     const cancelButtonHandler = () => {
-        navigate(`/${LoginPath}`, {replace: true});
+        navigate(LoginPath);
     }
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const {email, password} = data
@@ -35,14 +36,15 @@ const Register = () => {
     }
 
     if (isSuccess) {
-        navigate(`/${LoginPath}`);
+        navigate(LoginPath);
     }
 
     return (
         <PagesContainer>
             <form onSubmit={handleSubmit(onSubmit)}>
+                <Title>Sing Up</Title>
+
                 <InputsSection>
-                    <Title>Sing Up</Title>
                     <Input
                         label={"Email"}
                         disabled={isLoading}

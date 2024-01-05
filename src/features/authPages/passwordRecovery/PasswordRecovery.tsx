@@ -18,7 +18,7 @@ import PagesContainer from "../../../common/components/PagesContainer/PagesConta
 type RecoveryValues = { email: string }
 const PasswordRecovery = () => {
 
-    const [recoveryPassport, {isLoading}] = useRecoveryPasswordMutation()
+    const [recoveryPassport, { isLoading }] = useRecoveryPasswordMutation()
     const [email, setEmail] = useState<string>("")
 
 

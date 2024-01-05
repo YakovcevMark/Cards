@@ -15,7 +15,7 @@ import {ButtonControl} from "../../login/Login";
 const EmailRecovery: React.FC<{ email: string }> =
     ({email}) => {
         const nav = useNavigate()
-        const buttonHandler = () => (nav(`/${LoginPath}`));
+        const buttonHandler = () => (nav(LoginPath));
         return (
             <AppForm>
                 <InputsSection>

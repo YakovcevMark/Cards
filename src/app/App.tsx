@@ -1,15 +1,20 @@
 import React, {useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 
-import {AppRoutes, LoginPath} from "../common/components/Routes/AppRoutes";
+import {
+    AppRoutes, CardsPath,
+    LoginPath,
+    PasswordRecoveryPath,
+    ProfilePath,
+    RegisterPath
+} from "../common/components/Routes/AppRoutes";
 import styled from "styled-components";
 import {backgroundColor, secondColor} from "../assets/stylesheets/colors";
 import {useInitializeMutation} from "../dal/api/apiSlice";
 import {ReactComponent as RobotSVG} from '../assets/img/robot.svg'
 import Button from "../common/components/Button/Button";
 import Preloader from "../common/components/Preloader/Preloader";
-import {useAppDispatch, useAppSelector} from "../common/hooks/hooks";
-import {setAppError} from "./appSlice";
+import {Message} from "../common/components/Alert/Message";
 
 
 function App() {
@@ -18,16 +23,12 @@ function App() {
         fixedCacheKey: 'shared-postMe-post',
     })
     // const validator = useApiErrorsHandler(getInitialized)
-    useEffect( () => {
+    useEffect(() => {
         getInitialized()
     }, [getInitialized])
-    const singInButtonHandler = () => nav(`/${LoginPath}`)
+    const singInButtonHandler = () => nav(LoginPath)
 
-    if (isLoading) {
-        return <Preloader/>
-    }
-
-    return (
+    return isLoading ? <Preloader/> : (
         <Container>
             <Header>
                 <RobotSVG/>
@@ -45,43 +46,14 @@ function App() {
                 <AppRoutes/>
                 <Message/>
             </Content>
+            <NavLink to={LoginPath}>login</NavLink>
+            <NavLink to={RegisterPath}>Register</NavLink>
+            <NavLink to={PasswordRecoveryPath}>PasRec</NavLink>
+            <NavLink to={ProfilePath}>Profile</NavLink>
+            <NavLink to={CardsPath}>Cards</NavLink>
         </Container>
     );
 }
-
-const Message = () => {
-    const error = useAppSelector(state => state.app.error)
-    const dispatch = useAppDispatch()
-    useEffect(() => {
-        if (error) {
-            const id = setTimeout(() => {
-                dispatch(setAppError(null))
-            }, 3000)
-            return () => {
-                clearTimeout(id)
-            }
-        }
-    }, [error, dispatch])
-    return error ? <StyledMessage>
-            {/*<i className="fa fa-exclamation-triangle" aria-hidden="true"></i>*/}
-            {error}
-        </StyledMessage>
-        : <></>
-}
-const StyledMessage = styled.div`
-  position: absolute;
-  justify-self: end;
-  align-self: end;
-  color: #ffffff;
-  background-color: #FF8080;
-  font-family: 'Source Sans Pro', sans-serif;
-  border-radius: .5em;
-  border: 1px solid;
-  margin: 10px 0;
-  padding: 12px;
-  width: 400px;
-
-`
 
 const Avatar = styled.div`
   display: grid;

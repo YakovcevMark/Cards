@@ -3,8 +3,6 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {setAppError} from "../../app/appSlice";
 import {useCallback} from "react";
 import {useInitializeMutation} from "../../dal/api/apiSlice";
-import {useNavigate} from "react-router-dom";
-import {ProfilePath} from "../components/Routes/AppRoutes";
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
@@ -14,7 +12,6 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 
 export const useApiErrorsHandler = (method: any, withReFetchMe: boolean = false) => {
-    const nav = useNavigate()
     const [getInitializeApp] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -25,9 +22,6 @@ export const useApiErrorsHandler = (method: any, withReFetchMe: boolean = false)
             .then(() => {
                 if (withReFetchMe) {
                     getInitializeApp()
-                        .then(() => {
-                            nav(`/${ProfilePath}`)
-                        })
                 }
             })
             .catch((e: any) => {
@@ -39,5 +33,5 @@ export const useApiErrorsHandler = (method: any, withReFetchMe: boolean = false)
                     dispatch(setAppError(e.data.error))
             })
 
-    }, [dispatch, method, getInitializeApp, nav, withReFetchMe])
+    }, [dispatch, method, getInitializeApp, withReFetchMe])
 }

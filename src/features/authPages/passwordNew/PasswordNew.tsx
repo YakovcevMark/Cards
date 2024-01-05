@@ -29,7 +29,7 @@ const PasswordNew = () => {
         recoveryPassport({password, resetPasswordToken: token!})
     }
 
-    return isSuccess ? <Navigate to={`/${LoginPath}`}/> : (
+    return isSuccess ? <Navigate to={LoginPath}/> : (
         <PagesContainer>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Create new password</Title>

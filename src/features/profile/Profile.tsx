@@ -10,8 +10,6 @@ import Input from "../../common/components/Input/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../../dal/api/apiSlice";
-import {Navigate} from "react-router-dom";
-import {LoginPath} from "../../common/components/Routes/AppRoutes";
 import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "../../utils/YupValidators/Validators";
@@ -27,13 +25,13 @@ const Profile = () => {
     const inputRef = useRef<HTMLInputElement>(null)
 
 
-    const [, {data, isSuccess: isLoggedIn, isLoading: loadingInit}] = useInitializeMutation({
+    const [, {data, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
     const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
     const onUpdateProfile = useApiErrorsHandler(updateProfile)
     const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-    const logoutValidator = useApiErrorsHandler(logOut,true)
+    const logoutValidator = useApiErrorsHandler(logOut, true)
     const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
         defaultValues: ({
             name: loadingInit ? "" : data?.name
@@ -70,9 +68,9 @@ const Profile = () => {
         };
 
     };
-    if (!isLoggedIn) {
-        return <Navigate to={`/${LoginPath}`}/>
-    }
+    // if (!isLoggedIn) {
+    //     return <Navigate to={LoginPath}/>
+    // }
     let content = !editMode && !loadingInit
         ? (
             <>
