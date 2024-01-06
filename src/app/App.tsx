@@ -15,6 +15,8 @@ import {ReactComponent as RobotSVG} from '../assets/img/robot.svg'
 import Button from "../common/components/Button/Button";
 import Preloader from "../common/components/Preloader/Preloader";
 import {Message} from "../common/components/Alert/Message";
+import {useApiErrorsHandler} from "../common/hooks/hooks";
+import Cards from "../features/cards/Cards";
 
 
 function App() {
@@ -22,10 +24,10 @@ function App() {
     const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-    // const validator = useApiErrorsHandler(getInitialized)
-    useEffect(() => {
-        getInitialized()
-    }, [getInitialized])
+    const validator = useApiErrorsHandler(getInitialized)
+    // useEffect(() => {
+    //     getInitialized()
+    // }, [getInitialized])
     const singInButtonHandler = () => nav(LoginPath)
 
     return isLoading ? <Preloader/> : (
@@ -43,14 +45,15 @@ function App() {
                 </span>
             </Header>
             <Content>
-                <AppRoutes/>
-                <Message/>
+                <Cards/>
+                {/*<AppRoutes/>*/}
+                {/*<Message/>*/}
             </Content>
-            <NavLink to={LoginPath}>login</NavLink>
-            <NavLink to={RegisterPath}>Register</NavLink>
-            <NavLink to={PasswordRecoveryPath}>PasRec</NavLink>
-            <NavLink to={ProfilePath}>Profile</NavLink>
-            <NavLink to={CardsPath}>Cards</NavLink>
+            {/*<NavLink to={LoginPath}>login</NavLink>*/}
+            {/*<NavLink to={RegisterPath}>Register</NavLink>*/}
+            {/*<NavLink to={PasswordRecoveryPath}>PasRec</NavLink>*/}
+            {/*<NavLink to={ProfilePath}>Profile</NavLink>*/}
+            {/*<NavLink to={CardsPath}>Cards</NavLink>*/}
         </Container>
     );
 }
