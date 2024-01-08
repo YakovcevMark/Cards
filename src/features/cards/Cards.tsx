@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Title from "../../common/components/Title/Title";
 import {DoubleSlider} from "./DoubleSlider/DoubleSlider";
 
-const Cards = () => {
+export const Cards = () => {
     return <>
         <Title>Cards</Title>
         <DoubleSlider
@@ -14,5 +14,3 @@ const Cards = () => {
     </>
 };
 
-
-export default Cards;

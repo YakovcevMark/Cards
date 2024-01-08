@@ -4,7 +4,7 @@ import Title from "../../common/components/Title/Title";
 import HelperText from "../../common/components/HelperText/HelperText";
 import Button from "../../common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
-import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
+import {DriveFileRenameOutline, KeyboardBackspace} from "@styled-icons/material-outlined"
 import {SubmitHandler, useForm} from "react-hook-form";
 import Input from "../../common/components/Input/Input";
 import styled from "styled-components";
@@ -14,6 +14,8 @@ import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "../../utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
+import {useNavigate} from "react-router-dom";
+import {CardsPath} from "../../common/components/Routes/AppRoutes";
 
 type ProfileFormValues = {
     name?: string
@@ -23,15 +25,15 @@ const Profile = () => {
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement>(null)
-
+    const nav = useNavigate()
 
     const [, {data, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
     const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
-    const onUpdateProfile = useApiErrorsHandler(updateProfile)
     const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-    const logoutValidator = useApiErrorsHandler(logOut, true)
+    const onUpdateProfile = useApiErrorsHandler(updateProfile)
+    const onLogout = useApiErrorsHandler(logOut, true)
     const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
         defaultValues: ({
             name: loadingInit ? "" : data?.name
@@ -39,7 +41,7 @@ const Profile = () => {
         resolver: yupResolver(NameSchema)
     })
     const logoutHandler = async () => {
-        await logoutValidator()
+        await onLogout()
     }
     const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
         await onUpdateProfile({name: data.name})
@@ -66,11 +68,8 @@ const Profile = () => {
         reader.onerror = (error) => {
             console.log('Error: ', error);
         };
-
     };
-    // if (!isLoggedIn) {
-    //     return <Navigate to={LoginPath}/>
-    // }
+    const backButtonHandler = () => nav(CardsPath)
     let content = !editMode && !loadingInit
         ? (
             <>
@@ -103,46 +102,71 @@ const Profile = () => {
         )
 
     return (
-        <PagesContainer>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <ProfileContainer>
-                    <Title>Personal Information</Title>
 
-                    <Avatar>
-                        <img src={userPNG && data?.avatar} alt="avatar"/>
-                        <input
-                            type="file"
-                            style={{display: "none"}}
-                            ref={inputRef}
-                            onChange={handleFileChange}
-                        />
-                        <button
-                            onClick={changeAvatar}>
-                            <PhotoCamera/>
-                        </button>
-                    </Avatar>
-                    <NickName>
-                        {content}
-                    </NickName>
+        <>
+            <BackArrowBlock
+                onClick={backButtonHandler}>
+                <KeyboardBackspace/>
+                Back to Packs List
+            </BackArrowBlock>
 
-                    <HelperText>
-                        {data!.email}
-                    </HelperText>
-                    <Button
-                        disabled={isLogOutLoading}
-                        onClick={logoutHandler}
-                        gray>
+            <PagesContainer>
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <ProfileContainer>
+                        <Title>Personal Information</Title>
+
+                        <Avatar>
+                            <img src={userPNG && data?.avatar} alt="avatar"/>
+                            <input
+                                type="file"
+                                style={{display: "none"}}
+                                ref={inputRef}
+                                onChange={handleFileChange}
+                            />
+                            <button
+                                onClick={changeAvatar}>
+                                <PhotoCamera/>
+                            </button>
+                        </Avatar>
+                        <NickName>
+                            {content}
+                        </NickName>
+
+                        <HelperText>
+                            {data!.email}
+                        </HelperText>
+                        <Button
+                            disabled={isLogOutLoading}
+                            onClick={logoutHandler}
+                            gray>
                         <span>
                             <LogOutIcon
                                 style={{width: "2.5vh"}}/>
                             Log out
                         </span>
-                    </Button>
-                </ProfileContainer>
-            </form>
-        </PagesContainer>
+                        </Button>
+                    </ProfileContainer>
+                </form>
+            </PagesContainer></>
     );
 };
+const BackArrowBlock = styled.button`
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+
+  border: none;
+  width: 18vh;
+  height: 5vh;
+  
+  display: grid;
+  grid-template-columns: 2.5vh 1fr;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+`
 const LogOutIcon = styled(Logout)`
   width: 2vh;
 `
