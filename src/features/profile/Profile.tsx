@@ -15,7 +15,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "../../utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
 import {useNavigate} from "react-router-dom";
-import {CardsPath} from "../../common/components/Routes/AppRoutes";
+import {PacksPath} from "../../common/components/Routes/AppRoutes";
 
 type ProfileFormValues = {
     name?: string
@@ -69,7 +69,7 @@ const Profile = () => {
             console.log('Error: ', error);
         };
     };
-    const backButtonHandler = () => nav(CardsPath)
+    const backButtonHandler = () => nav(PacksPath)
     let content = !editMode && !loadingInit
         ? (
             <>

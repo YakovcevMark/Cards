@@ -1,16 +1,15 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
+import {secondColor} from "../../../assets/stylesheets/colors";
 
 type PT = {
     min: number,
     max: number,
     onChange: ({min, max}: { min: number, max: number }) => void
 }
-export const DoubleSlider = ({min, max, onChange}: PT) => {
-    const [minVal, setMinVal] = useState<string | number>(min);
-    const [maxVal, setMaxVal] = useState<string | number>(max);
-    const minValRef = useRef(min);
-    const maxValRef = useRef(max);
+export const DoubleSlider = memo(({min, max, onChange}: PT) => {
+    const [minVal, setMinVal] = useState(min);
+    const [maxVal, setMaxVal] = useState(max);
     const range = useRef<any>(null);
 
     // Convert to percentage
@@ -21,24 +20,20 @@ export const DoubleSlider = ({min, max, onChange}: PT) => {
 
     // Set width of the range to decrease from the left side
     useEffect(() => {
-        const minPercent = getPercent(+minVal);
-        const maxPercent = getPercent(maxValRef.current);
-
-        if (range.current) {
-            range.current.style.left = `${minPercent}%`;
-            range.current.style.width = `${maxPercent - minPercent}%`;
-        }
-    }, [minVal, getPercent]);
+        const minPercent = getPercent(minVal);
+        const maxPercent = getPercent(maxVal);
+        range.current.style.left = `${getPercent(minVal)+1}%`;
+        range.current.style.width = `${maxPercent - minPercent}%`;
+    }, [minVal, maxVal, getPercent]);
 
     // Set width of the range to decrease from the right side
     useEffect(() => {
-        const minPercent = getPercent(minValRef.current);
-        const maxPercent = getPercent(+maxVal);
+        const minPercent = getPercent(minVal);
+        const maxPercent = getPercent(maxVal);
 
-        if (range.current) {
-            range.current.style.width = `${maxPercent - minPercent}%`;
-        }
-    }, [maxVal, getPercent]);
+        range.current.style.width = `${maxPercent - minPercent}%`;
+
+    }, [maxVal, minVal, getPercent]);
 
     // Get min and max values when their state changes
     useEffect(() => {
@@ -46,16 +41,32 @@ export const DoubleSlider = ({min, max, onChange}: PT) => {
     }, [minVal, maxVal, onChange]);
 
     return (
-        <StyledSlider className="container">
+        <StyledSlider>
+            <div className="slider__left-value">
+                {minVal}
+                {/*<input*/}
+                {/*    type="number"*/}
+                {/*    value={minVal}*/}
+                {/*    min={min}*/}
+                {/*    max={+maxVal - 1}*/}
+                {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
+                {/*    onChange={(e) => {*/}
+                {/*        const val = +e.currentTarget.value*/}
+                {/*        if (!val || val > maxVal || val < min)*/}
+                {/*            setMinVal(min)*/}
+                {/*        else*/}
+                {/*            setMinVal(val)*/}
+                {/*    }}*/}
+                {/*/>*/}
+            </div>
             <input
                 type="range"
                 min={min}
                 max={max}
                 value={minVal}
                 onChange={(event) => {
-                    const value = Math.min(Number(event.target.value), +maxVal - 1);
-                        setMinVal(value);
-                    minValRef.current = value;
+                    const value = Math.min(Number(event.target.value), maxVal - 1);
+                    setMinVal(value);
                 }}
                 className="thumb thumb--left"
                 // style={{zIndex: minVal > max - 100 && "5"}}
@@ -67,63 +78,53 @@ export const DoubleSlider = ({min, max, onChange}: PT) => {
                 max={max}
                 value={maxVal}
                 onChange={(event) => {
-                    const value = Math.max(Number(event.target.value), +minVal + 1);
+                    const value = Math.max(Number(event.target.value), minVal + 1);
                     setMaxVal(value);
-                    maxValRef.current = value;
                 }}
                 className="thumb thumb--right"
             />
+            <div className="slider__right-value">
+                <span>{maxVal}</span>
 
+                {/*<input*/}
+                {/*    type="number"*/}
+                {/*    value={maxVal}*/}
+                {/*    min={+minVal + 1}*/}
+                {/*    max={max}*/}
+                {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
+                {/*    onChange={(e) => {*/}
+                {/*        const val = +e.currentTarget.value*/}
+                {/*        if (!val || val < minVal || val > max)*/}
+                {/*            setMaxVal(max)*/}
+                {/*        else*/}
+                {/*            setMaxVal(val)*/}
+                {/*    }}*/}
+                {/*/>*/}
+            </div>
             <div className="slider">
                 <div className="slider__track"/>
                 <div ref={range} className="slider__range"/>
-                <div className="slider__left-value">
-                    <input
-                        value={minVal}
-                        min={min}
-                        max={max}
-                        style={{width: "40px", height: "25px", marginLeft: "-10px"}}
-                        onBlur={(e) => {
-                            const val = e.currentTarget.value;
-                            if(val < `${max}` && val >= `${min}`) {
-                                setMinVal(e.currentTarget.value);
-                            }
-                        }}
-                    />
-                </div>
-                <div className="slider__right-value">
-                    <input
-                        value={maxVal}
-                        min={min - 1}
-                        max={max}
-                        style={{width: "40px", height: "25px", marginLeft: "-10px"}}
-                        onChange={(e) => {
-                            const val = e.currentTarget.value;
-                            if(val < `${max}` || val >= `${min}`) {
-                                setMaxVal(e.currentTarget.value);
-                            }
-                        }}
-                    />
-                </div>
+
+
             </div>
         </StyledSlider>
     );
-};
+});
 const StyledSlider = styled.div`
-  .container {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+  align-self: center;
+  position: relative;
+  bottom: -9px;
   .slider {
     position: relative;
-    width: 200px;
+    width: 100%;
   }
 
   .slider__track,
-  .slider__range,
+  .slider__range {
+    position: absolute;
+    left: 0px;
+  }
+
   .slider__left-value,
   .slider__right-value {
     position: absolute;
@@ -142,19 +143,19 @@ const StyledSlider = styled.div`
   }
 
   .slider__range {
-    background-color: #0d48c0;
+    background-color: ${secondColor};
     z-index: 2;
   }
 
   .slider__left-value,
   .slider__right-value {
-    color: #dee2e6;
-    font-size: 12px;
-    margin-top: 20px;
+    //color: #dee2e6;
+    font-size: 24px;
+    margin-top: -35px;
   }
 
   .slider__left-value {
-    left: 6px;
+    left: 2px;
   }
 
   .slider__right-value {
@@ -173,7 +174,7 @@ const StyledSlider = styled.div`
     pointer-events: none;
     position: absolute;
     height: 0;
-    width: 200px;
+    width: 100%;
     outline: none;
   }
 
@@ -188,7 +189,7 @@ const StyledSlider = styled.div`
   /* For Chrome browsers */
 
   .thumb::-webkit-slider-thumb {
-    background-color: #e13838;
+    background-color: rgb(192, 191, 191);
     border: none;
     border-radius: 50%;
     box-shadow: 0 0 1px 1px #ced4da;

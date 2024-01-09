@@ -63,7 +63,7 @@ export const Header =
     };
 
 const StyledAvatarModule = styled.div`
-  background-color: blueviolet;
+  //background-color: blueviolet;
   display: none;
   border: 1px rgba(0, 0, 0, 0.47) solid;
   position: absolute;
@@ -77,7 +77,7 @@ const StyledAvatarModule = styled.div`
     align-items: center;
     padding: 1vh;
     border: none;
-    background-color: burlywood;
+    //background-color: burlywood;
     cursor: pointer;
 
     svg {
@@ -91,7 +91,7 @@ const StyledAvatarModule = styled.div`
   }
 `
 const StyledHeader = styled.header`
-  background-color: blue;
+  //background-color: blue;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -117,8 +117,6 @@ const Avatar = styled.div`
     height: 5vh;
     object-fit: cover;
   }
-
-  
 `
 const ControlSection = styled.span`
   height: 100%;

@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 
 import {
     AppRoutes,
-    CardsPath,
+    PacksPath,
     LoginPath,
     PasswordRecoveryPath,
     ProfilePath,
@@ -15,16 +15,17 @@ import Preloader from "../common/components/Preloader/Preloader";
 import {Message} from "../common/components/Alert/Message";
 import {useApiErrorsHandler} from "../common/hooks/hooks";
 import {Header} from "./Header/Header";
+import {PackList} from "../features/cards/PackList";
 
 
 function App() {
     const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-    const validator = useApiErrorsHandler(getInitialized)
-    useEffect(() => {
-        validator()
-    }, [validator])
+    // const onGetInitialized = useApiErrorsHandler(getInitialized)
+    // useEffect(() => {
+    //     onGetInitialized()
+    // }, [onGetInitialized])
 
     return isLoading ? <Preloader/> : (
         <Container>
@@ -33,14 +34,14 @@ function App() {
                 name={data?.name}
                 avatar={data?.avatar}/>
             <Content>
-                {/*<Cards/>*/}
-                <AppRoutes/>
-                <Message/>
+                <PackList/>
+                {/*<AppRoutes/>*/}
+                {/*<Message/>*/}
                 <NavLink to={LoginPath}>login</NavLink>
                 <NavLink to={RegisterPath}>Register</NavLink>
                 <NavLink to={PasswordRecoveryPath}>PasRec</NavLink>
                 <NavLink to={ProfilePath}>Profile</NavLink>
-                <NavLink to={CardsPath}>Cards</NavLink>
+                <NavLink to={PacksPath}>Cards</NavLink>
             </Content>
         </Container>
     );

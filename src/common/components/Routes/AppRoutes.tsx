@@ -6,13 +6,14 @@ import PasswordNew from "../../../features/authPages/passwordNew/PasswordNew";
 import Profile from "../../../features/profile/Profile";
 import React, {memo} from "react";
 import {useInitializeMutation} from "../../../dal/api/apiSlice";
+import {PackList} from "../../../features/cards/PackList";
 
 export const LoginPath = "/login";
 export const RegisterPath = "/register";
 export const PasswordRecoveryPath = "/passwordRecovery";
 export const PasswordNewPath = "/passwordNew";
 export const ProfilePath = "/profile";
-export const CardsPath = "/cards"
+export const PacksPath = "/packs"
 export const AppRoutes = memo(() => {
     const [, {isSuccess: isLoggedIn}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
@@ -23,7 +24,7 @@ export const AppRoutes = memo(() => {
             <Route element={
                 <PrivateRoutes
                     condition={!isLoggedIn}
-                    path={CardsPath}/>
+                    path={PacksPath}/>
             }>
                 <Route path={LoginPath} element={<Login/>}/>
                 <Route path={RegisterPath} element={<Register/>}/>
@@ -37,7 +38,7 @@ export const AppRoutes = memo(() => {
                     path={LoginPath}/>
             }>
                 <Route path={ProfilePath} element={<Profile/>}/>
-                <Route path={"" && CardsPath} element={<Cards/>}/>
+                <Route path={"" && `${PacksPath}`} element={<PackList/>}/>
             </Route>
         </Routes>
     );
