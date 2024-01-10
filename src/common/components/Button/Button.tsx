@@ -47,6 +47,9 @@ const IconButton = styled.button<{ color: string }>`
     width: 100%;
     height: 100%;
   }
+  &:hover{
+    cursor: pointer;
+  }
 `
 const Button = styled.button<{ color: string }>`
   padding: 0 10px;

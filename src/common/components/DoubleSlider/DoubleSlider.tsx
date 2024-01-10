@@ -116,13 +116,13 @@ const StyledSlider = styled.div`
   bottom: -9px;
   .slider {
     position: relative;
-    width: 100%;
+    width: 96%;
   }
 
   .slider__track,
   .slider__range {
     position: absolute;
-    left: 0px;
+    left: 0;
   }
 
   .slider__left-value,

@@ -52,7 +52,7 @@ const Container = styled.div`
   width: 90%;
   height: 100vh;
   display: grid;
-  grid-template: 1fr 10fr/100%;
+  grid-template: 1fr 9fr/100%;
   margin: 0 auto;
 `
 const Content = styled.section`

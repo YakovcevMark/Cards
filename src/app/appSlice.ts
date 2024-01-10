@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authorization} from "../features/authPages/authSlice";
-import {RootState} from "./store";
 
 type AppStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 type AppError = string | null;
@@ -14,6 +13,9 @@ const initialState = {
 const appSlice = createSlice({
         name: 'app',
         initialState,
+        selectors: {
+            selectAppError: state => state.error
+        },
         reducers: {
             setAppStatus: (state, action: PayloadAction<AppStatus>) => {
                 state.status = action.payload;
@@ -40,5 +42,5 @@ const appSlice = createSlice({
     })
 ;
 export const {setAppStatus, setAppError, setInitialized} = appSlice.actions;
-export const selectAppError = (state:RootState) => state.app.error
+export const {selectAppError} = appSlice.selectors;
 export default appSlice.reducer;
