@@ -1,22 +1,19 @@
 import React, {useState} from 'react';
-import Title from "../../../common/components/Title/Title";
-import {StyledHelperText} from "../../../common/components/HelperText/StyledHelperText";
-import Button from "../../../common/components/Button/Button";
-import HelperLink from "../../../common/components/HelperLink/HelperLink";
+import {Button} from "../../../common/components/Button/Button";
+import {HelperLink} from "../../../common/components/HelperLink/HelperLink";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
-import ControlSection from "../ControlSection/ControlSection";
 import {SubmitHandler, useForm} from "react-hook-form";
-import Input from "../../../common/components/Input/Input";
-import InputsSection from "../InputsSection/InputsSection";
+import {Input} from "../../../common/components/Input/Input";
 import {EmailRecovery} from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {EmailSchema} from "../../../utils/YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../authApi";
-import {ButtonControl} from "../login/Login";
-import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
+import {AuthPagesContainer} from "../AuthPagesContainer/AuthPagesContainer";
+import {SButtonControl, SControlSection, SInputsSection} from "../AuthStyledComponents";
+import {SHelperText, STitle} from "../../../common/components/CommonStyledComponents";
 
 type RecoveryValues = { email: string }
-const PasswordRecovery = () => {
+export const PasswordRecovery = () => {
 
     const [recoveryPassport, { isLoading }] = useRecoveryPasswordMutation()
     const [email, setEmail] = useState<string>("")
@@ -33,36 +30,35 @@ const PasswordRecovery = () => {
     }
 
     return email ? <EmailRecovery email={email}/> : (
-            <PagesContainer>
+            <AuthPagesContainer>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                <Title>Forgot your password?</Title>
-                <InputsSection>
+                <STitle>Forgot your password?</STitle>
+                <SInputsSection>
                     <Input
                         label={'Email'}
                         disabled={isLoading}
                         error={errors.email?.message}
                         register={register}/>
-                    <StyledHelperText>
+                    <SHelperText>
                         Enter your email address and we will send
                         you further instructions
-                    </StyledHelperText>
-                </InputsSection>
-                <ControlSection>
-                    <ButtonControl>
+                    </SHelperText>
+                </SInputsSection>
+                <SControlSection>
+                    <SButtonControl>
                         <Button
                             disabled={isLoading}>
                             Send Instructions
                         </Button>
-                    </ButtonControl>
-                    <StyledHelperText>
+                    </SButtonControl>
+                    <SHelperText>
                         Did you remember your password?
-                    </StyledHelperText>
+                    </SHelperText>
                     <HelperLink path={LoginPath}>
                         Try logging in
                     </HelperLink>
-                </ControlSection>
+                </SControlSection>
                 </form>
-            </PagesContainer>
+            </AuthPagesContainer>
     );
 };
-export default PasswordRecovery;

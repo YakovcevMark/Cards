@@ -1,22 +1,20 @@
 import React from 'react';
-import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
-import Input from '../../../common/components/Input/Input';
-import Title from "../../../common/components/Title/Title";
-import {StyledHelperText} from "../../../common/components/HelperText/StyledHelperText";
-import Button from "../../../common/components/Button/Button";
-import InputsSection from "../InputsSection/InputsSection";
-import ControlSection from "../ControlSection/ControlSection";
+import {Button} from "../../../common/components/Button/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {PasswordSchema} from "../../../utils/YupValidators/Validators";
 import {useSetNewPasswordMutation} from "../authApi";
 import {Navigate, useParams} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
+import {AuthPagesContainer} from "../AuthPagesContainer/AuthPagesContainer";
+import {SHelperText, STitle} from "../../../common/components/CommonStyledComponents";
+import {SInputsSection, SControlSection} from "../AuthStyledComponents";
+import {Input} from "../../../common/components/Input/Input";
 
 type NewPasswordValues = {
     password: string
 }
-const PasswordNew = () => {
+export const PasswordNew = () => {
 
     const {token} = useParams()
     const [recoveryPassport, {isLoading, isSuccess}] = useSetNewPasswordMutation()
@@ -30,30 +28,28 @@ const PasswordNew = () => {
     }
 
     return isSuccess ? <Navigate to={LoginPath}/> : (
-        <PagesContainer>
+        <AuthPagesContainer>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Title>Create new password</Title>
-                <InputsSection>
+                <STitle>Create new password</STitle>
+                <SInputsSection>
                     <Input
                         type={'password'}
                         label={"Password"}
                         disabled={isLoading}
                         error={errors.password?.message}
                         register={register}/>
-                    <StyledHelperText>
+                    <SHelperText>
                         Create new password and we will send you
                         further instructions to email
-                    </StyledHelperText>
-                </InputsSection>
-                <ControlSection>
+                    </SHelperText>
+                </SInputsSection>
+                <SControlSection>
                     <Button
                         disabled={isLoading}>
                         Create new password
                     </Button>
-                </ControlSection>
+                </SControlSection>
             </form>
-        </PagesContainer>
+        </AuthPagesContainer>
     );
 };
-
-export default PasswordNew;

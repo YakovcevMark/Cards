@@ -1,11 +1,12 @@
-import React, {ReactNode} from 'react';
+import React, {memo, ReactNode} from 'react';
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 import {secondColor} from "../../../assets/stylesheets/colors";
 
 const Link = styled.span`
- 
+
   align-items: center;
+
   a {
     color: ${secondColor};
     font-weight: 600;
@@ -15,14 +16,17 @@ const Link = styled.span`
     text-decoration: none;
   }
 `
-const HelperLink: React.FC<{ path: string, children: ReactNode }> = ({path, children}) => {
-    return (
-        <Link>
-            <NavLink to={path}>
-                {children}
-            </NavLink>
-        </Link>
-    );
-};
-
-export default HelperLink;
+export const HelperLink = memo(
+    ({
+         path,
+         children
+     }: { path: string, children: ReactNode }) => {
+        return (
+            <Link>
+                <NavLink to={path}>
+                    {children}
+                </NavLink>
+            </Link>
+        );
+    }
+);

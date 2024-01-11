@@ -1,8 +1,8 @@
-import React, {memo} from 'react';
+import React from 'react';
 import styled, {keyframes} from "styled-components";
 import {ReactComponent as RobotSVG} from "../../../assets/img/robot.svg";
 
-const Preloader = () => {
+export const Preloader = () => {
     return (
         <StyledPreloader>
             <RobotSVG/>
@@ -31,4 +31,3 @@ const StyledPreloader = styled.div `
     animation: ${preloaderAnimation} 1s alternate infinite;
   }
 `
-export default memo(Preloader)

@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import Button from "../Button/Button";
+import {Button} from "../Button/Button";
 import {DeleteOutline, DriveFileRenameOutline, School} from "@styled-icons/material-outlined";
 import styled from "styled-components";
 import {useInitializeMutation} from "../../../features/authPages/authApi";

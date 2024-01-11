@@ -1,19 +1,15 @@
 import React from 'react';
-import {StyledPackPagesContainer} from "../PackPageContainer/PackPagesContainer";
-import {HeaderSection} from "../HeaderSection/HeaderSection";
-import Title from "../../../common/components/Title/Title";
-import Button from "../../../common/components/Button/Button";
-import {SettingsSection} from "../SettingsSection/SettingsSection";
-import {Setting} from "../SettingsSection/Setting/Setting";
-import {TableSection} from "../TableSection/TableSection";
-import {Table} from "../../../common/components/Table/Table";
-import {Th} from "../../../common/components/Table/Th";
+import {Button} from "../../../common/components/Button/Button";
+import {Th} from "../../../common/components/Th/Th";
 import {Pagination} from "../../../common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {BackArrowBlock} from "../../../common/components/BackArrowBlock/BackArrowBlock";
 import {TableNotation} from "../../../common/components/TableNotation/TableNotation";
+import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
+import {STitle} from "../../../common/components/CommonStyledComponents";
+
 type PT = {
-    name:string
+    name: string
 }
 export const Pack =
     ({
@@ -22,92 +18,92 @@ export const Pack =
         const data = {
             cards: [
                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
-                 {
-                    answer:"no answer",
-                    question:"no question",
-                    grade:3,
-                    user_id:"1",
-                    updated:"20.03.2002",
-                    _id:"1"
+                {
+                    answer: "no answer",
+                    question: "no question",
+                    grade: 3,
+                    user_id: "1",
+                    updated: "20.03.2002",
+                    _id: "1"
                 },
             ],
             cardsTotalCount: 2300,
@@ -115,21 +111,19 @@ export const Pack =
             minGrade: 0,
             page: 1,
             pageCount: 10,
-            packUserId:"3453434"
+            packUserId: "3453434"
         }
         return (
+            <ExtendContainer>
+                <BackArrowBlock/>
 
-            <>
-                <ExtendContainer>
-                    <BackArrowBlock/>
-
-                <HeaderSection>
-                    <Title>{name}</Title>
+                <SHeaderSection>
+                    <STitle>{name}</STitle>
                     <Button>Learn to Pack</Button>
-                </HeaderSection>
-                <SettingsSection>
-                    <Setting>
-                        <Title>Search</Title>
+                </SHeaderSection>
+                <SSettingsSection>
+                    <SSetting>
+                        <STitle>Search</STitle>
                         {/*<label>*/}
                         {/*    <StyledSearch/>*/}
                         {/*    <SearchInput*/}
@@ -142,18 +136,17 @@ export const Pack =
                             type={"search"}
                             placeholder={"Provide tour text"}
                         />
-                    </Setting>
-                </SettingsSection>
-                <TableSection>
-                    <Table>
-                        <thead>
+                    </SSetting>
+                </SSettingsSection>
+                <STableSection>
+                    <thead>
                         <Th value={"Question"}/>
                         <Th value={"Answer"}/>
                         <Th value={"Last Updated"}/>
                         <Th value={"Grade"}/>
                         <th>Actions</th>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         {data.cards.map(c => <TableNotation
                             id={c._id}
                             question={c.question}
@@ -162,21 +155,20 @@ export const Pack =
                             grade={c.grade}
                             userId={c.user_id}/>)
                         }
-                        </tbody>
-                    </Table>
-                </TableSection>
+                    </tbody>
+                </STableSection>
                 <Pagination
                     itemsName={"Cards"}
                     currentPage={data.page}
                     totalItemsCount={data.cardsTotalCount}
                     pageSize={data.pageCount}
-                    pageChanged={(awd) => {
+                    pageChanged={() => {
                     }}/>
-            </ExtendContainer></>
+            </ExtendContainer>
         )
     };
-const ExtendContainer = styled(StyledPackPagesContainer)`
-    grid-template-rows: 5px 1fr 1fr 5fr 1fr;
+const ExtendContainer = styled(SPackPagesContainer)`
+  grid-template-rows: 5px 1fr 1fr 5fr 1fr;
 `
 const StyledSearchInput = styled.input`
   border: 1px solid rgba(0, 0, 0, 0.2)

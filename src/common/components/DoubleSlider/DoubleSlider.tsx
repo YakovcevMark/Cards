@@ -7,113 +7,122 @@ type PT = {
     max: number,
     onChange: ({min, max}: { min: number, max: number }) => void
 }
-export const DoubleSlider = memo(({min, max, onChange}: PT) => {
-    const [minVal, setMinVal] = useState(min);
-    const [maxVal, setMaxVal] = useState(max);
-    const range = useRef<any>(null);
+export const DoubleSlider = memo(
+    ({
+         min,
+         max,
+         onChange
+     }: PT) => {
+        const [minVal, setMinVal] = useState(min);
+        const [maxVal, setMaxVal] = useState(max);
+        const range = useRef<HTMLDivElement>(null);
 
-    // Convert to percentage
-    const getPercent = useCallback(
-        (value: number) => Math.round(((value - min) / (max - min)) * 100),
-        [min, max]
-    );
+        // Convert to percentage
+        const getPercent = useCallback(
+            (value: number) => Math.round(((value - min) / (max - min)) * 100),
+            [min, max]
+        );
 
-    // Set width of the range to decrease from the left side
-    useEffect(() => {
-        const minPercent = getPercent(minVal);
-        const maxPercent = getPercent(maxVal);
-        range.current.style.left = `${getPercent(minVal)+1}%`;
-        range.current.style.width = `${maxPercent - minPercent}%`;
-    }, [minVal, maxVal, getPercent]);
+        // Set width of the range to decrease from the left side
+        useEffect(() => {
+            const minPercent = getPercent(minVal);
+            const maxPercent = getPercent(maxVal);
+            if (range.current) {
+                range.current.style.left = `${getPercent(minVal) + 1}%`;
+                range.current.style.width = `${maxPercent - minPercent}%`;
+            }
+        }, [minVal, maxVal, getPercent]);
 
-    // Set width of the range to decrease from the right side
-    useEffect(() => {
-        const minPercent = getPercent(minVal);
-        const maxPercent = getPercent(maxVal);
+        // Set width of the range to decrease from the right side
+        useEffect(() => {
+            const minPercent = getPercent(minVal);
+            const maxPercent = getPercent(maxVal);
+            if (range.current) {
+                range.current.style.width = `${maxPercent - minPercent}%`;
+            }
+        }, [maxVal, minVal, getPercent]);
 
-        range.current.style.width = `${maxPercent - minPercent}%`;
+        // Get min and max values when their state changes
+        useEffect(() => {
+            onChange({min: +minVal, max: +maxVal});
+        }, [minVal, maxVal, onChange]);
 
-    }, [maxVal, minVal, getPercent]);
+        return (
+            <StyledSlider>
+                <div className="slider__left-value">
+                    {minVal}
+                    {/*<input*/}
+                    {/*    type="number"*/}
+                    {/*    value={minVal}*/}
+                    {/*    min={min}*/}
+                    {/*    max={+maxVal - 1}*/}
+                    {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
+                    {/*    onChange={(e) => {*/}
+                    {/*        const val = +e.currentTarget.value*/}
+                    {/*        if (!val || val > maxVal || val < min)*/}
+                    {/*            setMinVal(min)*/}
+                    {/*        else*/}
+                    {/*            setMinVal(val)*/}
+                    {/*    }}*/}
+                    {/*/>*/}
+                </div>
+                <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={minVal}
+                    onChange={(event) => {
+                        const value = Math.min(Number(event.target.value), maxVal - 1);
+                        setMinVal(value);
+                    }}
+                    className="thumb thumb--left"
+                    // style={{zIndex: minVal > max - 100 && "5"}}
+                    style={{zIndex: 5}}
+                />
+                <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={maxVal}
+                    onChange={(event) => {
+                        const value = Math.max(Number(event.target.value), minVal + 1);
+                        setMaxVal(value);
+                    }}
+                    className="thumb thumb--right"
+                />
+                <div className="slider__right-value">
+                    <span>{maxVal}</span>
 
-    // Get min and max values when their state changes
-    useEffect(() => {
-        onChange({min: +minVal, max: +maxVal});
-    }, [minVal, maxVal, onChange]);
-
-    return (
-        <StyledSlider>
-            <div className="slider__left-value">
-                {minVal}
-                {/*<input*/}
-                {/*    type="number"*/}
-                {/*    value={minVal}*/}
-                {/*    min={min}*/}
-                {/*    max={+maxVal - 1}*/}
-                {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                {/*    onChange={(e) => {*/}
-                {/*        const val = +e.currentTarget.value*/}
-                {/*        if (!val || val > maxVal || val < min)*/}
-                {/*            setMinVal(min)*/}
-                {/*        else*/}
-                {/*            setMinVal(val)*/}
-                {/*    }}*/}
-                {/*/>*/}
-            </div>
-            <input
-                type="range"
-                min={min}
-                max={max}
-                value={minVal}
-                onChange={(event) => {
-                    const value = Math.min(Number(event.target.value), maxVal - 1);
-                    setMinVal(value);
-                }}
-                className="thumb thumb--left"
-                // style={{zIndex: minVal > max - 100 && "5"}}
-                style={{zIndex: 5}}
-            />
-            <input
-                type="range"
-                min={min}
-                max={max}
-                value={maxVal}
-                onChange={(event) => {
-                    const value = Math.max(Number(event.target.value), minVal + 1);
-                    setMaxVal(value);
-                }}
-                className="thumb thumb--right"
-            />
-            <div className="slider__right-value">
-                <span>{maxVal}</span>
-
-                {/*<input*/}
-                {/*    type="number"*/}
-                {/*    value={maxVal}*/}
-                {/*    min={+minVal + 1}*/}
-                {/*    max={max}*/}
-                {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                {/*    onChange={(e) => {*/}
-                {/*        const val = +e.currentTarget.value*/}
-                {/*        if (!val || val < minVal || val > max)*/}
-                {/*            setMaxVal(max)*/}
-                {/*        else*/}
-                {/*            setMaxVal(val)*/}
-                {/*    }}*/}
-                {/*/>*/}
-            </div>
-            <div className="slider">
-                <div className="slider__track"/>
-                <div ref={range} className="slider__range"/>
+                    {/*<input*/}
+                    {/*    type="number"*/}
+                    {/*    value={maxVal}*/}
+                    {/*    min={+minVal + 1}*/}
+                    {/*    max={max}*/}
+                    {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
+                    {/*    onChange={(e) => {*/}
+                    {/*        const val = +e.currentTarget.value*/}
+                    {/*        if (!val || val < minVal || val > max)*/}
+                    {/*            setMaxVal(max)*/}
+                    {/*        else*/}
+                    {/*            setMaxVal(val)*/}
+                    {/*    }}*/}
+                    {/*/>*/}
+                </div>
+                <div className="slider">
+                    <div className="slider__track"/>
+                    <div ref={range} className="slider__range"/>
 
 
-            </div>
-        </StyledSlider>
-    );
-});
+                </div>
+            </StyledSlider>
+        );
+    }
+);
 const StyledSlider = styled.div`
   align-self: center;
   position: relative;
   bottom: -9px;
+
   .slider {
     position: relative;
     width: 96%;

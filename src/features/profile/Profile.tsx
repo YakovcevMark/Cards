@@ -1,12 +1,9 @@
 import React, {ChangeEvent, MouseEvent, useRef, useState} from 'react';
-import PagesContainer from "../authPages/AuthPagesContainer/AuthPagesContainer";
-import Title from "../../common/components/Title/Title";
-import {StyledHelperText} from "../../common/components/HelperText/StyledHelperText";
-import Button from "../../common/components/Button/Button";
+import {Button} from "../../common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
-import {DriveFileRenameOutline, KeyboardBackspace} from "@styled-icons/material-outlined"
+import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
 import {SubmitHandler, useForm} from "react-hook-form";
-import Input from "../../common/components/Input/Input";
+import {Input} from "../../common/components/Input/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
@@ -14,9 +11,9 @@ import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "../../utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
-import {useNavigate} from "react-router-dom";
-import {PacksPath} from "../../common/components/Routes/AppRoutes";
 import {BackArrowBlock} from "../../common/components/BackArrowBlock/BackArrowBlock";
+import {AuthPagesContainer} from "../authPages/AuthPagesContainer/AuthPagesContainer";
+import {SHelperText, STitle} from "../../common/components/CommonStyledComponents";
 
 type ProfileFormValues = {
     name?: string
@@ -100,12 +97,12 @@ const Profile = () => {
     return (
         <>
             <BackArrowBlock/>
-            <PagesContainer>
+            <AuthPagesContainer>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <ProfileContainer>
-                        <Title>Personal Information</Title>
+                    <SProfileContainer>
+                        <STitle>Personal Information</STitle>
 
-                        <Avatar>
+                        <SAvatar>
                             <img src={userPNG && data?.avatar} alt="avatar"/>
                             <input
                                 type="file"
@@ -117,39 +114,39 @@ const Profile = () => {
                                 onClick={changeAvatar}>
                                 <PhotoCamera/>
                             </button>
-                        </Avatar>
-                        <NickName>
+                        </SAvatar>
+                        <SNickName>
                             {content}
-                        </NickName>
+                        </SNickName>
 
-                        <StyledHelperText>
+                        <SHelperText>
                             {data!.email}
-                        </StyledHelperText>
+                        </SHelperText>
                         <Button
                             disabled={isLogOutLoading}
                             onClick={logoutHandler}
                             gray>
                         <span>
-                            <LogOutIcon
+                            <SLogOutIcon
                                 style={{width: "2.5vh"}}/>
                             Log out
                         </span>
                         </Button>
-                    </ProfileContainer>
+                    </SProfileContainer>
                 </form>
-            </PagesContainer></>
+            </AuthPagesContainer></>
     );
 };
 
-const LogOutIcon = styled(Logout)`
+const SLogOutIcon = styled(Logout)`
   width: 2vh;
 `
-const ProfileContainer = styled.div`
+const SProfileContainer = styled.div`
   display: grid;
   justify-items: center;
   grid-template-rows: 15% 30% 20% 15% 30%;
 `
-const Avatar = styled.div`
+const SAvatar = styled.div`
   position: relative;
   overflow: hidden;
   width: 15vh;
@@ -181,7 +178,7 @@ const Avatar = styled.div`
     bottom: 0;
   }
 `
-const NickName = styled.div`
+const SNickName = styled.div`
   width: 100%;
   justify-items: center;
   display: grid;

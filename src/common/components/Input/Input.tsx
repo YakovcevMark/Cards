@@ -1,13 +1,12 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'react'
+import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useRef, useState} from 'react'
 import styled from "styled-components";
-import {antoColor, backgroundColor, secondColor} from "../../../assets/stylesheets/colors";
+import {antoColor, secondColor} from "../../../assets/stylesheets/colors";
 import {Path, UseFormRegister} from "react-hook-form";
-import {StyledHelperText} from "../HelperText/StyledHelperText";
-import {Visibility} from "@styled-icons/material"
-import {VisibilityOff} from "@styled-icons/material";
+import {Visibility, VisibilityOff} from "@styled-icons/material"
+import {SHelperText} from "../CommonStyledComponents";
 
 
-const camelize = (s:string) => {
+const camelize = (s: string) => {
     return s.toLowerCase()
         .replace(/\W+(.)/g, (match, chr) => chr.toUpperCase())
 }
@@ -22,61 +21,64 @@ type SuperInputTextPropsType = DefaultInputPropsType & {
     helperText?: string
 }
 
-const SuperInput: React.FC<SuperInputTextPropsType> = (
-    {
-        label,
-        register,
-        type,
-        children,
-        error,
-        helperText,
-        ...restProps// все остальные пропсы попадут в объект restProps
+export const Input = memo(
+    ({
+         label,
+         register,
+         type,
+         children,
+         error,
+         helperText,
+         ...restProps// все остальные пропсы попадут в объект restProps
+     }: SuperInputTextPropsType) => {
+        const [seeMode, setSeeMode] = useState<boolean>(false)
+        const inputRef = useRef<HTMLInputElement>(null)
+        const eyeHandle = (e: React.MouseEvent<SVGSVGElement>) => {
+            e.preventDefault()
+            setSeeMode(!seeMode)
+        };
+
+        const finalType = type === "password" && !seeMode ? "password" : 'text';
+        const onLabelClickHandler = () => {
+            if( inputRef.current )
+                inputRef.current.focus()
+        }
+
+        return (
+            <SInput
+                error={error}>
+                <input
+                    type={finalType}
+                    placeholder={label}
+                    {...restProps}
+                    {...register!(camelize(label!))}
+                    ref={inputRef}
+                />
+                <label
+                    onClick={onLabelClickHandler}>
+                    {label}
+                </label>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {helperText && <SHelperText>{helperText}</SHelperText>}
+                {type === "password" &&
+                    <Eye
+                        href="#"
+                        onClick={eyeHandle}>
+                        {seeMode
+                            ? <VisibilityOff/>
+                            : <Visibility/>
+                        }
+                    </Eye>
+                }
+                {children &&
+                    <DifferentControl>
+                        {children}
+                    </DifferentControl>
+                }
+            </SInput>
+        )
     }
-) => {
-    const [seeMode, setSeeMode] = useState<boolean>(false)
-
-    const eyeHandle = (e: React.MouseEvent<SVGSVGElement>) => {
-        e.preventDefault()
-        setSeeMode(!seeMode)
-    };
-
-    const finalType = type === "password" && !seeMode ? "password" : 'text';
-
-    return (
-        <Input
-            error={error}>
-            <input
-                type={finalType}
-                placeholder={label}
-                {...restProps}
-                {...register!(camelize(label!))}
-            />
-            <label>
-                {label}
-            </label>
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-            {helperText && <StyledHelperText>{helperText}</StyledHelperText>}
-            {type === "password" &&
-                <Eye
-                    href="#"
-                    onClick={eyeHandle}>
-                    {seeMode
-                        ? <VisibilityOff/>
-                        : <Visibility/>
-                    }
-                </Eye>
-            }
-            {children &&
-                <DifferentControl>
-                    {children}
-                </DifferentControl>
-            }
-
-
-        </Input>
-    )
-}
-
+)
 const gray = '#9b9b9b';
 const red = '#f34141'
 const opacityRed = 'rgba(243,65,65,0.36)'
@@ -85,7 +87,7 @@ const opacityRed = 'rgba(243,65,65,0.36)'
 const ErrorMessage = styled.span`
   color: ${red}
 `
-const Input = styled.div<{ error?: string, disabled?: boolean }>`
+const SInput = styled.div<{ error?: string, disabled?: boolean }>`
     // $borderColor = ${({error}) => error ? red : gray};
 
   position: relative;
@@ -105,7 +107,6 @@ const Input = styled.div<{ error?: string, disabled?: boolean }>`
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
-
     &:hover {
       border-color: ${({error}) => error ? opacityRed : "black"};
 
@@ -146,11 +147,11 @@ const Input = styled.div<{ error?: string, disabled?: boolean }>`
       color: ${secondColor};
       font-weight: 700;
     }
+
     padding-bottom: 6px;
     font-weight: 600;
     border-width: 3px;
-    border-image: ${backgroundColor};
-    border-image-slice: 1;
+    border-color:${secondColor};
   }
 
   /* reset input */
@@ -189,4 +190,3 @@ const Eye = styled.svg`
   top: 19px;
   right: 15px;
 `
-export default memo(SuperInput);

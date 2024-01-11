@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from "../../common/components/Button/Button";
+import {Button} from "../../common/components/Button/Button";
 import {LoginPath, ProfilePath} from "../../common/components/Routes/AppRoutes";
 import {useNavigate} from "react-router-dom";
 import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'

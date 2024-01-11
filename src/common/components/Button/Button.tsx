@@ -10,48 +10,51 @@ type SuperButtonPropsType = DefaultButtonPropsType & {
     red?: boolean
     gray?: boolean
     icon?: boolean
-    color?:boolean
+    color?: boolean
 }
 
-export const SuperButton: React.FC<SuperButtonPropsType> = (
-    {
-        red,
-        gray,
-        color,
-        icon,
-        children,
-        ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
+export const Button: React.FC<SuperButtonPropsType> = memo(
+    (
+        {
+            red,
+            gray,
+            color,
+            icon,
+            children,
+            ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
+        }
+    ) => {
+        const finalColor = color ? color : red ? 'red' : gray ? grayColor : secondColor;
+        return !icon ? (
+            <SButton
+                color={finalColor}
+                {...restProps}>
+                {children}
+            </SButton>
+        ) : (
+            <IconButton
+                color={finalColor}
+                {...restProps}>
+                {children}
+            </IconButton>
+        )
     }
-) => {
-    const finalColor = color ? color : red ? 'red' : gray ? grayColor : secondColor;
-    return !icon ? (
-        <Button
-            color={finalColor}
-            {...restProps}>
-            {children}
-        </Button>
-    ) : (
-        <IconButton
-            color={finalColor}
-            {...restProps}>
-            {children}
-        </IconButton>
-    )
-}
-
+)
 const IconButton = styled.button<{ color: string }>`
-  border:none;
+  border: none;
   width: 4vh;
   height: 4vh;
+
   svg {
     width: 100%;
     height: 100%;
   }
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
 `
-const Button = styled.button<{ color: string }>`
+const SButton = styled.button<{ color: string }>`
   padding: 0 10px;
   height: 36px;
   border-radius: 30px;
@@ -82,4 +85,3 @@ const Button = styled.button<{ color: string }>`
     opacity: 0.7;
   }
 `
-export default memo(SuperButton)

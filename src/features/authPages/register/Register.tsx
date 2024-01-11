@@ -1,25 +1,24 @@
 import React from 'react';
-import Title from "../../../common/components/Title/Title";
-import Input from "../../../common/components/Input/Input";
-import Button from "../../../common/components/Button/Button";
+import {Input} from "../../../common/components/Input/Input";
+import {Button} from "../../../common/components/Button/Button";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../authApi";
-import ControlSection from "../ControlSection/ControlSection";
-import InputsSection from "../InputsSection/InputsSection";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "../../../utils/YupValidators/Validators";
-import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
+import {AuthPagesContainer} from "../AuthPagesContainer/AuthPagesContainer";
 import {useApiErrorsHandler} from "../../../common/hooks/hooks";
+import {SControlSection, SInputsSection} from "../AuthStyledComponents";
+import {STitle} from "../../../common/components/CommonStyledComponents";
 
 export type RegisterFormValues = {
     email: string
     password: string
     confirmPassword: string
 }
-const Register = () => {
+export const Register = () => {
     const navigate = useNavigate()
     const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>({
         resolver: yupResolver(RegisterSchema)
@@ -40,11 +39,11 @@ const Register = () => {
     }
 
     return (
-        <PagesContainer>
+        <AuthPagesContainer>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Title>Sing Up</Title>
+                <STitle>Sing Up</STitle>
 
-                <InputsSection>
+                <SInputsSection>
                     <Input
                         label={"Email"}
                         disabled={isLoading}
@@ -62,9 +61,9 @@ const Register = () => {
                         disabled={isLoading}
                         error={errors.confirmPassword?.message}
                         register={register}/>
-                </InputsSection>
-                <ControlSection>
-                    <ButtonControl>
+                </SInputsSection>
+                <SControlSection>
+                    <SButtonControl>
                         <Button gray
                                 onClick={cancelButtonHandler}>
                             Cancel
@@ -72,18 +71,17 @@ const Register = () => {
                         <Button>
                             Register
                         </Button>
-                    </ButtonControl>
-                </ControlSection>
+                    </SButtonControl>
+                </SControlSection>
             </form>
-        </PagesContainer>
+        </AuthPagesContainer>
 
     );
 };
 
-const ButtonControl = styled.div`
+const SButtonControl = styled.div`
   justify-content: space-between;
   display: grid;
   grid-template-columns:45% 50%;
   width: 100%;
 `
-export default Register;

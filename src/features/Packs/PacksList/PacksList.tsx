@@ -1,23 +1,18 @@
 import React, {MouseEvent} from 'react';
-import Title from "../../../common/components/Title/Title";
 import {DoubleSlider} from "../../../common/components/DoubleSlider/DoubleSlider";
-import Button from "../../../common/components/Button/Button";
 import {RestartAlt} from "@styled-icons/material-outlined";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {PacksPath} from "../../../common/components/Routes/AppRoutes";
-import {Table} from "../../../common/components/Table/Table";
 import {TableNotation} from "../../../common/components/TableNotation/TableNotation";
-import {Th} from "../../../common/components/Table/Th";
+import {Th} from "../../../common/components/Th/Th";
 import {Pagination} from "../../../common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {Search} from "@styled-icons/material";
 import {secondColor} from "../../../assets/stylesheets/colors";
-import {StyledPackPagesContainer} from "../PackPageContainer/PackPagesContainer";
-import {HeaderSection} from "../HeaderSection/HeaderSection";
-import {SettingsSection} from "../SettingsSection/SettingsSection";
-import {Setting} from "../SettingsSection/Setting/Setting";
-import {TableSection} from "../TableSection/TableSection";
-import {PacksDataResponse} from "../cardsApi";
+import {PacksDataResponse} from "../packsApi";
+import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
+import {STitle} from "../../../common/components/CommonStyledComponents";
+import {Button} from "../../../common/components/Button/Button";
 
 type PT = PacksDataResponse & {}
 export const PacksList = () => {
@@ -47,14 +42,14 @@ export const PacksList = () => {
     // let {register} = useForm()
     const changeAccessory = (e: MouseEvent<HTMLButtonElement>) =>
         nav(`${PacksPath}?accessory=${e.currentTarget.value}`)
-    return <StyledPackPagesContainer>
-        <HeaderSection>
-            <Title>Pack list</Title>
+    return <SPackPagesContainer>
+        <SHeaderSection>
+            <STitle>Pack list</STitle>
             <Button>Add new pack</Button>
-        </HeaderSection>
-        <SettingsSection>
-            <Setting>
-                <Title>Search</Title>
+        </SHeaderSection>
+        <SSettingsSection>
+            <SSetting>
+                <STitle>Search</STitle>
                 {/*<label>*/}
                 {/*    <StyledSearch/>*/}
                 {/*    <SearchInput*/}
@@ -67,10 +62,10 @@ export const PacksList = () => {
                     type={"search"}
                     placeholder={"Provide tour text"}
                 />
-            </Setting>
-            <Setting>
-                <Title>Show packs cards</Title>
-                <ButtonSection>
+            </SSetting>
+            <SSetting>
+                <STitle>Show packs cards</STitle>
+                <SButtonSection>
                     <button
                         className={accessory === "my" ? "active" : ""}
                         onClick={changeAccessory}
@@ -83,35 +78,34 @@ export const PacksList = () => {
                         value={"all"}>
                         All
                     </button>
-                </ButtonSection>
-            </Setting>
+                </SButtonSection>
+            </SSetting>
 
-            <Setting>
-                <Title>Number of cards</Title>
+            <SSetting>
+                <STitle>Number of cards</STitle>
                 <DoubleSlider
                     min={data.minCardsCount}
                     max={data.maxCardsCount}
                     onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
                 />
-            </Setting>
+            </SSetting>
 
-            <Setting>
-                <Title>Clear</Title>
+            <SSetting>
+                <STitle>Clear</STitle>
                 <button>
                     <RestartAlt/>
                 </button>
-            </Setting>
-        </SettingsSection>
-        <TableSection>
-            <Table>
-                <thead>
+            </SSetting>
+        </SSettingsSection>
+        <STableSection>
+            <thead>
                 <Th value={"Name"}/>
                 <Th value={"Cards"}/>
                 <Th value={"Last Updated"}/>
                 <Th value={"Created by"}/>
                 <th>Actions</th>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 {data.cardPacks.map(c => <TableNotation
                     id={c._id}
                     name={c.name}
@@ -119,9 +113,8 @@ export const PacksList = () => {
                     cardsCount={c.cardsCount}
                     userId={c.user_id}/>)
                 }
-                </tbody>
-            </Table>
-        </TableSection>
+            </tbody>
+        </STableSection>
         <Pagination
             itemsName={"Cards"}
             currentPage={data.page}
@@ -129,7 +122,7 @@ export const PacksList = () => {
             pageSize={data.pageCount}
             pageChanged={(awd) => {
             }}/>
-    </StyledPackPagesContainer>
+    </SPackPagesContainer>
 };
 
 
@@ -143,7 +136,7 @@ const StyledSearch = styled(Search)`
   position: absolute;
   top: 2px;
 `
-const ButtonSection = styled.div`
+const SButtonSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
 

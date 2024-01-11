@@ -1,15 +1,19 @@
 import React, {memo, ReactNode} from 'react';
 import styled from "styled-components";
-const AuthPagesContainer: React.FC<{ children:ReactNode }> =
-    ({children}) => {
-        return  (
+
+export const AuthPagesContainer: React.FC<{ children: ReactNode }> = memo(
+    ({
+         children
+     }) => {
+        return (
             <SForm>
                 <Container>
                     {children}
                 </Container>
             </SForm>
         );
-    };
+    }
+);
 const SForm = styled.div`
   align-self: center;
   justify-self: center;
@@ -18,7 +22,6 @@ const SForm = styled.div`
   width: 50vh;
   height: 65vh;
   background: white;
-  
 `
 const Container = styled.div`
   width: 90%;
@@ -26,10 +29,10 @@ const Container = styled.div`
   margin: 0 auto;
   display: grid;
   justify-items: center;
+
   form {
     display: grid;
-    width:100%;
+    width: 100%;
     height: 100%;
   }
 `
-export default memo(AuthPagesContainer);

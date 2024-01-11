@@ -6,44 +6,45 @@ import {UseFormRegister} from "react-hook-form";
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 type SuperCheckboxPropsType = DefaultInputPropsType & {
-    register:UseFormRegister<any>
-    fieldName:string
+    register: UseFormRegister<any>
+    fieldName: string
     onChangeChecked?: (checked: boolean) => void
     error?: string
 }
 
-const SuperCheckbox: React.FC<SuperCheckboxPropsType> = (
-    {
-        type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
-        onChange, onChangeChecked,
-        register,
-        fieldName,
-        children, // в эту переменную попадёт текст
-        ...restProps// все остальные пропсы попадут в объект restProps
+export const Checkbox = memo(
+    ({
+         type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
+         onChange, onChangeChecked,
+         register,
+         fieldName,
+         children, // в эту переменную попадёт текст
+         ...restProps// все остальные пропсы попадут в объект restProps
+     }: SuperCheckboxPropsType) => {
+        return (
+            <SCheckbox>
+                <label>
+                    <input
+                        type={'checkbox'}
+                        {...restProps}
+                        {...register(fieldName)}
+                    />
+                    {children && <span>{children}</span>}
+                </label>
+            </SCheckbox>
+        )
     }
-) => {
-    return (
-        <Checkbox>
-            <label>
-                <input
-                    type={'checkbox'}
-                    {...restProps}
-                    {...register(fieldName)}
-                />
-                {children && <span>{children}</span>}
-            </label>
-        </Checkbox>
-    )
-}
-const Checkbox = styled.div`
+)
+const SCheckbox = styled.div`
 
   display: grid;
   justify-self: start;
   transition: 0.5s;
+
   :hover {
     cursor: pointer;
   }
-  
+
 
   label {
     display: grid;
@@ -62,4 +63,3 @@ const Checkbox = styled.div`
     }
   }
 `
-export default memo(SuperCheckbox)
