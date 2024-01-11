@@ -8,6 +8,7 @@ import {secondColor} from "../../assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
 import {useLogoutMutation} from "../../features/authPages/authApi";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
+import {SHoverModule} from "../../common/components/CommonStyledComponents";
 
 type HeaderT = {
     showMode: boolean
@@ -35,7 +36,7 @@ export const Header =
                 ? <Avatar>
                     <b>{name}</b>
                     <img src={avatar} alt="avatarka"/>
-                    <StyledAvatarModule>
+                    <SHoverModule>
                         <button
                             onClick={profileButtonHandler}>
                             <Person/>
@@ -47,7 +48,7 @@ export const Header =
                             <Logout/>
                             <span>LogOut</span>
                         </button>
-                    </StyledAvatarModule>
+                    </SHoverModule>
                 </Avatar>
                 : <Button onClick={singInButtonHandler}>Sing In</Button>
         return (
@@ -62,34 +63,7 @@ export const Header =
         );
     };
 
-const StyledAvatarModule = styled.div`
-  //background-color: blueviolet;
-  display: none;
-  border: 1px rgba(0, 0, 0, 0.47) solid;
-  position: absolute;
-  top: 7vh;
-  right: 3vh;
-  
-  button {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1vh 1fr;
-    align-items: center;
-    padding: 1vh;
-    border: none;
-    //background-color: burlywood;
-    cursor: pointer;
 
-    svg {
-      width: 1.5vh;
-      fill: black;
-    }
-
-    span {
-      padding-left: 1vh;
-    }
-  }
-`
 const StyledHeader = styled.header`
   //background-color: blue;
   display: grid;
