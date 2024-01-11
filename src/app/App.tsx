@@ -10,15 +10,17 @@ import {
     RegisterPath
 } from "../common/components/Routes/AppRoutes";
 import styled from "styled-components";
-import {useInitializeMutation} from "../dal/api/apiSlice";
+import {useInitializeMutation} from "../features/authPages/authApi";
 import Preloader from "../common/components/Preloader/Preloader";
 import {Message} from "../common/components/Alert/Message";
-import {useApiErrorsHandler} from "../common/hooks/hooks";
+import {useApiErrorsHandler, useAppDispatch} from "../common/hooks/hooks";
 import {Header} from "./Header/Header";
-import {PackList} from "../features/cards/PackList";
+import {PacksList} from "../features/Packs/PacksList/PacksList";
+import {Pack} from "../features/Packs/Pack/Pack";
 
 
 function App() {
+    const dispatch = useAppDispatch()
     const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -34,14 +36,15 @@ function App() {
                 name={data?.name}
                 avatar={data?.avatar}/>
             <Content>
-                <PackList/>
+                <Pack name={"NoName"}/>
+                {/*<PacksList/>*/}
                 {/*<AppRoutes/>*/}
                 {/*<Message/>*/}
-                <NavLink to={LoginPath}>login</NavLink>
-                <NavLink to={RegisterPath}>Register</NavLink>
-                <NavLink to={PasswordRecoveryPath}>PasRec</NavLink>
-                <NavLink to={ProfilePath}>Profile</NavLink>
-                <NavLink to={PacksPath}>Cards</NavLink>
+                {/*<NavLink to={LoginPath}>login</NavLink>*/}
+                {/*<NavLink to={RegisterPath}>Register</NavLink>*/}
+                {/*<NavLink to={PasswordRecoveryPath}>PasRec</NavLink>*/}
+                {/*<NavLink to={ProfilePath}>Profile</NavLink>*/}
+                {/*<NavLink to={PacksPath}>Cards</NavLink>*/}
             </Content>
         </Container>
     );

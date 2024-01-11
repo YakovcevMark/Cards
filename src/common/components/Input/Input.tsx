@@ -2,7 +2,7 @@ import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'rea
 import styled from "styled-components";
 import {antoColor, backgroundColor, secondColor} from "../../../assets/stylesheets/colors";
 import {Path, UseFormRegister} from "react-hook-form";
-import HelperText from "../HelperText/HelperText";
+import {StyledHelperText} from "../HelperText/StyledHelperText";
 import {Visibility} from "@styled-icons/material"
 import {VisibilityOff} from "@styled-icons/material";
 
@@ -55,7 +55,7 @@ const SuperInput: React.FC<SuperInputTextPropsType> = (
                 {label}
             </label>
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            {helperText && <HelperText>{helperText}</HelperText>}
+            {helperText && <StyledHelperText>{helperText}</StyledHelperText>}
             {type === "password" &&
                 <Eye
                     href="#"

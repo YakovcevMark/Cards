@@ -1,6 +1,6 @@
 import React, {memo, ReactNode} from 'react';
 import styled from "styled-components";
-const PagesContainer: React.FC<{ children:ReactNode }> =
+const AuthPagesContainer: React.FC<{ children:ReactNode }> =
     ({children}) => {
         return  (
             <SForm>
@@ -32,4 +32,4 @@ const Container = styled.div`
     height: 100%;
   }
 `
-export default memo(PagesContainer);
+export default memo(AuthPagesContainer);

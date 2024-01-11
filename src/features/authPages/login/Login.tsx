@@ -2,16 +2,16 @@ import React, {memo} from 'react';
 import Title from "../../../common/components/Title/Title";
 import Button from "../../../common/components/Button/Button";
 import {PasswordRecoveryPath, RegisterPath} from "../../../common/components/Routes/AppRoutes";
-import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
+import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
 import HelperLink from "../../../common/components/HelperLink/HelperLink";
-import HelperText from "../../../common/components/HelperText/HelperText";
+import {StyledHelperText} from "../../../common/components/HelperText/StyledHelperText";
 import styled from "styled-components";
 import Input from "../../../common/components/Input/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Checkbox from "../../../common/components/Checkbox/Checkbox";
 import {NavLink} from "react-router-dom";
 import ControlSection from "../ControlSection/ControlSection";
-import {useLoginMutation} from "../../../dal/api/apiSlice";
+import {useLoginMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginSchema} from "../../../utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "../../../common/hooks/hooks";
@@ -65,7 +65,7 @@ const Login = () => {
                             Login
                         </Button>
                     </ButtonControl>
-                    <HelperText>Don't have an account?</HelperText>
+                    <StyledHelperText>Don't have an account?</StyledHelperText>
                     <HelperLink path={RegisterPath}>Sing Up</HelperLink>
                 </ControlSection>
             </form>

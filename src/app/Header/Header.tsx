@@ -6,7 +6,7 @@ import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
 import {secondColor} from "../../assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
-import {useLogoutMutation} from "../../dal/api/apiSlice";
+import {useLogoutMutation} from "../../features/authPages/authApi";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
 
 type HeaderT = {

@@ -1,15 +1,15 @@
 import React from 'react';
-import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
+import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
 import Input from '../../../common/components/Input/Input';
 import Title from "../../../common/components/Title/Title";
-import HelperText from "../../../common/components/HelperText/HelperText";
+import {StyledHelperText} from "../../../common/components/HelperText/StyledHelperText";
 import Button from "../../../common/components/Button/Button";
 import InputsSection from "../InputsSection/InputsSection";
 import ControlSection from "../ControlSection/ControlSection";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {PasswordSchema} from "../../../utils/YupValidators/Validators";
-import {useSetNewPasswordMutation} from "../../../dal/api/apiSlice";
+import {useSetNewPasswordMutation} from "../authApi";
 import {Navigate, useParams} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
 
@@ -40,10 +40,10 @@ const PasswordNew = () => {
                         disabled={isLoading}
                         error={errors.password?.message}
                         register={register}/>
-                    <HelperText>
+                    <StyledHelperText>
                         Create new password and we will send you
                         further instructions to email
-                    </HelperText>
+                    </StyledHelperText>
                 </InputsSection>
                 <ControlSection>
                     <Button

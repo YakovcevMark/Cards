@@ -1,7 +1,7 @@
 import React, {ChangeEvent, MouseEvent, useRef, useState} from 'react';
-import PagesContainer from "../../common/components/PagesContainer/PagesContainer";
+import PagesContainer from "../authPages/AuthPagesContainer/AuthPagesContainer";
 import Title from "../../common/components/Title/Title";
-import HelperText from "../../common/components/HelperText/HelperText";
+import {StyledHelperText} from "../../common/components/HelperText/StyledHelperText";
 import Button from "../../common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
 import {DriveFileRenameOutline, KeyboardBackspace} from "@styled-icons/material-outlined"
@@ -9,24 +9,22 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import Input from "../../common/components/Input/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
-import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../../dal/api/apiSlice";
+import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
 import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "../../utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "../../common/hooks/hooks";
 import {useNavigate} from "react-router-dom";
 import {PacksPath} from "../../common/components/Routes/AppRoutes";
+import {BackArrowBlock} from "../../common/components/BackArrowBlock/BackArrowBlock";
 
 type ProfileFormValues = {
     name?: string
     avatar?: string
 }
 const Profile = () => {
-
     const [editMode, setEditMode] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement>(null)
-    const nav = useNavigate()
-
     const [, {data, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -69,7 +67,6 @@ const Profile = () => {
             console.log('Error: ', error);
         };
     };
-    const backButtonHandler = () => nav(PacksPath)
     let content = !editMode && !loadingInit
         ? (
             <>
@@ -100,18 +97,10 @@ const Profile = () => {
                 </Input>
             </>
         )
-
     return (
-
         <>
-            <BackArrowBlock
-                onClick={backButtonHandler}>
-                <KeyboardBackspace/>
-                Back to Packs List
-            </BackArrowBlock>
-
+            <BackArrowBlock/>
             <PagesContainer>
-
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <ProfileContainer>
                         <Title>Personal Information</Title>
@@ -133,9 +122,9 @@ const Profile = () => {
                             {content}
                         </NickName>
 
-                        <HelperText>
+                        <StyledHelperText>
                             {data!.email}
-                        </HelperText>
+                        </StyledHelperText>
                         <Button
                             disabled={isLogOutLoading}
                             onClick={logoutHandler}
@@ -151,22 +140,7 @@ const Profile = () => {
             </PagesContainer></>
     );
 };
-const BackArrowBlock = styled.button`
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
 
-  border: none;
-  width: 18vh;
-  height: 5vh;
-  
-  display: grid;
-  grid-template-columns: 2.5vh 1fr;
-  align-items: center;
-  cursor: pointer;
-  position: absolute;
-`
 const LogOutIcon = styled(Logout)`
   width: 2vh;
 `

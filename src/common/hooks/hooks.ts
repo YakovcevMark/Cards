@@ -2,7 +2,7 @@ import {AppDispatch, RootState} from "../../app/store";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {setAppError} from "../../app/appSlice";
 import {useCallback} from "react";
-import {useInitializeMutation} from "../../dal/api/apiSlice";
+import {useInitializeMutation} from "../../features/authPages/authApi";
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

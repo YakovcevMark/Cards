@@ -6,6 +6,13 @@ export type UserDataResponse = {
     name: string;
     avatar?: string;
     publicCardPacksCount: number;
+
+
+    created: Date;
+    updated: Date;
+    isAdmin: boolean;
+    verified: boolean;
+    rememberMe: boolean;
 };
 export type RegisterFormData = {
     email: string;

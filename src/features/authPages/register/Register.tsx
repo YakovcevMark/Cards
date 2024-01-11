@@ -6,12 +6,12 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {LoginPath} from "../../../common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useRegisterMutation} from "../../../dal/api/apiSlice";
+import {useRegisterMutation} from "../authApi";
 import ControlSection from "../ControlSection/ControlSection";
 import InputsSection from "../InputsSection/InputsSection";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "../../../utils/YupValidators/Validators";
-import PagesContainer from "../../../common/components/PagesContainer/PagesContainer";
+import PagesContainer from "../AuthPagesContainer/AuthPagesContainer";
 import {useApiErrorsHandler} from "../../../common/hooks/hooks";
 
 export type RegisterFormValues = {
