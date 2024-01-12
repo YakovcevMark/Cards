@@ -8,6 +8,7 @@ import {TableNotation} from "../../../common/components/TableNotation/TableNotat
 import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
 import {SHoverModule, STitle} from "../../../common/components/CommonStyledComponents";
 import {DeleteOutline, DriveFileRenameOutline, School, Tune} from "@styled-icons/material-outlined";
+import {useInitializeMutation} from "../../authPages/authApi";
 
 type PT = {
     name: string
@@ -114,6 +115,9 @@ export const Pack =
             pageCount: 10,
             packUserId: "3453434"
         }
+        const [, {data: userData}] = useInitializeMutation({
+            fixedCacheKey: 'shared-postMe-post',
+        })
         return (
             <ExtendContainer>
                 <BackArrowBlock/>
@@ -176,12 +180,11 @@ export const Pack =
                         </thead>
                         <tbody>
                         {data.cards.map(c => <TableNotation
-                            id={c._id}
                             question={c.question}
                             answer={c.question}
                             updated={c.updated}
                             grade={c.grade}
-                            userId={c.user_id}/>)
+                            isOwner={userData!._id === c.user_id}/>)
                         }
                         </tbody>
                     </table>
