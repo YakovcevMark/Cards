@@ -40,7 +40,9 @@ export const AppRoutes = memo(() => {
                         path={LoginPath}/>
                 }>
                     <Route path={ProfilePath} element={<Profile/>}/>
-                    <Route path={"" && `${PacksPath}`} element={<PacksList/>}/>
+
+                    <Route path={""} element={<PacksList/>}/>
+                    <Route path={PacksPath} element={<PacksList/>}/>
                     <Route path={PackPath} element={<Pack name={"No name"}/>}/>
                 </Route>
             </Routes>

@@ -1,48 +1,80 @@
-import React, {MouseEvent} from 'react';
+import React, {MouseEvent, useEffect} from 'react';
 import {DoubleSlider} from "../../../common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {PacksPath} from "../../../common/components/Routes/AppRoutes";
+import {useSearchParams} from "react-router-dom";
 import {TableNotation} from "../../../common/components/TableNotation/TableNotation";
 import {Th} from "../../../common/components/Th/Th";
 import {Pagination} from "../../../common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {Search} from "@styled-icons/material";
 import {secondColor} from "../../../assets/stylesheets/colors";
-import {PacksDataResponse} from "../packsApi";
+import {useLazyGetPacksQuery} from "../packsApi";
 import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
 import {STitle} from "../../../common/components/CommonStyledComponents";
 import {Button} from "../../../common/components/Button/Button";
+import {useInitializeMutation} from "../../authPages/authApi";
+import {useApiErrorsHandler} from "../../../common/hooks/hooks";
+import {Preloader} from "../../../common/components/Preloader/Preloader";
 
-type PT = PacksDataResponse & {}
 export const PacksList = () => {
-    const data = {
-        cardPacks: [
-            {_id: "1", name: "awd", cardsCount: 1, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "2", name: "awd", cardsCount: 2, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "3", name: "awd", cardsCount: 3, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "4", name: "awd", cardsCount: 4, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "5", name: "awd", cardsCount: 5, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "6", name: "awd", cardsCount: 6, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "7", name: "awd", cardsCount: 7, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "8", name: "awd", cardsCount: 8, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "9", name: "awd", cardsCount: 9, updated: "18.02.2002", user_id: "LolKek"},
-            {_id: "10", name: "awd", cardsCount: 10, updated: "18.02.2002", user_id: "LolKek"},
-        ],
-        cardPacksTotalCount: 2300,
-        maxCardsCount: 4,
-        minCardsCount: 0,
-        page: 1,
-        pageCount: 10,
-    }
+    // const data = {
+    //     cardPacks: [
+    //         {_id: "1", name: "awd", cardsCount: 1, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "2", name: "awd", cardsCount: 2, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "3", name: "awd", cardsCount: 3, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "4", name: "awd", cardsCount: 4, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "5", name: "awd", cardsCount: 5, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "6", name: "awd", cardsCount: 6, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "7", name: "awd", cardsCount: 7, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "8", name: "awd", cardsCount: 8, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "9", name: "awd", cardsCount: 9, updated: "18.02.2002", user_id: "LolKek"},
+    //         {_id: "10", name: "awd", cardsCount: 10, updated: "18.02.2002", user_id: "LolKek"},
+    //     ],
+    //     cardPacksTotalCount: 2300,
+    //     maxCardsCount: 4,
+    //     minCardsCount: 0,
+    //     page: 1,
+    //     pageCount: 10,
+    // };
+
+    const [, {data: userData}] = useInitializeMutation({
+        fixedCacheKey: 'shared-postMe-post',
+    })
+
     const [searchParams, setSearchParams] = useSearchParams();
-    const accessory = searchParams.get("accessory") || "all"
-    console.log(accessory)
-    const nav = useNavigate()
-    // let {register} = useForm()
+
+    const [fetchPacks, {
+        // data:packsData
+        data,
+        isLoading
+    }] = useLazyGetPacksQuery({
+        refetchOnFocus: true,
+        refetchOnReconnect: true,
+    })
+    const fetchPackValidator = useApiErrorsHandler(fetchPacks)
+    // fetchPackValidator({})
+    useEffect(() => {
+        fetchPackValidator({
+            packName: searchParams.get("packName") || "",
+            min: searchParams.get("min") || "0",
+            max: searchParams.get("max") || "0",
+            sortPacks: searchParams.get("sortPacks") || "",
+            user_id: searchParams.get("user_id") || "",
+            pageCount: searchParams.get("pageCount") || "10",
+            block: searchParams.get("block") || "false",
+        })
+    }, [fetchPackValidator, searchParams]);
+
+
+    // console.log(packsData)
+
+
     const changeAccessory = (e: MouseEvent<HTMLButtonElement>) =>
-        nav(`${PacksPath}?accessory=${e.currentTarget.value}`)
-    return <SPackPagesContainer>
+        setSearchParams({user_id: e.currentTarget.value})
+
+    const accessory = searchParams.get("user_id") || "";
+
+    return isLoading ? <Preloader/> : <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
             <Button>Add new pack</Button>
@@ -67,15 +99,15 @@ export const PacksList = () => {
                 <STitle>Show packs cards</STitle>
                 <SButtonSection>
                     <button
-                        className={accessory === "my" ? "active" : ""}
+                        className={accessory ? "active" : ""}
                         onClick={changeAccessory}
-                        value={"my"}>
+                        value={userData!._id}>
                         My
                     </button>
                     <button
-                        className={accessory === "all" ? "active" : ""}
+                        className={accessory ? "" : "active"}
                         onClick={changeAccessory}
-                        value={"all"}>
+                        value={""}>
                         All
                     </button>
                 </SButtonSection>
@@ -83,11 +115,13 @@ export const PacksList = () => {
 
             <SSetting>
                 <STitle>Number of cards</STitle>
-                <DoubleSlider
-                    min={data.minCardsCount}
-                    max={data.maxCardsCount}
-                    onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
-                />
+                {data &&
+                    <DoubleSlider
+                        min={data!.minCardsCount}
+                        max={data!.maxCardsCount}
+                        onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
+                    />
+                }
             </SSetting>
 
             <SSetting>
@@ -98,58 +132,65 @@ export const PacksList = () => {
             </SSetting>
         </SSettingsSection>
         <STableSection>
-            <thead>
-                <Th value={"Name"}/>
-                <Th value={"Cards"}/>
-                <Th value={"Last Updated"}/>
-                <Th value={"Created by"}/>
-                <th>Actions</th>
-            </thead>
-            <tbody>
-                {data.cardPacks.map(c => <TableNotation
-                    id={c._id}
-                    name={c.name}
-                    updated={c.updated}
-                    cardsCount={c.cardsCount}
-                    userId={c.user_id}/>)
+
+            <table>
+                    <Th value={"Name"}/>
+                    <Th value={"Cards"}/>
+                    <Th value={"Last Updated"}/>
+                    <Th value={"Created by"}/>
+                    <th>Actions</th>
+
+                {data &&
+
+                    data!.cardPacks.map(c => <TableNotation
+                        key={c._id}
+                        packName={c.name}
+                        userName={c.user_name}
+                        updated={c.updated}
+                        cardsCount={c.cardsCount}
+                        isOwner={userData!._id === c.user_id}
+                    />)
+
                 }
-            </tbody>
+            </table>
         </STableSection>
-        <Pagination
-            itemsName={"Cards"}
-            currentPage={data.page}
-            totalItemsCount={data.cardPacksTotalCount}
-            pageSize={data.pageCount}
-            pageChanged={(awd) => {
-            }}/>
+        {data &&
+            <Pagination
+                itemsName={"Cards"}
+                currentPage={data!.page}
+                totalItemsCount={data!.cardPacksTotalCount}
+                pageSize={data!.pageCount}
+                pageChanged={(awd) => {
+                }}/>
+        }
     </SPackPagesContainer>
 };
 
 
 const SearchInput = styled.input`
-  width: 100%;
-  height: 80%;
-  //padding: 0 0 0 3vh;
+    width: 100%;
+    height: 80%;
+    //padding: 0 0 0 3vh;
 `
 const StyledSearch = styled(Search)`
-  fill: rgba(0, 0, 0, 0.4);
-  position: absolute;
-  top: 2px;
+    fill: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 2px;
 `
 const SButtonSection = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
-  button {
-    font-size: 20px;
-  }
+    button {
+        font-size: 20px;
+    }
 
-  .active {
-    color: white;
-    background-color: ${secondColor};
-  }
+    .active {
+        color: white;
+        background-color: ${secondColor};
+    }
 `
 const StyledSearchInput = styled.input`
-  border: 1px solid rgba(0, 0, 0, 0.2)
+    border: 1px solid rgba(0, 0, 0, 0.2)
 `
 

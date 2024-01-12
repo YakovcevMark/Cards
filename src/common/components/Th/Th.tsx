@@ -73,6 +73,3 @@ const StyledTh = styled.th`
 
 
 `
-const NullEject = styled(Eject)`
-  rotate: 180deg;
-`

@@ -1,4 +1,4 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useRef, useState} from 'react'
+import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'react'
 import styled from "styled-components";
 import {antoColor, secondColor} from "../../../assets/stylesheets/colors";
 import {Path, UseFormRegister} from "react-hook-form";
@@ -32,17 +32,17 @@ export const Input = memo(
          ...restProps// все остальные пропсы попадут в объект restProps
      }: SuperInputTextPropsType) => {
         const [seeMode, setSeeMode] = useState<boolean>(false)
-        const inputRef = useRef<HTMLInputElement>(null)
+        // const inputRef = useRef<HTMLInputElement>(null)
         const eyeHandle = (e: React.MouseEvent<SVGSVGElement>) => {
             e.preventDefault()
             setSeeMode(!seeMode)
         };
 
         const finalType = type === "password" && !seeMode ? "password" : 'text';
-        const onLabelClickHandler = () => {
-            if( inputRef.current )
-                inputRef.current.focus()
-        }
+        // const onLabelClickHandler = () => {
+        //     if( inputRef.current )
+        //         inputRef.current.focus()
+        // }
 
         return (
             <SInput
@@ -52,10 +52,11 @@ export const Input = memo(
                     placeholder={label}
                     {...restProps}
                     {...register!(camelize(label!))}
-                    ref={inputRef}
+                    // ref={inputRef}
                 />
                 <label
-                    onClick={onLabelClickHandler}>
+                    // onClick={onLabelClickHandler}
+                >
                     {label}
                 </label>
                 {error && <ErrorMessage>{error}</ErrorMessage>}

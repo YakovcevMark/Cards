@@ -1,10 +1,10 @@
 import * as yup from "yup"
 
 const email = {
-    email: yup.string().email().required("Password is a required field")
+    email: yup.string().email().required("Email is a required field")
 }
 const password = {
-    password: yup.string().min(7).max(20).required("Email is a required field")
+    password: yup.string().min(7).max(20).required("Password is a required field")
 }
 export const RegisterSchema = yup
     .object({

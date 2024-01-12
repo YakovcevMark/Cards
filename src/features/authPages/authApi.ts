@@ -1,7 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {UserDataResponse} from "../../dal/api";
 
-type Response = {
+export type Response = {
     error?: string;
     info?: string
 };
@@ -9,7 +8,22 @@ export type RegisterFormData = {
     email: string;
     password: string;
 };
+export type UserDataResponse = {
+    _id: string;
+    email: string;
+    name: string;
+    avatar?: string;
+    publicCardPacksCount: number;
+
+
+    created: Date;
+    updated: Date;
+    isAdmin: boolean;
+    verified: boolean;
+    rememberMe: boolean;
+};
 export const authApi = createApi({
+    reducerPath:"auth",
     baseQuery: fetchBaseQuery(
         {
             baseUrl: 'http://localhost:7542/2.0/',

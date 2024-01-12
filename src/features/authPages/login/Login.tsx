@@ -21,7 +21,13 @@ type LoginValues = {
     rememberMe: boolean
 }
 export const Login = () => {
-    const {register, handleSubmit, formState: {errors}} = useForm<LoginValues>({
+    const {
+        register,
+        handleSubmit,
+        formState: {
+            errors
+        }
+    } = useForm<LoginValues>({
         resolver: yupResolver(LoginSchema)
     })
     const [login, {isLoading}] = useLoginMutation()
@@ -73,11 +79,11 @@ export const Login = () => {
     );
 };
 const FP = styled.div`
-  justify-self: end;
-  padding: 20px 0;
+    justify-self: end;
+    padding: 20px 0;
 
-  a {
-    color: black;
-    text-decoration: none;
-  }
+    a {
+        color: black;
+        text-decoration: none;
+    }
 `

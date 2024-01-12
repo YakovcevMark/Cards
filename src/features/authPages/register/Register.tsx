@@ -65,10 +65,12 @@ export const Register = () => {
                 <SControlSection>
                     <SButtonControl>
                         <Button gray
-                                onClick={cancelButtonHandler}>
+                                onClick={cancelButtonHandler}
+                            type={"button"}>
                             Cancel
                         </Button>
-                        <Button>
+                        <Button
+                            type={"submit"}>
                             Register
                         </Button>
                     </SButtonControl>

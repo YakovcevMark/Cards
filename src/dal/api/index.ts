@@ -1,26 +1,6 @@
 import axios from "axios";
+import {RegisterFormData, Response, UserDataResponse} from "../../features/authPages/authApi";
 
-export type UserDataResponse = {
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    publicCardPacksCount: number;
-
-
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean;
-    rememberMe: boolean;
-};
-export type RegisterFormData = {
-    email: string;
-    password: string;
-};
-type Response = {
-    error?: string;
-};
 const settings = {
     withCredentials: true
 };

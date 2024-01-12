@@ -20,7 +20,6 @@ export const Message = memo(
         }, [error, dispatch])
 
         return error ? <StyledMessage>
-                {/*<i className="fa fa-exclamation-triangle" aria-hidden="true"></i>*/}
                 {error}
             </StyledMessage>
             : <></>
