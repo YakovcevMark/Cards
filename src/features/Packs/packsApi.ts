@@ -5,45 +5,62 @@ type PaginationInfo = {
     page: number
     pageCount: number
 }
-
-export type CardPack = {
+type CommonPackAndCardTypes = {
     _id: string
+    grade: number
+    type: string
+    shots: number
+    rating: number
     user_id: string
+    created: string
+    updated: string
+}
+type CommonFetchParams = {
+    min: string
+    max: string
+}
+
+export type CardsPack = CommonPackAndCardTypes & {
     more_id: string
     user_name: string
     private: boolean
     name: string
     path: string
     cardsCount: number
-    grade: number
-    shots: number
-    rating: number
-    type: string
-    created: string
-    updated: string
     __v: number
 }
-export type Card = {
-    answer: string
-    question: string
-    cardPack_id: string
-    grade: number
-    rating: number
-    shots: number
-    type: string
+export type FetchPacksParams = CommonFetchParams & PaginationInfo & {
+    packName: string
+    sortPacks: string
     user_id: string
-    created: string
-    updated: string
-    __v: number
-    _id: string
+    block: string
 }
 export type PacksDataResponse = PaginationInfo & {
-    cardPacks: CardPack[]
+    cardPacks: CardsPack[]
     cardPacksTotalCount: number
     maxCardsCount: number
     minCardsCount: number
     token: string
     tokenDeathTime: number
+}
+type PackPostData = Omit<CommonPackAndCardTypes,"created"| "_id" | "updated" | "user_id"> & {
+    name:string
+    path:string
+    deckCover:string
+    private:boolean
+}
+
+export type Card = CommonPackAndCardTypes & {
+    answer: string
+    question: string
+    cardPack_id: string
+    __v: number
+}
+type FetchCardsParams = CommonFetchParams & PaginationInfo & {
+    cardPack_id:string
+    cardAnswer:string
+    cardQuestion:string
+    sortCards:string
 }
 export type CardDataResponse = PaginationInfo & {
     cards: Card[]
@@ -52,15 +69,19 @@ export type CardDataResponse = PaginationInfo & {
     minGrade: number
     packUserId: string
 }
-export type FetchPacksParams = PaginationInfo & {
-    packName: string
-    min: string
-    max: string
-    sortPacks: string
-    user_id: string
-    block: string
-    pageCount: string
+
+type CardPostData = Omit<CommonPackAndCardTypes,"created"| "_id" | "updated" | "user_id"> & {
+    cardsPack_id:string
+    question:string
+    answer:string
+    answerImg:string
+    questionImg:string
+    answerVideo:string
+    questionVideo:string
 }
+
+
+
 export const packsApi = createApi({
     reducerPath: "packs",
     baseQuery: fetchBaseQuery(
@@ -79,59 +100,66 @@ export const packsApi = createApi({
 
             }),
         }),
-        // register: build.mutation<Response, RegisterFormData>({
-        //     query: (data) => ({
-        //         url: 'auth/register',
-        //         method: 'POST',
-        //         body: data
-        //     }),
-        // }),
-        // login: build.mutation<Response, RegisterFormData & { rememberMe: boolean }>({
-        //     query: (data) => ({
-        //         url: 'auth/login',
-        //         method: 'POST',
-        //         body: data
-        //     })
-        // }),
-        // logout: build.mutation<Response, void>({
-        //     query: () => ({
-        //         url: 'auth/me',
-        //         method: 'DELETE',
-        //     })
-        // }),
-        // recoveryPassword: build.mutation<Response, Pick<RegisterFormData, 'email'> & { from?: string, message?: string }>({
-        //     query: (data) => ({
-        //         url: 'auth/forgot',
-        //         method: 'POST',
-        //         body: {
-        //             from: "",
-        //             message: `<div style="background-color: lime; padding: 15px">
-        //                         password recovery link
-        //                         <a
-        //                             href='http://localhost:3000/#/set-new-password/$token$'>
-        //                         link
-        //                         </a>
-        //                      </div>`,
-        //             ...data
-        //         }
-        //     })
-        // }),
-        // setNewPassword: build.mutation <Response, Pick<RegisterFormData, 'password'> & { resetPasswordToken: string }>({
-        //     query: (data) => ({
-        //         url: 'auth/set-new-password',
-        //         method: 'POST',
-        //         body: data
-        //     })
-        // }),
-        // updateProfile: build.mutation <Response, { name?: string, avatar?: string | ArrayBuffer }>({
-        //     query: (data) => ({
-        //         url: 'auth/me',
-        //         method: 'PUT',
-        //         body: data
-        //     })
-        // }),
+        createPack: build.mutation<Response, Partial<PackPostData>>({
+            query: (data) => ({
+                url: 'pack',
+                method: 'POST',
+                body: data
+            }),
+        }),
+        updatePack: build.mutation<Response, Partial<PackPostData> & { _id: string }>({
+            query: (data) => ({
+                url: 'pack',
+                method: 'PUT',
+                body: data
+            })
+        }),
+        deletePack: build.mutation<Response, { _id:String } >({
+            query: ({_id}) => ({
+                url: 'pack',
+                method: 'DELETE',
+                params: _id
+            })
+        }),
+        getCards: build.query<CardDataResponse & Response, Partial<FetchCardsParams>>({
+            query: (data) => ({
+                url: 'card',
+                params: {
+                    ...data
+                },
+
+            }),
+        }),
+        createCard: build.mutation<Response, Partial<CardPostData>>({
+            query: (data) => ({
+                url: 'card',
+                method: 'POST',
+                body: data
+            }),
+        }),
+        updateCard: build.mutation<Response, Partial<CardPostData> & { _id: string, comments:string }>({
+            query: (data) => ({
+                url: 'card',
+                method: 'PUT',
+                body: data
+            })
+        }),
+        deleteCard: build.mutation<Response, { _id:String } >({
+            query: ({_id}) => ({
+                url: 'card',
+                method: 'DELETE',
+                params: _id
+            })
+        }),
     }),
 })
 export const {
-    useLazyGetPacksQuery
+    useLazyGetPacksQuery,
+    useCreatePackMutation,
+    useUpdatePackMutation,
+    useDeletePackMutation,
+    useLazyGetCardsQuery,
+    useCreateCardMutation,
+    useUpdateCardMutation,
+    useDeleteCardMutation,
 } = packsApi

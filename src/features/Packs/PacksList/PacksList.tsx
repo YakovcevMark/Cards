@@ -51,6 +51,7 @@ export const PacksList = () => {
         refetchOnFocus: true,
         refetchOnReconnect: true,
     })
+
     const fetchPackValidator = useApiErrorsHandler(fetchPacks)
     // fetchPackValidator({})
     useEffect(() => {
