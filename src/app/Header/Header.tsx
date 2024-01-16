@@ -36,7 +36,7 @@ export const Header =
                 ? <Avatar>
                     <b>{name}</b>
                     <img src={avatar} alt="avatarka"/>
-                    <SHoverModule>
+                    <SSHoverModule>
                         <button
                             onClick={profileButtonHandler}>
                             <Person/>
@@ -48,7 +48,7 @@ export const Header =
                             <Logout/>
                             <span>LogOut</span>
                         </button>
-                    </SHoverModule>
+                    </SSHoverModule>
                 </Avatar>
                 : <Button onClick={singInButtonHandler}>Sing In</Button>
         return (
@@ -63,7 +63,9 @@ export const Header =
         );
     };
 
-
+const SSHoverModule = styled(SHoverModule)`
+    top:6vh;
+`
 const StyledHeader = styled.header`
   //background-color: blue;
   display: grid;
@@ -98,7 +100,7 @@ const ControlSection = styled.span`
   justify-self: end;
   display: grid;
   align-content: center;
-  
+    
   &:hover {
     div {
       display: grid;

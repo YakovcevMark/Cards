@@ -48,7 +48,7 @@ export const TableNotation = memo(
                 {cardsCount && <td>{cardsCount}</td>}
                 <td>{updated}</td>
                 {grade && <td>{grade}</td>}
-                {userName && <td>{userName}</td>}
+                {userName && <td>{handleStringLength(userName)}</td>}
                 <ActionButtons>
                     <Button
                         icon>
@@ -71,7 +71,7 @@ export const TableNotation = memo(
     }
 );
 const NotationName = styled.td`
-    //width: 40vh;
+    width: 40vh;
 
     &:hover {
         cursor: pointer;

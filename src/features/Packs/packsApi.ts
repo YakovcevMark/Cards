@@ -43,11 +43,11 @@ export type PacksDataResponse = PaginationInfo & {
     token: string
     tokenDeathTime: number
 }
-type PackPostData = Omit<CommonPackAndCardTypes,"created"| "_id" | "updated" | "user_id"> & {
-    name:string
-    path:string
-    deckCover:string
-    private:boolean
+type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
+    name: string
+    path: string
+    deckCover: string
+    private: boolean
 }
 
 export type Card = CommonPackAndCardTypes & {
@@ -57,10 +57,10 @@ export type Card = CommonPackAndCardTypes & {
     __v: number
 }
 type FetchCardsParams = CommonFetchParams & PaginationInfo & {
-    cardPack_id:string
-    cardAnswer:string
-    cardQuestion:string
-    sortCards:string
+    cardPack_id: string
+    cardAnswer: string
+    cardQuestion: string
+    sortCards: string
 }
 export type CardDataResponse = PaginationInfo & {
     cards: Card[]
@@ -70,16 +70,15 @@ export type CardDataResponse = PaginationInfo & {
     packUserId: string
 }
 
-type CardPostData = Omit<CommonPackAndCardTypes,"created"| "_id" | "updated" | "user_id"> & {
-    cardsPack_id:string
-    question:string
-    answer:string
-    answerImg:string
-    questionImg:string
-    answerVideo:string
-    questionVideo:string
+type CardPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
+    cardsPack_id: string
+    question: string
+    answer: string
+    answerImg: string
+    questionImg: string
+    answerVideo: string
+    questionVideo: string
 }
-
 
 
 export const packsApi = createApi({
@@ -90,6 +89,7 @@ export const packsApi = createApi({
             baseUrl: 'http://localhost:7542/2.0/cards/',
             credentials: "include"
         }),
+    tagTypes: ['Pack', 'Card'],
     endpoints: build => ({
         getPacks: build.query<PacksDataResponse & Response, Partial<FetchPacksParams>>({
             query: (data) => ({
@@ -97,8 +97,8 @@ export const packsApi = createApi({
                 params: {
                     ...data
                 },
-
             }),
+            providesTags:['Pack']
         }),
         createPack: build.mutation<Response, Partial<PackPostData>>({
             query: (data) => ({
@@ -106,20 +106,23 @@ export const packsApi = createApi({
                 method: 'POST',
                 body: data
             }),
+            invalidatesTags:['Pack'],
         }),
         updatePack: build.mutation<Response, Partial<PackPostData> & { _id: string }>({
             query: (data) => ({
                 url: 'pack',
                 method: 'PUT',
                 body: data
-            })
+            }),
+            invalidatesTags:['Pack'],
         }),
-        deletePack: build.mutation<Response, { _id:String } >({
+        deletePack: build.mutation<Response, { _id: String }>({
             query: ({_id}) => ({
                 url: 'pack',
                 method: 'DELETE',
                 params: _id
-            })
+            }),
+            invalidatesTags:['Pack'],
         }),
         getCards: build.query<CardDataResponse & Response, Partial<FetchCardsParams>>({
             query: (data) => ({
@@ -129,6 +132,7 @@ export const packsApi = createApi({
                 },
 
             }),
+            providesTags:['Card']
         }),
         createCard: build.mutation<Response, Partial<CardPostData>>({
             query: (data) => ({
@@ -136,20 +140,23 @@ export const packsApi = createApi({
                 method: 'POST',
                 body: data
             }),
+            invalidatesTags:['Card'],
         }),
-        updateCard: build.mutation<Response, Partial<CardPostData> & { _id: string, comments:string }>({
+        updateCard: build.mutation<Response, Partial<CardPostData> & { _id: string, comments: string }>({
             query: (data) => ({
                 url: 'card',
                 method: 'PUT',
                 body: data
-            })
+            }),
+            invalidatesTags:['Card'],
         }),
-        deleteCard: build.mutation<Response, { _id:String } >({
+        deleteCard: build.mutation<Response, { _id: String }>({
             query: ({_id}) => ({
                 url: 'card',
                 method: 'DELETE',
                 params: _id
-            })
+            }),
+            invalidatesTags:['Card'],
         }),
     }),
 })

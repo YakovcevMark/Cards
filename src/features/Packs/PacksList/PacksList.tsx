@@ -1,19 +1,17 @@
-import React, {MouseEvent, useEffect} from 'react';
+import React, {MouseEvent, useEffect, useMemo} from 'react';
 import {DoubleSlider} from "../../../common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
-import {useSearchParams} from "react-router-dom";
 import {TableNotation} from "../../../common/components/TableNotation/TableNotation";
 import {Th} from "../../../common/components/Th/Th";
 import {Pagination} from "../../../common/components/Pagination/Pagination";
 import styled from "styled-components";
-import {Search} from "@styled-icons/material";
 import {secondColor} from "../../../assets/stylesheets/colors";
 import {useLazyGetPacksQuery} from "../packsApi";
 import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
 import {STitle} from "../../../common/components/CommonStyledComponents";
 import {Button} from "../../../common/components/Button/Button";
 import {useInitializeMutation} from "../../authPages/authApi";
-import {useApiErrorsHandler} from "../../../common/hooks/hooks";
+import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "../../../common/hooks/hooks";
 import {Preloader} from "../../../common/components/Preloader/Preloader";
 
 export const PacksList = () => {
@@ -41,7 +39,8 @@ export const PacksList = () => {
         fixedCacheKey: 'shared-postMe-post',
     })
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const {searchParams, useMySetSearchParams, setSearchParams} = useAppSearchParams();
+
 
     const [fetchPacks, {
         // data:packsData
@@ -53,29 +52,42 @@ export const PacksList = () => {
     })
 
     const fetchPackValidator = useApiErrorsHandler(fetchPacks)
-    // fetchPackValidator({})
-    useEffect(() => {
-        fetchPackValidator({
+
+    const fetchParams = useMemo(() => {
+        return {
             packName: searchParams.get("packName") || "",
             min: searchParams.get("min") || "0",
             max: searchParams.get("max") || "0",
-            sortPacks: searchParams.get("sortPacks") || "",
+            sortPacks: searchParams.get("sortPacks") || "0updated",
             user_id: searchParams.get("user_id") || "",
             pageCount: searchParams.get("pageCount") || "10",
             block: searchParams.get("block") || "false",
-        })
-    }, [fetchPackValidator, searchParams]);
+            page: searchParams.get("page") || "1",
+        }
+    }, [searchParams])
 
+    useEffect(() => {
+        fetchPackValidator(fetchParams)
+    }, [fetchPackValidator, fetchParams]);
 
-    // console.log(packsData)
+    const setUserIdSearchParam = useMySetSearchParams("user_id")
+    const setPageSearchParam = useMySetSearchParams("page")
+    const setSortPacksSearchParam = useMySetSearchParams("sortPacks")
+    const setPackNameSearchParam = useMySetSearchParams("packName")
+    const setMinSearchParam = useMySetSearchParams("min")
+    const setMaxSearchParam = useMySetSearchParams("max")
+    const setPageCountSearchParam = useMySetSearchParams("pageCount")
 
+    const setPackNameHandler = useSearchWithDelay(setPackNameSearchParam, 1500)
 
     const changeAccessory = (e: MouseEvent<HTMLButtonElement>) =>
-        setSearchParams({user_id: e.currentTarget.value})
+        setUserIdSearchParam(e.currentTarget.value)
 
-    const accessory = searchParams.get("user_id") || "";
+    const clearButtonHandler = () => {
+        setSearchParams({})
+    }
 
-    return isLoading ? <Preloader/> : <SPackPagesContainer>
+    return !data ? <Preloader/> : <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
             <Button>Add new pack</Button>
@@ -83,30 +95,23 @@ export const PacksList = () => {
         <SSettingsSection>
             <SSetting>
                 <STitle>Search</STitle>
-                {/*<label>*/}
-                {/*    <StyledSearch/>*/}
-                {/*    <SearchInput*/}
-                {/*        name={"search"}*/}
-                {/*        type={"text"}*/}
-                {/*        placeholder={"Provide tour text"}*/}
-                {/*    />*/}
-                {/*</label>*/}
-                <StyledSearchInput
+                <SSearchInput
                     type={"search"}
                     placeholder={"Provide tour text"}
+                    onChange={(e) => setPackNameHandler(e.currentTarget.value)}
                 />
             </SSetting>
             <SSetting>
                 <STitle>Show packs cards</STitle>
                 <SButtonSection>
                     <button
-                        className={accessory ? "active" : ""}
+                        className={fetchParams.user_id ? "active" : ""}
                         onClick={changeAccessory}
                         value={userData!._id}>
                         My
                     </button>
                     <button
-                        className={accessory ? "" : "active"}
+                        className={fetchParams.user_id ? "" : "active"}
                         onClick={changeAccessory}
                         value={""}>
                         All
@@ -116,18 +121,19 @@ export const PacksList = () => {
 
             <SSetting>
                 <STitle>Number of cards</STitle>
-                {data &&
-                    <DoubleSlider
-                        min={data!.minCardsCount}
-                        max={data!.maxCardsCount}
-                        onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
-                    />
-                }
+                <DoubleSlider
+                    min={data!.minCardsCount}
+                    max={data!.maxCardsCount}
+                    // onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
+                    onMouseUpMin={setMinSearchParam}
+                    onMouseUpMax={setMaxSearchParam}
+                />
             </SSetting>
 
             <SSetting>
                 <STitle>Clear</STitle>
-                <button>
+                <button
+                    onClick={clearButtonHandler}>
                     <RestartAlt/>
                 </button>
             </SSetting>
@@ -135,48 +141,60 @@ export const PacksList = () => {
         <STableSection>
 
             <table>
-                    <Th value={"Name"}/>
-                    <Th value={"Cards"}/>
-                    <Th value={"Last Updated"}/>
-                    <Th value={"Created by"}/>
-                    <th>Actions</th>
-
-                {data &&
-
+                <thead>
+                <Th
+                    filterValue={"name"}
+                    onChange={setSortPacksSearchParam}
+                    searchValue={fetchParams.sortPacks}>
+                    Name
+                </Th>
+                <Th
+                    filterValue={"cardsCount"}
+                    onChange={setSortPacksSearchParam}
+                    searchValue={fetchParams.sortPacks}>
+                    Cards
+                </Th>
+                <Th
+                    filterValue={"updated"}
+                    onChange={setSortPacksSearchParam}
+                    searchValue={fetchParams.sortPacks}>
+                    Last Updated
+                </Th>
+                <Th
+                    filterValue={"user_name"}
+                    onChange={setSortPacksSearchParam}
+                    searchValue={fetchParams.sortPacks}>
+                    Created By
+                </Th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                {
                     data!.cardPacks.map(c => <TableNotation
                         key={c._id}
                         packName={c.name}
                         userName={c.user_name}
                         updated={c.updated}
                         cardsCount={c.cardsCount}
-                        isOwner={userData!._id === c.user_id}
-                    />)
-
+                        isOwner={userData!._id === c.user_id}/>)
                 }
+                </tbody>
             </table>
         </STableSection>
-        {data &&
-            <Pagination
-                itemsName={"Cards"}
-                currentPage={data!.page}
-                totalItemsCount={data!.cardPacksTotalCount}
-                pageSize={data!.pageCount}
-                pageChanged={(awd) => {
-                }}/>
-        }
+
+        <Pagination
+            itemsName={"Cards"}
+            currentPage={data!.page}
+            totalItemsCount={data!.cardPacksTotalCount}
+            pageSize={data!.pageCount}
+            pageSizeChanged={setPageCountSearchParam}
+            pageChanged={setPageSearchParam}/>
+
     </SPackPagesContainer>
 };
 
-
-const SearchInput = styled.input`
-    width: 100%;
-    height: 80%;
-    //padding: 0 0 0 3vh;
-`
-const StyledSearch = styled(Search)`
-    fill: rgba(0, 0, 0, 0.4);
-    position: absolute;
-    top: 2px;
+const SSearchInput = styled.input`
+    border: 1px solid rgba(0, 0, 0, 0.2)
 `
 const SButtonSection = styled.div`
     display: grid;
@@ -190,8 +208,5 @@ const SButtonSection = styled.div`
         color: white;
         background-color: ${secondColor};
     }
-`
-const StyledSearchInput = styled.input`
-    border: 1px solid rgba(0, 0, 0, 0.2)
 `
 

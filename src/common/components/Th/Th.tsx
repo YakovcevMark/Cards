@@ -1,75 +1,82 @@
-import React, {memo, ReactNode, useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Eject} from "@styled-icons/material";
 
 type PT = {
-    value?: string
+    filterValue: string
+    searchValue: string
     children?: ReactNode
+    onChange: (value: string) => void
 }
 
-export const Th = memo(
+export const Th =
     ({
-         value,
-         children
+         filterValue,
+         searchValue,
+         children,
+         onChange
      }: PT) => {
+
         const [mode, setMode] = useState<"firstMode" | "secondMode" | "default">("default")
         const changeModeHandler = () => {
             setMode(mode =>
-                mode === "default"
-                    ? "firstMode"
-                    : mode === "firstMode"
-                        ? "secondMode" : "default"
+                mode === "firstMode"
+                    ? "secondMode"
+                    : "firstMode"
             )
         }
 
-        if(mode !== "default") console.log(mode)
+        searchValue = searchValue.slice(1)
+
+        useEffect(() => {
+            setMode(filterValue === searchValue ? "firstMode" : "default")
+        }, [filterValue, searchValue]);
+
+        useEffect(() => {
+            if (mode !== "default") {
+                const modeSearchValue = mode === "firstMode" ? "0" : "1";
+                onChange(`${modeSearchValue}${filterValue}`)
+            }
+        }, [mode, onChange, filterValue]);
+
         return (
             <StyledTh>
                 <span
                     className={mode}
                     onClick={changeModeHandler}>
-                    {value}
+                    {children}
                     <Eject/>
                 </span>
-                {children}
             </StyledTh>
         )
-            ;
     }
-);
+
 const StyledTh = styled.th`
-  text-align: start;
+    text-align: start;
 
-  span {
-    cursor: pointer;
-  }
+    span {
+        cursor: pointer;
+    }
 
-  svg {
-    width: 2vh;
-    opacity: 1;
-  }
-
-  .firstMode {
     svg {
+        width: 2vh;
+        opacity: 1;
     }
-  }
-
-  .secondMode {
-    svg {
-      rotate: 180deg;
+    
+    .secondMode {
+        svg {
+            rotate: 180deg;
+        }
     }
-  }
+    .default {
+        svg {
+            opacity: 0;
+        }
 
-  .default {
-    svg {
-      opacity: 0;
+        &:hover {
+            svg {
+                opacity: 0.5;
+            }
+        }
     }
-    &:hover {
-      svg {
-        opacity: 0.5;
-      }
-    }
-  }
-
-
 `

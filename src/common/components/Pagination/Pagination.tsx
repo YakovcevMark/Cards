@@ -7,7 +7,8 @@ type PT = {
     totalItemsCount: number
     pageSize: number
     currentPage: number
-    pageChanged: (p: number) => void
+    pageChanged: (p: string) => void
+    pageSizeChanged: (p: string) => void
     portionSize?: number
     itemsName?: string
 }
@@ -15,6 +16,7 @@ export const Pagination = memo(
     ({
          itemsName,
          totalItemsCount,
+         pageSizeChanged,
          pageSize,
          currentPage,
          pageChanged,
@@ -62,7 +64,8 @@ export const Pagination = memo(
                 <span>
                     Show&nbsp;
                     <select
-                        onChange={e => console.log(e.currentTarget.value)}>
+                        value={pageSize}
+                        onChange={e => pageSizeChanged(e.currentTarget.value)}>
                         <option value="5">5</option>
                         <option value="10">10</option>
                     </select>

@@ -43,7 +43,7 @@ export const AppRoutes = memo(() => {
 
                     <Route path={""} element={<PacksList/>}/>
                     <Route path={PacksPath} element={<PacksList/>}/>
-                    <Route path={PackPath} element={<Pack name={"No name"}/>}/>
+                    {/*<Route path={PackPath} element={<Pack name={"No name"}/>}/>*/}
                 </Route>
             </Routes>
         );

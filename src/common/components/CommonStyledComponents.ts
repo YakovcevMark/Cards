@@ -17,33 +17,38 @@ export const STitle = styled.h1`
   text-align: left;
 `
 export const SHoverModule = styled.div`
-  //background-color: blueviolet;
-  display: none;
-  border: 1px rgba(0, 0, 0, 0.47) solid;
-  position: absolute;
-  top: 7vh;
-  right: 3vh;
-  z-index: 99;
-  button {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1vh 1fr;
-    grid-gap: 15px;
-    align-items: center;
-    padding: 1vh;
-    border: none;
-    //background-color: burlywood;
-    cursor: pointer;
+    //background-color: blueviolet;
+    display: none;
+    border: 1px rgba(0, 0, 0, 0.47) solid;
+    position: absolute;
+    top: 7vh;
+    right: 3vh;
+    z-index: 99;
 
-    svg {
-      width: 2vh;
-      fill: black;
-      padding-right: 1vh;
-    }
+    button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1vh 1fr;
+        grid-gap: 15px;
+        align-items: center;
+        padding: 1vh;
+        border: none;
+        //background-color: burlywood;
+        cursor: pointer;
 
-    span {
-      justify-self: start;
-      padding-left: 1vh;
+        svg {
+            width: 2vh;
+            fill: black;
+            padding-right: 1vh;
+        }
+
+        span {
+            justify-self: start;
+            padding-left: 1vh;
+        }
+
+        &:hover {
+            background-color: #d2d2d2;
+        }
     }
-  }
 `
