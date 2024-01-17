@@ -23,7 +23,6 @@ export const Pagination = memo(
          portionSize = 5
      }: PT) => {
         const [portionNumber, setPortionNumber] = useState(1);
-
         const countOfPages = Math.ceil(totalItemsCount / pageSize);
         const pages = new Array(countOfPages);
         for (let i = 0; i <= countOfPages; i++) {
@@ -78,7 +77,7 @@ export const Pagination = memo(
 );
 const StyledPagination = styled.section`
   justify-self: start;
-  align-self: end;
+  align-self: start;
   display: flex;
   justify-content: center;
   padding: 5px;

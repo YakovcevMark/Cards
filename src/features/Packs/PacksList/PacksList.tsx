@@ -1,55 +1,42 @@
 import React, {MouseEvent, useEffect, useMemo} from 'react';
 import {DoubleSlider} from "../../../common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
-import {TableNotation} from "../../../common/components/TableNotation/TableNotation";
 import {Th} from "../../../common/components/Th/Th";
 import {Pagination} from "../../../common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {secondColor} from "../../../assets/stylesheets/colors";
-import {useLazyGetPacksQuery} from "../packsApi";
+import {PackPostData, useCreatePackMutation, useLazyGetPacksQuery} from "../packsApi";
 import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
 import {STitle} from "../../../common/components/CommonStyledComponents";
 import {Button} from "../../../common/components/Button/Button";
 import {useInitializeMutation} from "../../authPages/authApi";
 import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "../../../common/hooks/hooks";
 import {Preloader} from "../../../common/components/Preloader/Preloader";
+import {PackNotation} from "./PackNotation/PackNotation";
 
 export const PacksList = () => {
-    // const data = {
-    //     cardPacks: [
-    //         {_id: "1", name: "awd", cardsCount: 1, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "2", name: "awd", cardsCount: 2, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "3", name: "awd", cardsCount: 3, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "4", name: "awd", cardsCount: 4, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "5", name: "awd", cardsCount: 5, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "6", name: "awd", cardsCount: 6, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "7", name: "awd", cardsCount: 7, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "8", name: "awd", cardsCount: 8, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "9", name: "awd", cardsCount: 9, updated: "18.02.2002", user_id: "LolKek"},
-    //         {_id: "10", name: "awd", cardsCount: 10, updated: "18.02.2002", user_id: "LolKek"},
-    //     ],
-    //     cardPacksTotalCount: 2300,
-    //     maxCardsCount: 4,
-    //     minCardsCount: 0,
-    //     page: 1,
-    //     pageCount: 10,
-    // };
+
 
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
 
-    const {searchParams, useMySetSearchParams, setSearchParams} = useAppSearchParams();
+    const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
 
 
     const [fetchPacks, {
-        // data:packsData
-        data,
+        data:packsData,
         isLoading
     }] = useLazyGetPacksQuery({
         refetchOnFocus: true,
         refetchOnReconnect: true,
     })
+
+    const [createPack, {
+        isLoading: packCreating
+    }] = useCreatePackMutation()
+
+    const createPackValidator = useApiErrorsHandler(createPack)
 
     const fetchPackValidator = useApiErrorsHandler(fetchPacks)
 
@@ -84,13 +71,21 @@ export const PacksList = () => {
         setUserIdSearchParam(e.currentTarget.value)
 
     const clearButtonHandler = () => {
-        setSearchParams({})
+        setSearchParams({name:"Kek"})
     }
 
-    return !data ? <Preloader/> : <SPackPagesContainer>
+    const createPackButtonHandler = async () =>
+            await createPackValidator({})
+
+    return !packsData ? <Preloader/> : <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
-            <Button>Add new pack</Button>
+            <Button
+                type={"submit"}
+                disabled={packCreating}
+                onClick={createPackButtonHandler}>
+                Add new pack
+            </Button>
         </SHeaderSection>
         <SSettingsSection>
             <SSetting>
@@ -122,8 +117,8 @@ export const PacksList = () => {
             <SSetting>
                 <STitle>Number of cards</STitle>
                 <DoubleSlider
-                    min={data!.minCardsCount}
-                    max={data!.maxCardsCount}
+                    min={packsData!.minCardsCount}
+                    max={packsData!.maxCardsCount}
                     // onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
                     onMouseUpMin={setMinSearchParam}
                     onMouseUpMax={setMaxSearchParam}
@@ -170,8 +165,9 @@ export const PacksList = () => {
                 </thead>
                 <tbody>
                 {
-                    data!.cardPacks.map(c => <TableNotation
+                    packsData!.cardPacks.map(c => <PackNotation
                         key={c._id}
+                        id={c._id}
                         packName={c.name}
                         userName={c.user_name}
                         updated={c.updated}
@@ -184,9 +180,9 @@ export const PacksList = () => {
 
         <Pagination
             itemsName={"Cards"}
-            currentPage={data!.page}
-            totalItemsCount={data!.cardPacksTotalCount}
-            pageSize={data!.pageCount}
+            currentPage={packsData!.page}
+            totalItemsCount={packsData!.cardPacksTotalCount}
+            pageSize={packsData!.pageCount}
             pageSizeChanged={setPageCountSearchParam}
             pageChanged={setPageSearchParam}/>
 

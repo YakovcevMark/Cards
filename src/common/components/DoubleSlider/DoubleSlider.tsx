@@ -26,7 +26,10 @@ export const DoubleSlider = memo(
             (value: number) => Math.round(((value - min) / (max - min)) * 100),
             [min, max]
         );
-
+        useEffect(() => {
+            setMaxVal(max)
+            setMinVal(min)
+        }, [max,min]);
         // Set width of the range to decrease from the left side
         useEffect(() => {
             const minPercent = getPercent(minVal);

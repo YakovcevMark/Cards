@@ -41,18 +41,24 @@ export const Button: React.FC<SuperButtonPropsType> = memo(
     }
 )
 const IconButton = styled.button<{ color: string }>`
-  border: none;
-  width: 4vh;
-  height: 4vh;
+    border: none;
+    width: 4vh;
+    height: 4vh;
 
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+    
+    &:hover {
+        cursor: pointer;
+        background-color: #d2d2d2;
+        &:disabled{
+            cursor: auto;
+            background-color: revert;
+        }
+    }
+   
 `
 const SButton = styled.button<{ color: string }>`
   padding: 0 10px;

@@ -15,7 +15,7 @@ export const PasswordRecoveryPath = "/passwordRecovery";
 export const PasswordNewPath = "/passwordNew";
 export const ProfilePath = "/profile";
 export const PacksPath = "/packs"
-export const PackPath = "/card"
+export const PackPath = "/pack"
 export const AppRoutes = memo(() => {
         const [, {isSuccess: isLoggedIn}] = useInitializeMutation({
             fixedCacheKey: 'shared-postMe-post',
@@ -31,7 +31,7 @@ export const AppRoutes = memo(() => {
                     <Route path={LoginPath} element={<Login/>}/>
                     <Route path={RegisterPath} element={<Register/>}/>
                     <Route path={PasswordRecoveryPath} element={<PasswordRecovery/>}/>
-                    <Route path={`${PasswordNewPath}/:token?`} element={<PasswordNew/>}/>
+                    <Route path={`${PasswordNewPath}/:token`} element={<PasswordNew/>}/>
                 </Route>
 
                 <Route element={
@@ -43,7 +43,7 @@ export const AppRoutes = memo(() => {
 
                     <Route path={""} element={<PacksList/>}/>
                     <Route path={PacksPath} element={<PacksList/>}/>
-                    {/*<Route path={PackPath} element={<Pack name={"No name"}/>}/>*/}
+                    <Route path={`${PackPath}/:cardsPack_id`} element={<Pack/>}/>
                 </Route>
             </Routes>
         );

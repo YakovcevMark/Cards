@@ -14,6 +14,9 @@ type CommonPackAndCardTypes = {
     user_id: string
     created: string
     updated: string
+    more_id: string
+    __v: number
+
 }
 type CommonFetchParams = {
     min: string
@@ -21,13 +24,11 @@ type CommonFetchParams = {
 }
 
 export type CardsPack = CommonPackAndCardTypes & {
-    more_id: string
     user_name: string
     private: boolean
     name: string
     path: string
     cardsCount: number
-    __v: number
 }
 export type FetchPacksParams = CommonFetchParams & PaginationInfo & {
     packName: string
@@ -43,8 +44,8 @@ export type PacksDataResponse = PaginationInfo & {
     token: string
     tokenDeathTime: number
 }
-type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
-    name: string
+export type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
+    packName: string
     path: string
     deckCover: string
     private: boolean
@@ -54,7 +55,8 @@ export type Card = CommonPackAndCardTypes & {
     answer: string
     question: string
     cardPack_id: string
-    __v: number
+    questionImg: string
+    comments: string
 }
 type FetchCardsParams = CommonFetchParams & PaginationInfo & {
     cardPack_id: string
@@ -64,13 +66,21 @@ type FetchCardsParams = CommonFetchParams & PaginationInfo & {
 }
 export type CardDataResponse = PaginationInfo & {
     cards: Card[]
+    packUserId: string
+    packName: string
+    packPrivate: boolean
+    packDeckCover: string
+    packCreated: string
+    packUpdated: string
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
-    packUserId: string
-}
+    token: string
+    tokenDeathTime: number
 
-type CardPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
+}
+type CardPostData = Omit<CommonPackAndCardTypes,
+    "created" | "_id" | "updated" | "user_id" | "more_id" | "__v"> & {
     cardsPack_id: string
     question: string
     answer: string
@@ -98,31 +108,42 @@ export const packsApi = createApi({
                     ...data
                 },
             }),
-            providesTags:['Pack']
+            providesTags: ['Pack']
         }),
         createPack: build.mutation<Response, Partial<PackPostData>>({
             query: (data) => ({
                 url: 'pack',
                 method: 'POST',
-                body: data
+                body: {
+                    cardsPack: {
+                        deckCover: "",
+                        name: "Pack Subname",
+                        private: false,
+                        ...data
+                    }
+                }
             }),
-            invalidatesTags:['Pack'],
+            invalidatesTags: ['Pack'],
         }),
         updatePack: build.mutation<Response, Partial<PackPostData> & { _id: string }>({
             query: (data) => ({
                 url: 'pack',
                 method: 'PUT',
-                body: data
+                body: {
+                    cardsPack: data
+                }
             }),
-            invalidatesTags:['Pack'],
+            invalidatesTags: ['Pack', 'Card'],
         }),
-        deletePack: build.mutation<Response, { _id: String }>({
-            query: ({_id}) => ({
+        deletePack: build.mutation<Response, { id: String }>({
+            query: (data) => ({
                 url: 'pack',
                 method: 'DELETE',
-                params: _id
+                params: {
+                    ...data
+                }
             }),
-            invalidatesTags:['Pack'],
+            invalidatesTags: ['Pack', 'Card'],
         }),
         getCards: build.query<CardDataResponse & Response, Partial<FetchCardsParams>>({
             query: (data) => ({
@@ -132,31 +153,39 @@ export const packsApi = createApi({
                 },
 
             }),
-            providesTags:['Card']
+            providesTags: ['Card']
         }),
         createCard: build.mutation<Response, Partial<CardPostData>>({
             query: (data) => ({
                 url: 'card',
                 method: 'POST',
-                body: data
+                body: {
+                    card: {
+                        ...data
+                    }
+                }
             }),
-            invalidatesTags:['Card'],
+            invalidatesTags: ['Card'],
         }),
         updateCard: build.mutation<Response, Partial<CardPostData> & { _id: string, comments: string }>({
             query: (data) => ({
                 url: 'card',
                 method: 'PUT',
-                body: data
+                body: {
+                    card: {
+                        ...data
+                    }
+                }
             }),
-            invalidatesTags:['Card'],
+            invalidatesTags: ['Card'],
         }),
-        deleteCard: build.mutation<Response, { _id: String }>({
-            query: ({_id}) => ({
+        deleteCard: build.mutation<Response, { id: String }>({
+            query: (data) => ({
                 url: 'card',
                 method: 'DELETE',
-                params: _id
+                params: data
             }),
-            invalidatesTags:['Card'],
+            invalidatesTags: ['Card'],
         }),
     }),
 })

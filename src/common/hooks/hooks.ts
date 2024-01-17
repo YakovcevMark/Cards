@@ -47,7 +47,7 @@ export const useAppSearchParams = () => {
             });
         }, [param])
 
-    return {searchParams, useMySetSearchParams, setSearchParams};
+    return { searchParams, setSearchParams, useMySetSearchParams };
 }
 export const useSearchWithDelay = (searchFn: any, delay: number = 1000) => {
     const [value, setValue] = useState("");

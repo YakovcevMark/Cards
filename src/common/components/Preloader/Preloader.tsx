@@ -18,12 +18,11 @@ const preloaderAnimation = keyframes`
   }
 `
 const StyledPreloader = styled.div `
-  height:100vh;
-  position: relative;
+  height:auto;
   svg {
     width: 20vh;
     margin: auto auto;
-    top: 0;
+    top: 50%;
     bottom:0;
     left: 0;
     right: 0;

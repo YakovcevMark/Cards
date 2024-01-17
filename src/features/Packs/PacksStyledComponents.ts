@@ -61,3 +61,28 @@ export const STableSection = styled.section`
         width: 100%;
     }
 `
+export const SNotationName = styled.td`
+    width: 40vh;
+   button {
+       border: none;
+       font-weight:bold;
+       cursor:pointer;
+       background-color: inherit;
+       &:disabled{
+          opacity:0.7;
+           cursor: auto;
+       }
+   }
+`
+export const SNotationActionButtons = styled.td`
+    width: 16vh;
+    button {
+        margin: 0 5px;
+    }
+`
+export const SNotation = styled.tr`
+    height: 4vh;
+    padding-bottom: 1vh;
+    background-color: burlywood;
+    border-bottom: 3px solid blue;
+`

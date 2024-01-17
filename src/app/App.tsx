@@ -26,7 +26,6 @@ function App() {
     useEffect(() => {
         onGetInitialized()
     }, [onGetInitialized])
-
     return isLoading ? <Preloader/> : (
         <Container>
             <Header
@@ -34,15 +33,13 @@ function App() {
                 name={data?.name}
                 avatar={data?.avatar}/>
             <Content>
-                {/*<Pack name={"NoName"}/>*/}
-                {/*<PacksList/>*/}
                 <AppRoutes/>
                 <Message/>
-                <NavLink to={LoginPath}>login</NavLink>
-                <NavLink to={RegisterPath}>Register</NavLink>
-                <NavLink to={PasswordRecoveryPath}>PasRec</NavLink>
-                <NavLink to={ProfilePath}>Profile</NavLink>
-                <NavLink to={PacksPath}>Cards</NavLink>
+                {/*<NavLink to={LoginPath}>login</NavLink>*/}
+                {/*<NavLink to={RegisterPath}>Register</NavLink>*/}
+                {/*<NavLink to={PasswordRecoveryPath}>PasRec</NavLink>*/}
+                {/*<NavLink to={ProfilePath}>Profile</NavLink>*/}
+                {/*<NavLink to={PacksPath}>Cards</NavLink>*/}
             </Content>
         </Container>
     );
