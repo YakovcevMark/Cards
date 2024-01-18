@@ -1,17 +1,24 @@
 import React, {MouseEvent, useEffect, useMemo} from 'react';
-import {DoubleSlider} from "../../../common/components/DoubleSlider/DoubleSlider";
+import {DoubleSlider} from "common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
-import {Th} from "../../../common/components/Th/Th";
-import {Pagination} from "../../../common/components/Pagination/Pagination";
+import {Th} from "common/components/Th/Th";
+import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
-import {secondColor} from "../../../assets/stylesheets/colors";
-import {PackPostData, useCreatePackMutation, useLazyGetPacksQuery} from "../packsApi";
-import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
-import {STitle} from "../../../common/components/CommonStyledComponents";
-import {Button} from "../../../common/components/Button/Button";
+import {secondColor} from "assets/stylesheets/colors";
+import {useCreatePackMutation, useLazyGetPacksQuery} from "../packsApi";
+import {
+    SHeaderSection,
+    SNoSuchItemMessage,
+    SPackPagesContainer,
+    SSetting,
+    SSettingsSection,
+    STableSection
+} from "../PacksStyledComponents";
+import {STitle} from "common/components/CommonStyledComponents";
+import {Button} from "common/components/Button/Button";
 import {useInitializeMutation} from "../../authPages/authApi";
-import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "../../../common/hooks/hooks";
-import {Preloader} from "../../../common/components/Preloader/Preloader";
+import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
+import {Preloader} from "common/components/Preloader/Preloader";
 import {PackNotation} from "./PackNotation/PackNotation";
 
 export const PacksList = () => {
@@ -21,15 +28,12 @@ export const PacksList = () => {
         fixedCacheKey: 'shared-postMe-post',
     })
 
-    const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
-
-
     const [fetchPacks, {
-        data:packsData,
-        isLoading
+        data: packsData,
+        isError: fetchPacksError
     }] = useLazyGetPacksQuery({
-        refetchOnFocus: true,
         refetchOnReconnect: true,
+        // refetchOnFocus: true,
     })
 
     const [createPack, {
@@ -39,6 +43,8 @@ export const PacksList = () => {
     const createPackValidator = useApiErrorsHandler(createPack)
 
     const fetchPackValidator = useApiErrorsHandler(fetchPacks)
+
+    const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
 
     const fetchParams = useMemo(() => {
         return {
@@ -65,19 +71,23 @@ export const PacksList = () => {
     const setMaxSearchParam = useMySetSearchParams("max")
     const setPageCountSearchParam = useMySetSearchParams("pageCount")
 
-    const setPackNameHandler = useSearchWithDelay(setPackNameSearchParam, 1500)
+    const [packName, setPackName] = useSearchWithDelay(fetchParams.packName, setPackNameSearchParam, 1500)
 
     const changeAccessory = (e: MouseEvent<HTMLButtonElement>) =>
         setUserIdSearchParam(e.currentTarget.value)
 
     const clearButtonHandler = () => {
-        setSearchParams({name:"Kek"})
+        setSearchParams({})
     }
 
     const createPackButtonHandler = async () =>
-            await createPackValidator({})
+        await createPackValidator({})
 
-    return !packsData ? <Preloader/> : <SPackPagesContainer>
+    if (fetchPacksError || !packsData) {
+        return <Preloader/>
+    }
+
+    return <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
             <Button
@@ -93,7 +103,8 @@ export const PacksList = () => {
                 <SSearchInput
                     type={"search"}
                     placeholder={"Provide tour text"}
-                    onChange={(e) => setPackNameHandler(e.currentTarget.value)}
+                    value={packName}
+                    onChange={(e) => setPackName(e.currentTarget.value)}
                 />
             </SSetting>
             <SSetting>
@@ -133,61 +144,69 @@ export const PacksList = () => {
                 </button>
             </SSetting>
         </SSettingsSection>
-        <STableSection>
+        {
+            packsData!.cardPacks.length
+                ? <>
+                    <STableSection>
+                        <table>
+                            <thead>
+                            <Th
+                                filterValue={"name"}
+                                onChange={setSortPacksSearchParam}
+                                searchValue={fetchParams.sortPacks}>
+                                Name
+                            </Th>
+                            <Th
+                                filterValue={"cardsCount"}
+                                onChange={setSortPacksSearchParam}
+                                searchValue={fetchParams.sortPacks}>
+                                Cards
+                            </Th>
+                            <Th
+                                filterValue={"updated"}
+                                onChange={setSortPacksSearchParam}
+                                searchValue={fetchParams.sortPacks}>
+                                Last Updated
+                            </Th>
+                            <Th
+                                filterValue={"user_name"}
+                                onChange={setSortPacksSearchParam}
+                                searchValue={fetchParams.sortPacks}>
+                                Created By
+                            </Th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {
+                                packsData!.cardPacks.map(c => <PackNotation
+                                    key={c._id}
+                                    id={c._id}
+                                    packName={c.name}
+                                    userName={c.user_name}
+                                    updated={c.updated}
+                                    cardsCount={c.cardsCount}
+                                    isOwner={userData!._id === c.user_id}/>)
+                            }
+                            </tbody>
+                        </table>
+                    </STableSection>
 
-            <table>
-                <thead>
-                <Th
-                    filterValue={"name"}
-                    onChange={setSortPacksSearchParam}
-                    searchValue={fetchParams.sortPacks}>
-                    Name
-                </Th>
-                <Th
-                    filterValue={"cardsCount"}
-                    onChange={setSortPacksSearchParam}
-                    searchValue={fetchParams.sortPacks}>
-                    Cards
-                </Th>
-                <Th
-                    filterValue={"updated"}
-                    onChange={setSortPacksSearchParam}
-                    searchValue={fetchParams.sortPacks}>
-                    Last Updated
-                </Th>
-                <Th
-                    filterValue={"user_name"}
-                    onChange={setSortPacksSearchParam}
-                    searchValue={fetchParams.sortPacks}>
-                    Created By
-                </Th>
-                <th>Actions</th>
-                </thead>
-                <tbody>
-                {
-                    packsData!.cardPacks.map(c => <PackNotation
-                        key={c._id}
-                        id={c._id}
-                        packName={c.name}
-                        userName={c.user_name}
-                        updated={c.updated}
-                        cardsCount={c.cardsCount}
-                        isOwner={userData!._id === c.user_id}/>)
-                }
-                </tbody>
-            </table>
-        </STableSection>
-
-        <Pagination
-            itemsName={"Cards"}
-            currentPage={packsData!.page}
-            totalItemsCount={packsData!.cardPacksTotalCount}
-            pageSize={packsData!.pageCount}
-            pageSizeChanged={setPageCountSearchParam}
-            pageChanged={setPageSearchParam}/>
+                    <Pagination
+                        itemsName={"Cards"}
+                        currentPage={packsData!.page}
+                        totalItemsCount={packsData!.cardPacksTotalCount}
+                        pageSize={packsData!.pageCount}
+                        pageSizeChanged={setPageCountSearchParam}
+                        pageChanged={setPageSearchParam}/>
+                </>
+                : <SNoSuchItemMessage>
+                    NoItemsWithSuchParams
+                </SNoSuchItemMessage>
+        }
 
     </SPackPagesContainer>
 };
+
 
 const SSearchInput = styled.input`
     border: 1px solid rgba(0, 0, 0, 0.2)

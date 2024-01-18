@@ -1,13 +1,13 @@
 import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import {Login} from "../../../features/authPages/login/Login";
-import {Register} from "../../../features/authPages/register/Register";
-import {PasswordRecovery} from "../../../features/authPages/passwordRecovery/PasswordRecovery";
-import {PasswordNew} from "../../../features/authPages/passwordNew/PasswordNew";
-import Profile from "../../../features/profile/Profile";
+import {Login} from "features/authPages/login/Login";
+import {Register} from "features/authPages/register/Register";
+import {PasswordRecovery} from "features/authPages/passwordRecovery/PasswordRecovery";
+import {PasswordNew} from "features/authPages/passwordNew/PasswordNew";
+import {Profile} from "features/profile/Profile";
 import React, {memo} from "react";
-import {useInitializeMutation} from "../../../features/authPages/authApi";
-import {PacksList} from "../../../features/Packs/PacksList/PacksList";
-import {Pack} from "../../../features/Packs/Pack/Pack";
+import {useInitializeMutation} from "features/authPages/authApi";
+import {PacksList} from "features/Packs/PacksList/PacksList";
+import {Pack} from "features/Packs/Pack/Pack";
 
 export const LoginPath = "/login";
 export const RegisterPath = "/register";
@@ -17,16 +17,20 @@ export const ProfilePath = "/profile";
 export const PacksPath = "/packs"
 export const PackPath = "/pack"
 export const AppRoutes = memo(() => {
-        const [, {isSuccess: isLoggedIn}] = useInitializeMutation({
+        const [, {
+            isUninitialized,
+            isSuccess: isLoggedIn,
+            isError: haveErrorWithLoggedIn
+        }] = useInitializeMutation({
             fixedCacheKey: 'shared-postMe-post',
         })
         return (
             <Routes>
-                {/*<Route path={""} element={<Cards/>}/>*/}
+                {/*<Route redirectPath={""} element={<Cards/>}/>*/}
                 <Route element={
                     <PrivateRoutes
-                        condition={!isLoggedIn}
-                        path={PacksPath}/>
+                        condition={haveErrorWithLoggedIn || isUninitialized}
+                        redirectPath={PacksPath}/>
                 }>
                     <Route path={LoginPath} element={<Login/>}/>
                     <Route path={RegisterPath} element={<Register/>}/>
@@ -36,8 +40,8 @@ export const AppRoutes = memo(() => {
 
                 <Route element={
                     <PrivateRoutes
-                        condition={isLoggedIn}
-                        path={LoginPath}/>
+                        condition={isLoggedIn || isUninitialized}
+                        redirectPath={LoginPath}/>
                 }>
                     <Route path={ProfilePath} element={<Profile/>}/>
 
@@ -50,7 +54,7 @@ export const AppRoutes = memo(() => {
     }
 );
 const PrivateRoutes =
-    ({condition, path}: { condition: boolean, path: string }) =>
-        condition ? <Outlet/> : <Navigate to={path}/>
+    ({condition, redirectPath}: { condition: boolean, redirectPath: string }) =>
+        condition ? <Outlet/> : <Navigate to={redirectPath}/>
 
 

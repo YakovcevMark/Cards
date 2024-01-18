@@ -1,8 +1,8 @@
-import {AppDispatch, RootState} from "../../app/store";
+import {AppDispatch, RootState} from "app/store";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {setAppError} from "../../app/appSlice";
+import {setAppError} from "app/appSlice";
 import {useCallback, useEffect, useState} from "react";
-import {useInitializeMutation} from "../../features/authPages/authApi";
+import {useInitializeMutation} from "features/authPages/authApi";
 import {useSearchParams} from "react-router-dom";
 
 export const useAppDispatch: () => AppDispatch = useDispatch
@@ -47,19 +47,26 @@ export const useAppSearchParams = () => {
             });
         }, [param])
 
-    return { searchParams, setSearchParams, useMySetSearchParams };
+    return {searchParams, setSearchParams, useMySetSearchParams};
 }
-export const useSearchWithDelay = (searchFn: any, delay: number = 1000) => {
-    const [value, setValue] = useState("");
+/**
+ * useSearchWithDelay - custom hook, witch return same functional as `useState`
+ * and trigger the function after `delay`, with value, that it's `useState` gave you.
+ * @param initValue - initialValue
+ * @param triggerFn - some function, would you like to trigger after delay
+ * @param delay - delay of trigger your function
+ */
+export const useSearchWithDelay = (initValue = "", triggerFn: any, delay = 1000) => {
+    const [value, setValue] = useState(initValue);
 
     useEffect(() => {
         const timerId = setTimeout(() => {
             // console.log(value)
-            searchFn(value)
+            if (value !== initValue)
+                triggerFn(value)
         }, delay)
-
         return () => clearTimeout(timerId)
-    }, [value, delay, searchFn])
+    }, [value, initValue, delay, triggerFn])
 
-    return setValue;
+    return [value, setValue] as const;
 }

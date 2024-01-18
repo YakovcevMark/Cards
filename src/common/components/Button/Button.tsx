@@ -1,6 +1,6 @@
 import React, {ButtonHTMLAttributes, DetailedHTMLProps, memo} from 'react'
 import styled from "styled-components";
-import {antoColor, buttonShadow, grayColor, mainColor, secondColor} from "../../../assets/stylesheets/colors";
+import {antoColor, buttonShadow, grayColor, mainColor, secondColor} from "assets/stylesheets/colors";
 
 
 // тип пропсов обычной кнопки, children в котором храниться название кнопки там уже описан
@@ -44,18 +44,20 @@ const IconButton = styled.button<{ color: string }>`
     border: none;
     width: 4vh;
     height: 4vh;
-
+    background-color: transparent;
     svg {
         width: 100%;
         height: 100%;
     }
-    
     &:hover {
         cursor: pointer;
-        background-color: #d2d2d2;
+        &:enabled{
+            svg{
+                fill: ${secondColor};
+            }
+        }
         &:disabled{
-            cursor: auto;
-            background-color: revert;
+            pointer-events: none;
         }
     }
    

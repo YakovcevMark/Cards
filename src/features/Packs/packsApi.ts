@@ -102,11 +102,9 @@ export const packsApi = createApi({
     tagTypes: ['Pack', 'Card'],
     endpoints: build => ({
         getPacks: build.query<PacksDataResponse & Response, Partial<FetchPacksParams>>({
-            query: (data) => ({
+            query: (params) => ({
                 url: 'pack',
-                params: {
-                    ...data
-                },
+                params,
             }),
             providesTags: ['Pack']
         }),
@@ -136,21 +134,17 @@ export const packsApi = createApi({
             invalidatesTags: ['Pack', 'Card'],
         }),
         deletePack: build.mutation<Response, { id: String }>({
-            query: (data) => ({
+            query: (params) => ({
                 url: 'pack',
                 method: 'DELETE',
-                params: {
-                    ...data
-                }
+                params
             }),
             invalidatesTags: ['Pack', 'Card'],
         }),
         getCards: build.query<CardDataResponse & Response, Partial<FetchCardsParams>>({
-            query: (data) => ({
+            query: (params) => ({
                 url: 'card',
-                params: {
-                    ...data
-                },
+                params,
 
             }),
             providesTags: ['Card']
@@ -180,10 +174,10 @@ export const packsApi = createApi({
             invalidatesTags: ['Card'],
         }),
         deleteCard: build.mutation<Response, { id: String }>({
-            query: (data) => ({
+            query: (params) => ({
                 url: 'card',
                 method: 'DELETE',
-                params: data
+                params
             }),
             invalidatesTags: ['Card'],
         }),

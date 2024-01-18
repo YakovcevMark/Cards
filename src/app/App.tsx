@@ -1,31 +1,25 @@
 import React, {useEffect} from 'react';
-import {NavLink} from "react-router-dom";
 
-import {
-    AppRoutes,
-    PacksPath,
-    LoginPath,
-    PasswordRecoveryPath,
-    ProfilePath,
-    RegisterPath
-} from "../common/components/Routes/AppRoutes";
+import {AppRoutes} from "common/components/Routes/AppRoutes";
 import styled from "styled-components";
-import {useInitializeMutation} from "../features/authPages/authApi";
-import {Preloader} from "../common/components/Preloader/Preloader";
-import {Message} from "../common/components/Alert/Message";
-import {useApiErrorsHandler, useAppDispatch} from "../common/hooks/hooks";
+import {useInitializeMutation} from "features/authPages/authApi";
+import {Preloader} from "common/components/Preloader/Preloader";
+import {Message} from "common/components/Alert/Message";
+import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Header} from "./Header/Header";
-import {Pack} from "../features/Packs/Pack/Pack";
 
 
 function App() {
+
     const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
+
     const onGetInitialized = useApiErrorsHandler(getInitialized)
     useEffect(() => {
         onGetInitialized()
     }, [onGetInitialized])
+
     return isLoading ? <Preloader/> : (
         <Container>
             <Header

@@ -1,9 +1,9 @@
-import React, {memo, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import {ChevronLeft, ChevronRight} from "@styled-icons/material";
 import styled from "styled-components";
-import {secondColor} from "../../../assets/stylesheets/colors";
+import {secondColor} from "assets/stylesheets/colors";
 
-type PT = {
+export type PaginationPT = {
     totalItemsCount: number
     pageSize: number
     currentPage: number
@@ -21,7 +21,7 @@ export const Pagination = memo(
          currentPage,
          pageChanged,
          portionSize = 5
-     }: PT) => {
+     }: PaginationPT) => {
         const [portionNumber, setPortionNumber] = useState(1);
         const countOfPages = Math.ceil(totalItemsCount / pageSize);
         const pages = new Array(countOfPages);
@@ -31,7 +31,9 @@ export const Pagination = memo(
         const portionCount = Math.ceil(countOfPages / portionSize);
         const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
         const rightPortionPageNumber = portionNumber * portionSize;
-
+        useEffect(() => {
+            setPortionNumber(Math.ceil(currentPage / portionSize))
+        }, [currentPage, portionSize]);
         return (
             <StyledPagination>
 
@@ -76,42 +78,42 @@ export const Pagination = memo(
     }
 );
 const StyledPagination = styled.section`
-  justify-self: start;
-  align-self: start;
-  display: flex;
-  justify-content: center;
-  padding: 5px;
+    justify-self: start;
+    align-self: start;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
 
-  span {
-    align-self: center;
-  }
-  
-  button {
-    //background-color: blueviolet;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 15px;
-    margin: 0 10px;
-    cursor: pointer;
-
-    &:disabled {
-      cursor: auto;
+    span {
+        align-self: center;
     }
-  }
 
-  svg {
-    //background-color: burlywood;
-    width: 20px;
-  }
+    button {
+        //background-color: blueviolet;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 15px;
+        margin: 0 10px;
+        cursor: pointer;
 
-  .selectedPage {
-    background-color: ${secondColor};
-    font-weight: bold;
-    //padding: 0 20px;
-  }
+        &:disabled {
+            cursor: auto;
+        }
+    }
 
-  .paginationItem {
-    //padding: 0 5px;
-  }
+    svg {
+        //background-color: burlywood;
+        width: 20px;
+    }
+
+    .selectedPage {
+        background-color: ${secondColor};
+        font-weight: bold;
+        //padding: 0 20px;
+    }
+
+    .paginationItem {
+        //padding: 0 5px;
+    }
 
 `

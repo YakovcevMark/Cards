@@ -1,12 +1,12 @@
 import React from 'react';
 import {DeleteOutline, DriveFileRenameOutline, School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
-import {handleStringLength} from "../../../../utils/DataUtils/handleStringsUtils";
-import {Button} from "../../../../common/components/Button/Button";
-import {PackPath} from "../../../../common/components/Routes/AppRoutes";
+import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
+import {Button} from "common/components/Button/Button";
+import {PackPath} from "common/components/Routes/AppRoutes";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {useDeletePackMutation, useUpdatePackMutation} from "../../packsApi";
-import {useApiErrorsHandler} from "../../../../common/hooks/hooks";
+import {useApiErrorsHandler} from "common/hooks/hooks";
 
 type PT = {
     id: string
@@ -46,16 +46,18 @@ export const PackNotation =
         const showPackButtonHandler = () => nav(`${PackPath}/${id}`)
         const schoolButtonHandler = () => alert("Hi!")
         const isControlButtonsDisabled = deletingPack || updatingPack;
-        const isNotationDisabled = cardsCount === 0 && !isOwner;
+        const isNotationDisabled = cardsCount === 0;
 
         return (
             <SNotation>
                 <SNotationName>
-                    <button
-                        disabled={isNotationDisabled}
-                        onClick={showPackButtonHandler}>
-                        {handleStringLength(packName)}
-                    </button>
+                    <b>
+                        <button
+                            disabled={isNotationDisabled}
+                            onClick={showPackButtonHandler}>
+                            {handleStringLength(packName)}
+                        </button>
+                    </b>
                 </SNotationName>
                 <td>{cardsCount}</td>
                 <td>{updated}</td>

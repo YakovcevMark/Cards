@@ -1,19 +1,26 @@
 import React, {useEffect, useMemo} from 'react';
-import {Button} from "../../../common/components/Button/Button";
-import {Th} from "../../../common/components/Th/Th";
-import {Pagination} from "../../../common/components/Pagination/Pagination";
+import {Button} from "common/components/Button/Button";
+import {Th} from "common/components/Th/Th";
+import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
-import {BackArrowBlock} from "../../../common/components/BackArrowBlock/BackArrowBlock";
-import {SHeaderSection, SPackPagesContainer, SSetting, SSettingsSection, STableSection} from "../PacksStyledComponents";
-import {SHoverModule, STitle} from "../../../common/components/CommonStyledComponents";
+import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
+import {
+    SHeaderSection,
+    SNoSuchItemMessage,
+    SPackPagesContainer,
+    SSetting,
+    SSettingsSection,
+    STableSection
+} from "../PacksStyledComponents";
+import {SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {DeleteOutline, DriveFileRenameOutline, School, Tune} from "@styled-icons/material-outlined";
 import {useInitializeMutation} from "../../authPages/authApi";
 import {CardNotation} from "./CardNotation/CardNotation";
-import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "../../../common/hooks/hooks";
+import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
 import {useCreateCardMutation, useDeletePackMutation, useLazyGetCardsQuery, useUpdatePackMutation} from "../packsApi";
-import {Preloader} from "../../../common/components/Preloader/Preloader";
+import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useParams} from "react-router-dom";
-import {PacksPath} from "../../../common/components/Routes/AppRoutes";
+import {PacksPath} from "common/components/Routes/AppRoutes";
 
 
 export const Pack = () => {
@@ -27,21 +34,19 @@ export const Pack = () => {
     const [fetchCards, {
         data: packData,
         isError: haveNotSuchPack,
-        isLoading
     }] = useLazyGetCardsQuery({
         refetchOnFocus: true,
         refetchOnReconnect: true,
     })
     const fetchCardsValidator = useApiErrorsHandler(fetchCards)
 
-    const [createCard, {
-        isLoading: packCreating
-    }] = useCreateCardMutation()
+    const [createCard] = useCreateCardMutation()
     const createCardValidator = useApiErrorsHandler(createCard)
 
 
     const [deletePack, {
-        isLoading: deletingPack
+        isLoading: deletingPack,
+        isSuccess: packHasDeleted
     }] = useDeletePackMutation()
     const deletePackValidator = useApiErrorsHandler(deletePack)
     const deletePackButtonHandler = async () => await deletePackValidator({id: cardsPack_id})
@@ -77,7 +82,7 @@ export const Pack = () => {
     const setCardQuestionSearchParam = useMySetSearchParams("cardQuestion")
     const setPageCountSearchParam = useMySetSearchParams("pageCount")
 
-    const setCardQuestionHandler = useSearchWithDelay(setCardQuestionSearchParam, 1500)
+    const [cardQuestion, setCardQuestion] = useSearchWithDelay(fetchParams.cardQuestion, setCardQuestionSearchParam, 1500)
 
     const createCardButtonHandler = async () =>
         await createCardValidator({cardsPack_id})
@@ -87,7 +92,7 @@ export const Pack = () => {
         isOwner = packData.packUserId === userData!._id;
     }
 
-    if (haveNotSuchPack) {
+    if (packHasDeleted || haveNotSuchPack) {
         return <Navigate to={PacksPath}/>
     }
     return !packData ? <Preloader/> : <SSPackPagesContainer>
@@ -140,59 +145,68 @@ export const Pack = () => {
                 <StyledSearchInput
                     type={"search"}
                     placeholder={"Provide tour text"}
-                    onChange={(e) => setCardQuestionHandler(e.currentTarget.value)}
+                    value={cardQuestion}
+                    onChange={(e) => setCardQuestion(e.currentTarget.value)}
                 />
             </SSetting>
         </SSettingsSection>
-        <STableSection>
-            <table>
-                <thead>
-                <Th
-                    filterValue={"question"}
-                    onChange={setSortCardsSearchParam}
-                    searchValue={fetchParams.sortCards}>
-                    Question
-                </Th>
-                <Th
-                    filterValue={"answer"}
-                    onChange={setSortCardsSearchParam}
-                    searchValue={fetchParams.sortCards}>
-                    Answer
-                </Th>
-                <Th
-                    filterValue={"updated"}
-                    onChange={setSortCardsSearchParam}
-                    searchValue={fetchParams.sortCards}>
-                    Last Updated
-                </Th>
-                <Th
-                    filterValue={"grade"}
-                    onChange={setSortCardsSearchParam}
-                    searchValue={fetchParams.sortCards}>
-                    Grade
-                </Th>
-                {isOwner && <th>Actions</th>}
-                </thead>
-                <tbody>
-                {packData.cards.map(c => <CardNotation
-                    key={c._id}
-                    id={c._id}
-                    question={c.question}
-                    answer={c.question}
-                    updated={c.updated}
-                    grade={c.grade}
-                    isOwner={isOwner}/>)
-                }
-                </tbody>
-            </table>
-        </STableSection>
-        <Pagination
-            itemsName={"Cards"}
-            currentPage={packData.page}
-            totalItemsCount={packData.cardsTotalCount}
-            pageSize={packData.pageCount}
-            pageChanged={setPageSearchParam}
-            pageSizeChanged={setPageCountSearchParam}/>
+        {packData.cards.length
+            ? <>
+                <STableSection>
+                    <table>
+                        <thead>
+                        <Th
+                            filterValue={"question"}
+                            onChange={setSortCardsSearchParam}
+                            searchValue={fetchParams.sortCards}>
+                            Question
+                        </Th>
+                        <Th
+                            filterValue={"answer"}
+                            onChange={setSortCardsSearchParam}
+                            searchValue={fetchParams.sortCards}>
+                            Answer
+                        </Th>
+                        <Th
+                            filterValue={"updated"}
+                            onChange={setSortCardsSearchParam}
+                            searchValue={fetchParams.sortCards}>
+                            Last Updated
+                        </Th>
+                        <Th
+                            filterValue={"grade"}
+                            onChange={setSortCardsSearchParam}
+                            searchValue={fetchParams.sortCards}>
+                            Grade
+                        </Th>
+                        {isOwner && <th>Actions</th>}
+                        </thead>
+                        <tbody>
+                        {packData.cards.map(c => <CardNotation
+                            key={c._id}
+                            id={c._id}
+                            question={c.question}
+                            answer={c.question}
+                            updated={c.updated}
+                            grade={c.grade}
+                            isOwner={isOwner}/>)
+                        }
+                        </tbody>
+                    </table>
+                </STableSection>
+                <Pagination
+                    itemsName={"Cards"}
+                    currentPage={packData.page}
+                    totalItemsCount={packData.cardsTotalCount}
+                    pageSize={packData.pageCount}
+                    pageChanged={setPageSearchParam}
+                    pageSizeChanged={setPageCountSearchParam}/>
+            </>
+            : <SNoSuchItemMessage>
+                NoItemsWithSuchParams
+            </SNoSuchItemMessage>
+        }
+
     </SSPackPagesContainer>
 };
 const SSPackPagesContainer = styled(SPackPagesContainer)`

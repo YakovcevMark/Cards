@@ -55,24 +55,36 @@ export const SSetting = styled.article`
 `
 export const STableSection = styled.section`
     height: auto;
-    border: 1px red solid;
+    //border: 1px red solid;
 
     table {
         width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+        tr:nth-child(2n) {
+            background-color: #e1e1e1;
+        }
+        td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.28);
+        }
     }
 `
 export const SNotationName = styled.td`
     width: 40vh;
-   button {
-       border: none;
-       font-weight:bold;
-       cursor:pointer;
-       background-color: inherit;
-       &:disabled{
-          opacity:0.7;
-           cursor: auto;
-       }
-   }
+    justify-self: start;
+    
+    button {
+        padding-inline: 0;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: inherit;
+
+        &:disabled {
+            font-weight: bold;
+            cursor: auto;
+        }
+    }
 `
 export const SNotationActionButtons = styled.td`
     width: 16vh;
@@ -83,6 +95,11 @@ export const SNotationActionButtons = styled.td`
 export const SNotation = styled.tr`
     height: 4vh;
     padding-bottom: 1vh;
-    background-color: burlywood;
-    border-bottom: 3px solid blue;
+    //background-color: burlywood;
+    //border-bottom: 3px solid blue;
+`
+export const SNoSuchItemMessage = styled.span`
+    justify-self: center;
+    align-self: center;
+    font-weight: lighter;
 `
