@@ -70,3 +70,22 @@ export const useSearchWithDelay = (initValue = "", triggerFn: any, delay = 1000)
 
     return [value, setValue] as const;
 }
+
+/**
+ * https://keyholesoftware.com/cancel-a-react-modal-with-escape-key-or-external-click/
+ */
+export const useEscapeKey = (handleClose:any) => {
+    const handleEscKey = useCallback((event:any) => {
+        if (event.key === 'Escape') {
+            handleClose();
+        }
+    }, [handleClose]);
+
+    useEffect(() => {
+        document.addEventListener('keyup', handleEscKey, false);
+
+        return () => {
+            document.removeEventListener('keyup', handleEscKey, false);
+        };
+    }, [handleEscKey]);
+}

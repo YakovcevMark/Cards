@@ -45,7 +45,7 @@ export type PacksDataResponse = PaginationInfo & {
     tokenDeathTime: number
 }
 export type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "updated" | "user_id"> & {
-    packName: string
+    name: string
     path: string
     deckCover: string
     private: boolean

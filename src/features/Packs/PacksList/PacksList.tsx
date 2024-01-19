@@ -5,7 +5,7 @@ import {Th} from "common/components/Th/Th";
 import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {secondColor} from "assets/stylesheets/colors";
-import {useCreatePackMutation, useLazyGetPacksQuery} from "../packsApi";
+import {useLazyGetPacksQuery} from "../packsApi";
 import {
     SHeaderSection,
     SNoSuchItemMessage,
@@ -15,11 +15,11 @@ import {
     STableSection
 } from "../PacksStyledComponents";
 import {STitle} from "common/components/CommonStyledComponents";
-import {Button} from "common/components/Button/Button";
 import {useInitializeMutation} from "../../authPages/authApi";
 import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {PackNotation} from "./PackNotation/PackNotation";
+import {AddNewPackModal} from "features/Modals/AddNewPackModal/AddNewPackModal";
 
 export const PacksList = () => {
 
@@ -33,14 +33,7 @@ export const PacksList = () => {
         isError: fetchPacksError
     }] = useLazyGetPacksQuery({
         refetchOnReconnect: true,
-        // refetchOnFocus: true,
     })
-
-    const [createPack, {
-        isLoading: packCreating
-    }] = useCreatePackMutation()
-
-    const createPackValidator = useApiErrorsHandler(createPack)
 
     const fetchPackValidator = useApiErrorsHandler(fetchPacks)
 
@@ -80,9 +73,6 @@ export const PacksList = () => {
         setSearchParams({})
     }
 
-    const createPackButtonHandler = async () =>
-        await createPackValidator({})
-
     if (fetchPacksError || !packsData) {
         return <Preloader/>
     }
@@ -90,12 +80,7 @@ export const PacksList = () => {
     return <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
-            <Button
-                type={"submit"}
-                disabled={packCreating}
-                onClick={createPackButtonHandler}>
-                Add new pack
-            </Button>
+            <AddNewPackModal/>
         </SHeaderSection>
         <SSettingsSection>
             <SSetting>

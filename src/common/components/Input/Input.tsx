@@ -1,7 +1,7 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, memo, useState} from 'react'
 import styled from "styled-components";
-import {antoColor, secondColor} from "../../../assets/stylesheets/colors";
-import {Path, UseFormRegister} from "react-hook-form";
+import {antoColor, secondColor} from "assets/stylesheets/colors";
+import {UseFormRegister} from "react-hook-form";
 import {Visibility, VisibilityOff} from "@styled-icons/material"
 import {SHelperText} from "../CommonStyledComponents";
 
@@ -15,15 +15,17 @@ type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
 
 
 type SuperInputTextPropsType = DefaultInputPropsType & {
-    label?: Path<any>
+    label: string
     register?: UseFormRegister<any>
     error?: string
     helperText?: string
+    registerFieldName?:string;
 }
 
 export const Input = memo(
     ({
          label,
+         registerFieldName,
          register,
          type,
          children,
@@ -43,7 +45,7 @@ export const Input = memo(
         //     if( inputRef.current )
         //         inputRef.current.focus()
         // }
-
+        const finalRegisterFieldName = registerFieldName || camelize(label)
         return (
             <SInput
                 error={error}>
@@ -51,7 +53,7 @@ export const Input = memo(
                     type={finalType}
                     placeholder={label}
                     {...restProps}
-                    {...register!(camelize(label!))}
+                    {...register!(finalRegisterFieldName!)}
                     // ref={inputRef}
                 />
                 <label

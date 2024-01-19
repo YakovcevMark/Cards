@@ -52,3 +52,37 @@ export const SHoverModule = styled.div`
         }
     }
 `
+export const SPagesContainer = styled.div`
+  align-self: center;
+  justify-self: center;
+  padding-top: 20px;
+  border-radius: 10px;
+  width: 50vh;
+  height: 65vh;
+  background: white;
+    form {
+        display: grid;
+        width: 90%;
+        height: 90%;
+        margin: 0 auto;
+    }
+`
+export const SControlSection = styled.section`
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-self: end;
+`
+export const  SInputsSection= styled.section`
+  width: 100%;
+  height: 50%;
+  display: grid;
+  justify-items: center;
+`
+export const SButtonControl = styled.div`
+  width: 80%;
+
+  button {
+    width: 100%;
+  }
+`

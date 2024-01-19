@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
-
-import {AppRoutes} from "common/components/Routes/AppRoutes";
 import styled from "styled-components";
 import {useInitializeMutation} from "features/authPages/authApi";
 import {Preloader} from "common/components/Preloader/Preloader";
-import {Message} from "common/components/Alert/Message";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Header} from "./Header/Header";
+import {AppRoutes} from "common/components/Routes/AppRoutes";
+import {Message} from "common/components/Alert/Message";
 
 
-function App() {
+export function App() {
 
     const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
@@ -27,6 +26,7 @@ function App() {
                 name={data?.name}
                 avatar={data?.avatar}/>
             <Content>
+
                 <AppRoutes/>
                 <Message/>
                 {/*<NavLink to={LoginPath}>login</NavLink>*/}
@@ -39,16 +39,14 @@ function App() {
     );
 }
 
-
 const Container = styled.div`
-  width: 90%;
-  height: 100vh;
-  display: grid;
-  grid-template: 1fr 9fr/100%;
-  margin: 0 auto;
+    width: 90%;
+    height: 100vh;
+    display: grid;
+    grid-template: 1fr 9fr/100%;
+    margin: 0 auto;
 `
 const Content = styled.section`
-  display: grid;
+    display: grid;
 `
 
-export default App;

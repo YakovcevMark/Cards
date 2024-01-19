@@ -1,21 +1,26 @@
 import React, {useState} from 'react';
-import {Button} from "../../../common/components/Button/Button";
-import {HelperLink} from "../../../common/components/HelperLink/HelperLink";
-import {LoginPath} from "../../../common/components/Routes/AppRoutes";
+import {Button} from "common/components/Button/Button";
+import {HelperLink} from "common/components/HelperLink/HelperLink";
+import {LoginPath} from "common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Input} from "../../../common/components/Input/Input";
+import {Input} from "common/components/Input/Input";
 import {EmailRecovery} from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {EmailSchema} from "../../../utils/YupValidators/Validators";
+import {EmailSchema} from "utils/YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../authApi";
-import {AuthPagesContainer} from "../AuthPagesContainer/AuthPagesContainer";
-import {SButtonControl, SControlSection, SInputsSection} from "../AuthStyledComponents";
-import {SHelperText, STitle} from "../../../common/components/CommonStyledComponents";
+import {
+    SButtonControl,
+    SControlSection,
+    SHelperText,
+    SInputsSection,
+    SPagesContainer,
+    STitle
+} from "common/components/CommonStyledComponents";
 
 type RecoveryValues = { email: string }
 export const PasswordRecovery = () => {
 
-    const [recoveryPassport, { isLoading }] = useRecoveryPasswordMutation()
+    const [recoveryPassport, {isLoading}] = useRecoveryPasswordMutation()
     const [email, setEmail] = useState<string>("")
 
 
@@ -30,8 +35,8 @@ export const PasswordRecovery = () => {
     }
 
     return email ? <EmailRecovery email={email}/> : (
-            <AuthPagesContainer>
-                <form onSubmit={handleSubmit(onSubmit)}>
+        <SPagesContainer>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Forgot your password?</STitle>
                 <SInputsSection>
                     <Input
@@ -58,7 +63,7 @@ export const PasswordRecovery = () => {
                         Try logging in
                     </HelperLink>
                 </SControlSection>
-                </form>
-            </AuthPagesContainer>
+            </form>
+        </SPagesContainer>
     );
 };

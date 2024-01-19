@@ -7,7 +7,7 @@ type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
 
 type SuperCheckboxPropsType = DefaultInputPropsType & {
     register: UseFormRegister<any>
-    fieldName: string
+    registrFieldName: string
     onChangeChecked?: (checked: boolean) => void
     error?: string
 }
@@ -17,7 +17,7 @@ export const Checkbox = memo(
          type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
          onChange, onChangeChecked,
          register,
-         fieldName,
+         registrFieldName,
          children, // в эту переменную попадёт текст
          ...restProps// все остальные пропсы попадут в объект restProps
      }: SuperCheckboxPropsType) => {
@@ -27,7 +27,7 @@ export const Checkbox = memo(
                     <input
                         type={'checkbox'}
                         {...restProps}
-                        {...register(fieldName)}
+                        {...register(registrFieldName)}
                     />
                     {children && <span>{children}</span>}
                 </label>

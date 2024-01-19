@@ -1,19 +1,23 @@
 import React from 'react';
-import {Button} from "../../../common/components/Button/Button";
-import {PasswordRecoveryPath, RegisterPath} from "../../../common/components/Routes/AppRoutes";
-import {HelperLink} from "../../../common/components/HelperLink/HelperLink";
+import {Button} from "common/components/Button/Button";
+import {PasswordRecoveryPath, RegisterPath} from "common/components/Routes/AppRoutes";
+import {HelperLink} from "common/components/HelperLink/HelperLink";
 import styled from "styled-components";
-import {Input} from "../../../common/components/Input/Input";
+import {Input} from "common/components/Input/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Checkbox} from "../../../common/components/Checkbox/Checkbox";
+import {Checkbox} from "common/components/Checkbox/Checkbox";
 import {NavLink} from "react-router-dom";
 import {useLoginMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {LoginSchema} from "../../../utils/YupValidators/Validators";
-import {useApiErrorsHandler} from "../../../common/hooks/hooks";
-import {AuthPagesContainer} from "../AuthPagesContainer/AuthPagesContainer";
-import {SButtonControl, SControlSection} from "../AuthStyledComponents";
-import {SHelperText, STitle} from "../../../common/components/CommonStyledComponents";
+import {LoginSchema} from "utils/YupValidators/Validators";
+import {useApiErrorsHandler} from "common/hooks/hooks";
+import {
+    SButtonControl,
+    SControlSection,
+    SHelperText,
+    SPagesContainer,
+    STitle
+} from "common/components/CommonStyledComponents";
 
 type LoginValues = {
     email: string
@@ -36,7 +40,7 @@ export const Login = () => {
         await loginValidator(data)
     }
     return (
-        <AuthPagesContainer>
+        <SPagesContainer>
             <form
                 onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Sing In</STitle>
@@ -56,7 +60,7 @@ export const Login = () => {
                 <Checkbox
                     disabled={isLoading}
                     register={register}
-                    fieldName={'rememberMe'}>
+                    registrFieldName={'rememberMe'}>
                     Remember me
                 </Checkbox>
                 <FP>
@@ -75,7 +79,7 @@ export const Login = () => {
                     <HelperLink path={RegisterPath}>Sing Up</HelperLink>
                 </SControlSection>
             </form>
-        </AuthPagesContainer>
+        </SPagesContainer>
     );
 };
 const FP = styled.div`

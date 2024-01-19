@@ -1,25 +1,24 @@
 import React, {ChangeEvent, MouseEvent, useRef, useState} from 'react';
-import {Button} from "../../common/components/Button/Button";
+import {Button} from "common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Input} from "../../common/components/Input/Input";
+import {Input} from "common/components/Input/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
 import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
-import {NameSchema} from "../../utils/YupValidators/Validators";
-import {useApiErrorsHandler} from "../../common/hooks/hooks";
-import {BackArrowBlock} from "../../common/components/BackArrowBlock/BackArrowBlock";
-import {AuthPagesContainer} from "../authPages/AuthPagesContainer/AuthPagesContainer";
-import {SHelperText, STitle} from "../../common/components/CommonStyledComponents";
+import {NameSchema} from "utils/YupValidators/Validators";
+import {useApiErrorsHandler} from "common/hooks/hooks";
+import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
+import {SHelperText, STitle, SPagesContainer} from "common/components/CommonStyledComponents";
 
 type ProfileFormValues = {
     name?: string
     avatar?: string
 }
-const Profile = () => {
+export const Profile = () => {
     const [editMode, setEditMode] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement>(null)
     const [, {data, isLoading: loadingInit}] = useInitializeMutation({
@@ -97,7 +96,7 @@ const Profile = () => {
     return (
         <>
             <BackArrowBlock/>
-            <AuthPagesContainer>
+            <SPagesContainer>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <SProfileContainer>
                         <STitle>Personal Information</STitle>
@@ -134,7 +133,7 @@ const Profile = () => {
                         </Button>
                     </SProfileContainer>
                 </form>
-            </AuthPagesContainer></>
+            </SPagesContainer></>
     );
 };
 
@@ -185,5 +184,3 @@ const SNickName = styled.div`
   align-items: center;
   font-weight: bold;
 `
-
-export default Profile;
