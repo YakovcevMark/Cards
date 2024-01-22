@@ -1,36 +1,55 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {BasicModal} from "features/Modals/BasicModal/BasicModal";
 import {Input} from "common/components/Input/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useCreatePackMutation} from "features/Packs/packsApi";
+import {useUpdatePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
+import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
 
 export type AddNewPackModel = {
     name: string
     private: boolean
 }
+type PT = {
+    id: string
+    packName: string
+    isPrivatePack: boolean
+    children?: ReactNode
+}
+export const EditPackModal =
+    ({
+         id,
+         packName,
+         isPrivatePack,
+         children
+     }: PT) => {
 
-export const AddNewPackModal = () => {
         const {register, handleSubmit, formState: {errors}} = useForm<AddNewPackModel>({
+            defaultValues: {
+                name: packName,
+                private: isPrivatePack,
+            }
             // resolver: yupResolver(RegisterSchema)
         })
-        const [createPack, {
-            isLoading: isPackCreating,
-            isSuccess: isPackCreated,
-            reset
-        }] = useCreatePackMutation()
-        const createPackValidator = useApiErrorsHandler(createPack)
+        const [updatePack, {
+            isLoading: isPackUpdating,
+            isSuccess: isPackUpdated
+        }] = useUpdatePackMutation()
+        const updatePackValidator = useApiErrorsHandler(updatePack)
         const onSubmit: SubmitHandler<AddNewPackModel> = async (data) => {
-            await createPackValidator(data)
+            await updatePackValidator({
+                _id: id,
+                ...data
+            })
         }
         return (
             <BasicModal
-                buttonContent={"Add new pack"}
-                initViewMode={isPackCreated}
-                resetQuery = {reset}
-                title={"Add new pack"}
+                isIcon
+                buttonContent={<DriveFileRenameOutline/>}
+                initViewMode={isPackUpdated}
+                title={"Edit pack"}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
@@ -39,11 +58,11 @@ export const AddNewPackModal = () => {
                             registerFieldName={"name"}
                             register={register}
                             error={errors.name?.message}
-                            disabled={isPackCreating}
+                            disabled={isPackUpdating}
                         />
                         <Checkbox
                             register={register}
-                            disabled={isPackCreating}
+                            disabled={isPackUpdating}
                             registrFieldName={"private"}>
                             Private pack?
                         </Checkbox>
@@ -52,10 +71,12 @@ export const AddNewPackModal = () => {
                 controlChildrenSection={
                     <Button
                         type={"submit"}
-                        disabled={isPackCreating}>
-                        Create
+                        disabled={isPackUpdating}>
+                        Edit
                     </Button>
-                }/>
+                }>
+                {children}
+            </BasicModal>
         );
     };
 

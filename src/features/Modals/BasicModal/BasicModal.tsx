@@ -1,44 +1,77 @@
-import React, {ReactNode} from "react";
+import React, {FormEvent, ReactNode, useCallback, useEffect, useState} from "react";
 import {useEscapeKey} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
-import {SModal, SModalBackground, SModalContent} from "features/Modals/ModalsStyledComponents";
+import {SModalBackground, SModalContent, SModalControlSection} from "features/Modals/ModalsStyledComponents";
+import {SInputsSection, STitle} from "common/components/CommonStyledComponents";
 
 type PT = {
-    children?: ReactNode
     isIcon?: boolean
-    viewMode: boolean
-    setViewMode: (v:boolean) => void
-    setFormSubmit: (data:any) => void
+    initViewMode: boolean
+    inputsChildrenSection: ReactNode
+    controlChildrenSection: ReactNode
     buttonContent: ReactNode | string
+    title: string
+    setFormSubmit?: (data: FormEvent<HTMLFormElement>) => void
+    resetQuery?: () => void
+    children?: ReactNode
 }
 export const BasicModal =
     ({
-         children,
+         initViewMode,
          buttonContent,
-         viewMode,
-         setViewMode,
+         inputsChildrenSection,
+         controlChildrenSection,
+         title,
          setFormSubmit,
-         isIcon
+         resetQuery,
+         isIcon,
+         children
      }: PT) => {
+        const [viewMode, setViewMode] = useState(false)
+
+        const updateModalStateHandler = useCallback(() => {
+            setViewMode(false)
+            resetQuery && resetQuery()
+        }, [setViewMode, resetQuery])
+
+        useEffect(() => {
+            viewMode && initViewMode && updateModalStateHandler()
+        }, [viewMode, initViewMode, updateModalStateHandler]);
         const switchViewModeOn = () => setViewMode(true);
         const switchViewModeOff = () => setViewMode(false);
+
         useEscapeKey(switchViewModeOff)
-        return <SModal>
+        return <>
             <Button
                 onClick={switchViewModeOn}
                 icon={isIcon}>
                 {buttonContent}
+                {children}
             </Button>
             {viewMode && <>
                 <SModalBackground
-                    onClick={() => setViewMode(false)}/>
+                    onClick={switchViewModeOff}/>
                 <SModalContent>
                     <form onSubmit={setFormSubmit}>
-                        {children}
+                        <STitle>
+                            {title}
+                        </STitle>
+                        <SInputsSection>
+                            {inputsChildrenSection}
+                        </SInputsSection>
+                        <SModalControlSection>
+                            <Button
+                                gray
+                                type={"button"}
+                                onClick={switchViewModeOff}>
+                                Cancel
+                            </Button>
+                            {controlChildrenSection}
+                        </SModalControlSection>
                     </form>
                 </SModalContent>
             </>
             }
-        </SModal>
+        </>
     }
 

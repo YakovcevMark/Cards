@@ -24,7 +24,7 @@ export const Button: React.FC<SuperButtonPropsType> = memo(
             ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
         }
     ) => {
-        const finalColor = color ? color : red ? 'red' : gray ? grayColor : secondColor;
+        const finalColor = color ? color : red ? 'rgba(255, 54, 54, 1)' : gray ? grayColor : secondColor;
         return !icon ? (
             <SButton
                 color={finalColor}

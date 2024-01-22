@@ -26,14 +26,8 @@ export function App() {
                 name={data?.name}
                 avatar={data?.avatar}/>
             <Content>
-
                 <AppRoutes/>
                 <Message/>
-                {/*<NavLink to={LoginPath}>login</NavLink>*/}
-                {/*<NavLink to={RegisterPath}>Register</NavLink>*/}
-                {/*<NavLink to={PasswordRecoveryPath}>PasRec</NavLink>*/}
-                {/*<NavLink to={ProfilePath}>Profile</NavLink>*/}
-                {/*<NavLink to={PacksPath}>Cards</NavLink>*/}
             </Content>
         </Container>
     );

@@ -170,7 +170,8 @@ export const PacksList = () => {
                                     userName={c.user_name}
                                     updated={c.updated}
                                     cardsCount={c.cardsCount}
-                                    isOwner={userData!._id === c.user_id}/>)
+                                    isOwner={userData!._id === c.user_id}
+                                    isPrivate={c.private}/>)
                             }
                             </tbody>
                         </table>

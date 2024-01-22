@@ -12,10 +12,13 @@ export const SModalContent = styled(SPagesContainer)`
     min-height: 30vh;
     box-shadow: 0 0 1vh ${secondColor};
     background: white;
-    position: absolute;
-    top:30vh;
-    z-index: 21;
     border-radius: 3px;
+    z-index: 21;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
 `
 export const SModalBackground = styled.div`
     width: 100vw;
@@ -32,4 +35,7 @@ export const SModalControlSection = styled.div`
     justify-content: space-between;
     align-self: end;
     grid-template-columns:repeat(2, 9vw);
+    button{
+        justify-self: auto;
+    }
 `

@@ -1,11 +1,8 @@
 import React from 'react';
-import {DeleteOutline, DriveFileRenameOutline} from "@styled-icons/material-outlined";
-import {handleStringLength} from "../../../../utils/DataUtils/handleStringsUtils";
-import {Button} from "../../../../common/components/Button/Button";
+import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
-import {useDeleteCardMutation, useUpdateCardMutation} from "../../packsApi";
-import {useApiErrorsHandler} from "../../../../common/hooks/hooks";
-import styled from "styled-components";
+import {EditCardModal} from "features/Modals/EditCardModal/EditCardModal";
+import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
 
 type PT = {
     id: string
@@ -25,22 +22,6 @@ export const CardNotation =
          grade,
          id
      }: PT) => {
-        const [deleteCard, {
-            isLoading: deletingCard
-        }] = useDeleteCardMutation()
-        const deleteCardValidator = useApiErrorsHandler(deleteCard)
-        const deleteCardButtonHandler = async () => await deleteCardValidator({id})
-
-        const [updateCard, {
-            isLoading: updatingCard
-        }] = useUpdateCardMutation()
-        const updateCardValidator = useApiErrorsHandler(updateCard)
-        const updateCardButtonHandler = async () => await updateCardValidator({
-            _id: id,
-            question: `${question}+`
-        })
-
-        const isControlButtonsDisabled = deletingCard || updatingCard;
         return (
             <SNotation>
                 <SNotationQuestion>
@@ -50,22 +31,11 @@ export const CardNotation =
                 <td>{updated}</td>
                 <td>{grade}</td>
                 {isOwner && <SNotationActionButtons>
-                    <Button
-                        onClick={updateCardButtonHandler}
-                        disabled={isControlButtonsDisabled}
-                        icon>
-                        <DriveFileRenameOutline/>
-                    </Button>
-                    <Button
-                        onClick={deleteCardButtonHandler}
-                        disabled={isControlButtonsDisabled}
-                        icon>
-                        <DeleteOutline/>
-                    </Button>
+                    <EditCardModal id={id}/>
+                    <DeleteCardModal id={id}/>
                 </SNotationActionButtons>
                 }
             </SNotation>
         );
     };
-
 const SNotationQuestion = SNotationName

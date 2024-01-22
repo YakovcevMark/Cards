@@ -54,7 +54,7 @@ export type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "upd
 export type Card = CommonPackAndCardTypes & {
     answer: string
     question: string
-    cardPack_id: string
+    cardsPack_id: string
     questionImg: string
     comments: string
 }

@@ -13,18 +13,22 @@ import {
     STableSection
 } from "../PacksStyledComponents";
 import {SHoverModule, STitle} from "common/components/CommonStyledComponents";
-import {DeleteOutline, DriveFileRenameOutline, School, Tune} from "@styled-icons/material-outlined";
+import {School, Tune} from "@styled-icons/material-outlined";
 import {useInitializeMutation} from "../../authPages/authApi";
 import {CardNotation} from "./CardNotation/CardNotation";
 import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
-import {useCreateCardMutation, useDeletePackMutation, useLazyGetCardsQuery, useUpdatePackMutation} from "../packsApi";
+import {useLazyGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useParams} from "react-router-dom";
+import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
+import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {PacksPath} from "common/components/Routes/AppRoutes";
+import {AddNewCardModal} from "features/Modals/AddNewCardModal/AddNewCardModal";
 
 
 export const Pack = () => {
     const {cardsPack_id} = useParams()
+
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -35,30 +39,9 @@ export const Pack = () => {
         data: packData,
         isError: haveNotSuchPack,
     }] = useLazyGetCardsQuery({
-        refetchOnFocus: true,
         refetchOnReconnect: true,
     })
     const fetchCardsValidator = useApiErrorsHandler(fetchCards)
-
-    const [createCard] = useCreateCardMutation()
-    const createCardValidator = useApiErrorsHandler(createCard)
-
-
-    const [deletePack, {
-        isLoading: deletingPack,
-        isSuccess: packHasDeleted
-    }] = useDeletePackMutation()
-    const deletePackValidator = useApiErrorsHandler(deletePack)
-    const deletePackButtonHandler = async () => await deletePackValidator({id: cardsPack_id})
-
-    const [updatePack, {
-        isLoading: updatingPack
-    }] = useUpdatePackMutation()
-    const updatePackValidator = useApiErrorsHandler(updatePack)
-    const updatePackButtonHandler = async () => await updatePackValidator({
-        _id: cardsPack_id!,
-        name: `${packData!.packName}+`
-    })
 
     const fetchParams = useMemo(() => {
         return {
@@ -84,17 +67,16 @@ export const Pack = () => {
 
     const [cardQuestion, setCardQuestion] = useSearchWithDelay(fetchParams.cardQuestion, setCardQuestionSearchParam, 1500)
 
-    const createCardButtonHandler = async () =>
-        await createCardValidator({cardsPack_id})
 
     let isOwner = false
     if (packData) {
         isOwner = packData.packUserId === userData!._id;
     }
 
-    if (packHasDeleted || haveNotSuchPack) {
+    if (haveNotSuchPack) {
         return <Navigate to={PacksPath}/>
     }
+
     return !packData ? <Preloader/> : <SSPackPagesContainer>
         <BackArrowBlock/>
         <SHeaderSection>
@@ -103,35 +85,31 @@ export const Pack = () => {
                 {isOwner && <span>
                         <Tune/>
                           <SSHoverModule>
-                            <button
-                                onClick={updatePackButtonHandler}
-                                disabled={updatingPack}
-                            >
-                                <DriveFileRenameOutline/>
-                                <span>Edit</span>
-                            </button>
-                            <button
-                                onClick={deletePackButtonHandler}
-                                disabled={deletingPack}
-                            >
-                                <DeleteOutline/>
-                                <span>Delete</span>
-                            </button>
-                              <button
-                                  onClick={() => alert("Hi")}
-                              >
+                              <EditPackModal
+                                  id={cardsPack_id!}
+                                  packName={packData.packName}
+                                  isPrivatePack={packData.packPrivate}>
+                                  <span>Edit</span>
+                              </EditPackModal>
+                              <DeletePackModal
+                                  id={cardsPack_id!}
+                                  name={packData.packName}>
+                                  <span>Delete</span>
+                              </DeletePackModal>
+                              <Button
+                                  icon
+                                  disabled={!Boolean(packData.cards.length)}
+                                  onClick={() => alert("Hi")}>
                                 <School/>
                                 <span>Learn</span>
-                            </button>
+                            </Button>
                         </SSHoverModule>
                     </span>
                 }
             </SSTitle>
             {isOwner
-                ? <Button
-                    onClick={createCardButtonHandler}>
-                    Add new card
-                </Button>
+                ? <AddNewCardModal
+                    cardsPack_id={cardsPack_id!}/>
                 : <Button
                     onClick={() => alert("Hi!")}>
                     Learn to pack
@@ -231,7 +209,7 @@ const SSTitle = styled(STitle)`
     }
 `
 const SSHoverModule = styled(SHoverModule)`
+    width: 100%;
     top: 3vh;
     left: 3vh;
-
 `

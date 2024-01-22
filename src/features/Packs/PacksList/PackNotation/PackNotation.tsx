@@ -1,12 +1,12 @@
 import React from 'react';
-import {DeleteOutline, DriveFileRenameOutline, School} from "@styled-icons/material-outlined";
+import {School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
 import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
 import {Button} from "common/components/Button/Button";
 import {PackPath} from "common/components/Routes/AppRoutes";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
-import {useDeletePackMutation, useUpdatePackMutation} from "../../packsApi";
-import {useApiErrorsHandler} from "common/hooks/hooks";
+import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
+import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 
 type PT = {
     id: string
@@ -15,6 +15,7 @@ type PT = {
     userName: string
     cardsCount: number
     isOwner: boolean
+    isPrivate: boolean
 }
 
 export const PackNotation =
@@ -24,36 +25,20 @@ export const PackNotation =
          userName,
          packName,
          isOwner,
+         isPrivate,
          id
      }: PT) => {
-        const [deletePack, {
-            isLoading: deletingPack
-        }] = useDeletePackMutation()
-        const deletePackValidator = useApiErrorsHandler(deletePack)
-        const deletePackButtonHandler = async () => await deletePackValidator({id})
-
-        const [updatePack, {
-            isLoading: updatingPack
-        }] = useUpdatePackMutation()
-
-        const updatePackValidator = useApiErrorsHandler(updatePack)
-        const updatePackButtonHandler = async () => await updatePackValidator({
-            _id: id,
-            name: `${packName}+`
-        })
-
         const nav = useNavigate()
         const showPackButtonHandler = () => nav(`${PackPath}/${id}`)
         const schoolButtonHandler = () => alert("Hi!")
-        const isControlButtonsDisabled = deletingPack || updatingPack;
-        const isNotationDisabled = cardsCount === 0;
+        const isNotationDisabled = cardsCount === 0 ;
 
         return (
             <SNotation>
                 <SNotationName>
                     <b>
                         <button
-                            disabled={isNotationDisabled}
+                            disabled={ isNotationDisabled && !isOwner }
                             onClick={showPackButtonHandler}>
                             {handleStringLength(packName)}
                         </button>
@@ -64,24 +49,19 @@ export const PackNotation =
                 <td>{handleStringLength(userName)}</td>
                 <SNotationActionButtons>
                     <Button
-                        disabled={isNotationDisabled}
+                        disabled={ isNotationDisabled }
                         onClick={schoolButtonHandler}
                         icon>
                         <School/>
                     </Button>
                     {isOwner && <>
-                        <Button
-                            onClick={updatePackButtonHandler}
-                            disabled={isControlButtonsDisabled}
-                            icon>
-                            <DriveFileRenameOutline/>
-                        </Button>
-                        <Button
-                            onClick={deletePackButtonHandler}
-                            disabled={isControlButtonsDisabled}
-                            icon>
-                            <DeleteOutline/>
-                        </Button>
+                        <EditPackModal
+                            id={id}
+                            packName={packName}
+                            isPrivatePack={isPrivate}/>
+                        <DeletePackModal
+                            id={id}
+                            name={packName}/>
                     </>
                     }
                 </SNotationActionButtons>

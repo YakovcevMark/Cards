@@ -34,12 +34,15 @@ export const SHoverModule = styled.div`
         padding: 1vh;
         border: none;
         //background-color: burlywood;
-        cursor: pointer;
+        background-color: white;
 
         svg {
             width: 2vh;
-            fill: black;
             padding-right: 1vh;
+
+            &:enabled {
+                fill: black;
+            }
         }
 
         span {
@@ -47,8 +50,9 @@ export const SHoverModule = styled.div`
             padding-left: 1vh;
         }
 
-        &:hover {
+        &:enabled:hover {
             background-color: #d2d2d2;
+            cursor: pointer;
         }
     }
 `

@@ -1,14 +1,14 @@
 import React from 'react';
-import {Button} from "../../common/components/Button/Button";
-import {LoginPath, ProfilePath} from "../../common/components/Routes/AppRoutes";
+import {Button} from "common/components/Button/Button";
+import {LoginPath, ProfilePath} from "common/components/Routes/AppRoutes";
 import {useNavigate} from "react-router-dom";
 import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
-import {secondColor} from "../../assets/stylesheets/colors";
+import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
-import {useLogoutMutation} from "../../features/authPages/authApi";
-import {useApiErrorsHandler} from "../../common/hooks/hooks";
-import {SHoverModule} from "../../common/components/CommonStyledComponents";
+import {useLogoutMutation} from "features/authPages/authApi";
+import {useApiErrorsHandler} from "common/hooks/hooks";
+import {SHoverModule} from "common/components/CommonStyledComponents";
 
 type HeaderT = {
     showMode: boolean
@@ -53,7 +53,9 @@ export const Header =
                 : <Button onClick={singInButtonHandler}>Sing In</Button>
         return (
             <StyledHeader>
-                <RobotSVG/>
+                <SRobotSVG>
+                    <RobotSVG/>
+                </SRobotSVG>
                 <ControlSection>
                     {
                         controlSectionContent
@@ -66,17 +68,18 @@ export const Header =
 const SSHoverModule = styled(SHoverModule)`
     top:6vh;
 `
+const SRobotSVG = styled.div`
+    svg {
+        width: 10vh;
+        height: auto;
+        fill: ${secondColor};
+    }
+`
 const StyledHeader = styled.header`
   //background-color: blue;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-
-  svg {
-    width: 10vh;
-    height: auto;
-    fill: ${secondColor};
-  }
 `
 
 const Avatar = styled.div`
