@@ -10,7 +10,9 @@ import {Message} from "common/components/Alert/Message";
 
 export function App() {
 
-    const [getInitialized, {data, isSuccess, isLoading}] = useInitializeMutation({
+    const [getInitialized, {
+        data, isSuccess, isLoading
+    }] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
 
@@ -42,5 +44,6 @@ const Container = styled.div`
 `
 const Content = styled.section`
     display: grid;
+    align-content: start;
 `
 

@@ -3,7 +3,7 @@ import {School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
 import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
 import {Button} from "common/components/Button/Button";
-import {PackPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
@@ -29,10 +29,9 @@ export const PackNotation =
          id
      }: PT) => {
         const nav = useNavigate()
-        const showPackButtonHandler = () => nav(`${PackPath}/${id}`)
-        const schoolButtonHandler = () => alert("Hi!")
+        const showPackButtonHandler = () => nav(`${PATH.pack}/${id}`)
+        const schoolButtonHandler = () => nav(`${PATH.learn}/${id}`)
         const isNotationDisabled = cardsCount === 0 ;
-
         return (
             <SNotation>
                 <SNotationName>

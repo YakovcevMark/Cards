@@ -2,7 +2,7 @@ import React from 'react';
 import {ReactComponent as EmailSVG} from "../../../../assets/img/email.svg"
 import {Button} from "common/components/Button/Button";
 import {useNavigate} from "react-router-dom";
-import {LoginPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {secondColor} from "assets/stylesheets/colors";
 import styled from "styled-components";
 import {
@@ -18,7 +18,7 @@ import {
 export const EmailRecovery: React.FC<{ email: string }> =
     ({email}) => {
         const nav = useNavigate()
-        const buttonHandler = () => (nav(LoginPath));
+        const buttonHandler = () => (nav(PATH.login));
         return (
             <SPagesContainer>
                 <SInputsSection>

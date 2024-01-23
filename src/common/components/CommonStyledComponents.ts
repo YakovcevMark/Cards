@@ -64,12 +64,12 @@ export const SPagesContainer = styled.div`
   width: 50vh;
   height: 65vh;
   background: white;
-    form {
-        display: grid;
-        width: 90%;
-        height: 90%;
-        margin: 0 auto;
-    }
+`
+export const SForm =styled.form`
+    display: grid;
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
 `
 export const SControlSection = styled.section`
   width: 100%;

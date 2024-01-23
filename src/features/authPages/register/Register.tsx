@@ -1,20 +1,20 @@
 import React from 'react';
 import {Input} from "common/components/Input/Input";
 import {Button} from "common/components/Button/Button";
-import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {LoginPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {
-    SControlSection,
+    SForm,
     SInputsSection,
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
+import {SModalControlSection} from "features/Modals/ModalsStyledComponents";
 
 type RegisterFormValues = {
     email: string
@@ -30,7 +30,7 @@ export const Register = () => {
 
     const getRegisterValidator = useApiErrorsHandler(getRegister)
     const cancelButtonHandler = () => {
-        navigate(LoginPath);
+        navigate(PATH.login);
     }
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const {email, password} = data
@@ -38,12 +38,12 @@ export const Register = () => {
     }
 
     if (isSuccess) {
-        navigate(LoginPath);
+        navigate(PATH.login);
     }
 
     return (
         <SPagesContainer>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Sing Up</STitle>
                 <SInputsSection>
                     <Input
@@ -64,8 +64,7 @@ export const Register = () => {
                         error={errors.confirmPassword?.message}
                         register={register}/>
                 </SInputsSection>
-                <SControlSection>
-                    <SButtonControl>
+                <SModalControlSection>
                         <Button gray
                                 onClick={cancelButtonHandler}
                                 type={"button"}>
@@ -75,17 +74,9 @@ export const Register = () => {
                             type={"submit"}>
                             Register
                         </Button>
-                    </SButtonControl>
-                </SControlSection>
-            </form>
+                </SModalControlSection>
+            </SForm>
         </SPagesContainer>
 
     );
 };
-
-const SButtonControl = styled.div`
-    justify-content: space-between;
-    display: grid;
-    grid-template-columns:45% 50%;
-    width: 100%;
-`

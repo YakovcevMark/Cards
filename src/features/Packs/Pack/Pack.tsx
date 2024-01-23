@@ -19,21 +19,21 @@ import {CardNotation} from "./CardNotation/CardNotation";
 import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
 import {useLazyGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
-import {Navigate, useParams} from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
-import {PacksPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {AddNewCardModal} from "features/Modals/AddNewCardModal/AddNewCardModal";
 
 
 export const Pack = () => {
     const {cardsPack_id} = useParams()
+    const {searchParams, useMySetSearchParams} = useAppSearchParams();
+    const nav = useNavigate()
 
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-    const {searchParams, useMySetSearchParams} = useAppSearchParams();
-
 
     const [fetchCards, {
         data: packData,
@@ -74,9 +74,9 @@ export const Pack = () => {
     }
 
     if (haveNotSuchPack) {
-        return <Navigate to={PacksPath}/>
+        return <Navigate to={PATH.packs}/>
     }
-
+    const schoolButtonHandler = () => nav(`${PATH.learn}/${cardsPack_id}`)
     return !packData ? <Preloader/> : <SSPackPagesContainer>
         <BackArrowBlock/>
         <SHeaderSection>
@@ -99,7 +99,7 @@ export const Pack = () => {
                               <Button
                                   icon
                                   disabled={!Boolean(packData.cards.length)}
-                                  onClick={() => alert("Hi")}>
+                                  onClick={schoolButtonHandler}>
                                 <School/>
                                 <span>Learn</span>
                             </Button>
@@ -111,7 +111,7 @@ export const Pack = () => {
                 ? <AddNewCardModal
                     cardsPack_id={cardsPack_id!}/>
                 : <Button
-                    onClick={() => alert("Hi!")}>
+                    onClick={schoolButtonHandler}>
                     Learn to pack
                 </Button>
             }

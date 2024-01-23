@@ -59,7 +59,7 @@ export type Card = CommonPackAndCardTypes & {
     comments: string
 }
 type FetchCardsParams = CommonFetchParams & PaginationInfo & {
-    cardPack_id: string
+    cardsPack_id: string
     cardAnswer: string
     cardQuestion: string
     sortCards: string
@@ -95,8 +95,7 @@ export const packsApi = createApi({
     reducerPath: "packs",
     baseQuery: fetchBaseQuery(
         {
-            // baseUrl: 'https://neko-back.herokuapp.com/2.0/cards/',
-            baseUrl: 'http://localhost:7542/2.0/cards/',
+            baseUrl: `${process.env.REACT_APP_BACK_URL}cards/`,
             credentials: "include"
         }),
     tagTypes: ['Pack', 'Card'],
@@ -114,9 +113,6 @@ export const packsApi = createApi({
                 method: 'POST',
                 body: {
                     cardsPack: {
-                        deckCover: "",
-                        name: "Pack Subname",
-                        private: false,
                         ...data
                     }
                 }
@@ -173,7 +169,7 @@ export const packsApi = createApi({
             }),
             invalidatesTags: ['Card'],
         }),
-        deleteCard: build.mutation<Response, { id: String }>({
+        deleteCard: build.mutation<Response, { id: string }>({
             query: (params) => ({
                 url: 'card',
                 method: 'DELETE',
@@ -181,6 +177,14 @@ export const packsApi = createApi({
             }),
             invalidatesTags: ['Card'],
         }),
+        gradeCard: build.mutation<Response, { card_id: boolean, grade: 1 | 2 | 3 | 4 | 5 }>({
+            query: (body) => ({
+                url: 'grade',
+                method: 'PUT',
+                body
+            }),
+            invalidatesTags: ['Card'],
+        })
     }),
 })
 export const {
@@ -192,4 +196,5 @@ export const {
     useCreateCardMutation,
     useUpdateCardMutation,
     useDeleteCardMutation,
+    useGradeCardMutation,
 } = packsApi

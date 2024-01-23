@@ -5,9 +5,9 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {PasswordSchema} from "utils/YupValidators/Validators";
 import {useSetNewPasswordMutation} from "../authApi";
 import {Navigate, useParams} from "react-router-dom";
-import {LoginPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {
-    SControlSection,
+    SControlSection, SForm,
     SHelperText,
     SInputsSection,
     SPagesContainer,
@@ -31,9 +31,9 @@ export const PasswordNew = () => {
         recoveryPassport({password, resetPasswordToken: token!})
     }
 
-    return isSuccess ? <Navigate to={LoginPath}/> : (
+    return isSuccess ? <Navigate to={PATH.login}/> : (
         <SPagesContainer>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Create new password</STitle>
                 <SInputsSection>
                     <Input
@@ -53,7 +53,7 @@ export const PasswordNew = () => {
                         Create new password
                     </Button>
                 </SControlSection>
-            </form>
+            </SForm>
         </SPagesContainer>
     );
 };

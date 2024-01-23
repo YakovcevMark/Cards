@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button} from "common/components/Button/Button";
-import {LoginPath, ProfilePath} from "common/components/Routes/AppRoutes";
 import {useNavigate} from "react-router-dom";
 import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
@@ -9,6 +8,7 @@ import {Logout, Person} from "@styled-icons/material";
 import {useLogoutMutation} from "features/authPages/authApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {SHoverModule} from "common/components/CommonStyledComponents";
+import {PATH} from "common/components/Routes/AppRoutes";
 
 type HeaderT = {
     showMode: boolean
@@ -26,8 +26,8 @@ export const Header =
         const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
         const onLogout = useApiErrorsHandler(logOut, true)
 
-        const singInButtonHandler = () => nav(LoginPath)
-        const profileButtonHandler = () => nav(ProfilePath);
+        const singInButtonHandler = () => nav(PATH.login)
+        const profileButtonHandler = () => nav(PATH.profile);
         const logOutButtonHandler = async () => await onLogout()
 
 

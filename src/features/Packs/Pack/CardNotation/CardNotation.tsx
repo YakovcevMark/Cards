@@ -3,6 +3,7 @@ import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {EditCardModal} from "features/Modals/EditCardModal/EditCardModal";
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
+import {NotationGrade} from "features/Packs/Pack/CardNotation/NotationGrade/NotationGrade";
 
 type PT = {
     id: string
@@ -29,7 +30,7 @@ export const CardNotation =
                 </SNotationQuestion>
                 <td>{handleStringLength(answer)}</td>
                 <td>{updated}</td>
-                <td>{grade}</td>
+                <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
                     <EditCardModal id={id}/>
                     <DeleteCardModal id={id}/>

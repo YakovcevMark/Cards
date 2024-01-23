@@ -34,8 +34,8 @@ export const SModalControlSection = styled.div`
     display: grid;
     justify-content: space-between;
     align-self: end;
-    grid-template-columns:repeat(2, 9vw);
+    grid-template-columns:repeat(2, 150px);
     button{
-        justify-self: auto;
+       width:100%
     }
 `

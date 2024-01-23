@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button} from "common/components/Button/Button";
 import {HelperLink} from "common/components/HelperLink/HelperLink";
-import {LoginPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Input} from "common/components/Input/Input";
 import {EmailRecovery} from "./EmailRecovery/EmailRecovery";
@@ -10,7 +10,7 @@ import {EmailSchema} from "utils/YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../authApi";
 import {
     SButtonControl,
-    SControlSection,
+    SControlSection, SForm,
     SHelperText,
     SInputsSection,
     SPagesContainer,
@@ -36,7 +36,7 @@ export const PasswordRecovery = () => {
 
     return email ? <EmailRecovery email={email}/> : (
         <SPagesContainer>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Forgot your password?</STitle>
                 <SInputsSection>
                     <Input
@@ -59,11 +59,11 @@ export const PasswordRecovery = () => {
                     <SHelperText>
                         Did you remember your password?
                     </SHelperText>
-                    <HelperLink path={LoginPath}>
+                    <HelperLink path={PATH.login}>
                         Try logging in
                     </HelperLink>
                 </SControlSection>
-            </form>
+            </SForm>
         </SPagesContainer>
     );
 };

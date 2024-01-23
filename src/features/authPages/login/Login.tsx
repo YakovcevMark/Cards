@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from "common/components/Button/Button";
-import {PasswordRecoveryPath, RegisterPath} from "common/components/Routes/AppRoutes";
+import {PATH} from "common/components/Routes/AppRoutes";
 import {HelperLink} from "common/components/HelperLink/HelperLink";
 import styled from "styled-components";
 import {Input} from "common/components/Input/Input";
@@ -13,7 +13,7 @@ import {LoginSchema} from "utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {
     SButtonControl,
-    SControlSection,
+    SControlSection, SForm,
     SHelperText,
     SPagesContainer,
     STitle
@@ -41,7 +41,7 @@ export const Login = () => {
     }
     return (
         <SPagesContainer>
-            <form
+            <SForm
                 onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Sing In</STitle>
                 <Input
@@ -64,7 +64,7 @@ export const Login = () => {
                     Remember me
                 </Checkbox>
                 <FP>
-                    <NavLink to={PasswordRecoveryPath}>
+                    <NavLink to={PATH.passwordRecovery}>
                         Forgot password
                     </NavLink>
                 </FP>
@@ -76,9 +76,9 @@ export const Login = () => {
                         </Button>
                     </SButtonControl>
                     <SHelperText>Don't have an account?</SHelperText>
-                    <HelperLink path={RegisterPath}>Sing Up</HelperLink>
+                    <HelperLink path={PATH.register}>Sing Up</HelperLink>
                 </SControlSection>
-            </form>
+            </SForm>
         </SPagesContainer>
     );
 };

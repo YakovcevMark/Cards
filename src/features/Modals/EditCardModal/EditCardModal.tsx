@@ -11,6 +11,7 @@ export type EditCardModel = {
     question: string
     answer: boolean
 }
+
 type PT = {
     id: string
 }

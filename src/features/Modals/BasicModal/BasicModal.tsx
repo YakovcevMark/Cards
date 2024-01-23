@@ -2,7 +2,7 @@ import React, {FormEvent, ReactNode, useCallback, useEffect, useState} from "rea
 import {useEscapeKey} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {SModalBackground, SModalContent, SModalControlSection} from "features/Modals/ModalsStyledComponents";
-import {SInputsSection, STitle} from "common/components/CommonStyledComponents";
+import {SForm, SInputsSection, STitle} from "common/components/CommonStyledComponents";
 
 type PT = {
     isIcon?: boolean
@@ -52,7 +52,7 @@ export const BasicModal =
                 <SModalBackground
                     onClick={switchViewModeOff}/>
                 <SModalContent>
-                    <form onSubmit={setFormSubmit}>
+                    <SForm onSubmit={setFormSubmit}>
                         <STitle>
                             {title}
                         </STitle>
@@ -68,7 +68,7 @@ export const BasicModal =
                             </Button>
                             {controlChildrenSection}
                         </SModalControlSection>
-                    </form>
+                    </SForm>
                 </SModalContent>
             </>
             }

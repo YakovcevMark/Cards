@@ -96,51 +96,51 @@ export const Profile = () => {
     return (
         <>
             <BackArrowBlock/>
-            <SPagesContainer>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <SProfileContainer>
-                        <STitle>Personal Information</STitle>
-
-                        <SAvatar>
-                            <img src={userPNG && data?.avatar} alt="avatar"/>
-                            <input
-                                type="file"
-                                style={{display: "none"}}
-                                ref={inputRef}
-                                onChange={handleFileChange}
-                            />
-                            <button
-                                onClick={changeAvatar}>
-                                <PhotoCamera/>
-                            </button>
-                        </SAvatar>
-                        <SNickName>
-                            {content}
-                        </SNickName>
-
-                        <SHelperText>
-                            {data!.email}
-                        </SHelperText>
-                        <Button
-                            disabled={isLogOutLoading}
-                            onClick={logoutHandler}
-                            gray>
+            <SForm onSubmit={handleSubmit(onSubmit)}>
+                <SProfileContainer>
+                    <STitle>Personal Information</STitle>
+                    <SAvatar>
+                        <img src={userPNG && data?.avatar} alt="avatar"/>
+                        <input
+                            type="file"
+                            style={{display: "none"}}
+                            ref={inputRef}
+                            onChange={handleFileChange}
+                        />
+                        <button
+                            onClick={changeAvatar}>
+                            <PhotoCamera/>
+                        </button>
+                    </SAvatar>
+                    <SNickName>
+                        {content}
+                    </SNickName>
+                    <SHelperText>
+                        {data!.email}
+                    </SHelperText>
+                    <Button
+                        disabled={isLogOutLoading}
+                        onClick={logoutHandler}
+                        gray>
                         <span>
                             <SLogOutIcon
                                 style={{width: "2.5vh"}}/>
                             Log out
                         </span>
-                        </Button>
-                    </SProfileContainer>
-                </form>
-            </SPagesContainer></>
+                    </Button>
+                </SProfileContainer>
+            </SForm>
+        </>
     );
 };
 
 const SLogOutIcon = styled(Logout)`
-  width: 2vh;
+    width: 2vh;
 `
-const SProfileContainer = styled.div`
+const SForm = styled.form`
+display: grid
+`
+const SProfileContainer = styled(SPagesContainer)`
   display: grid;
   justify-items: center;
   grid-template-rows: 15% 30% 20% 15% 30%;
