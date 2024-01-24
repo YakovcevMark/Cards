@@ -1,7 +1,7 @@
 import React from 'react';
 import {School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
-import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
+import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 import {Button} from "common/components/Button/Button";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
@@ -39,13 +39,13 @@ export const PackNotation =
                         <button
                             disabled={ isNotationDisabled && !isOwner }
                             onClick={showPackButtonHandler}>
-                            {handleStringLength(packName)}
+                            {stringLengthHandler(packName)}
                         </button>
                     </b>
                 </SNotationName>
                 <td>{cardsCount}</td>
                 <td>{updated}</td>
-                <td>{handleStringLength(userName)}</td>
+                <td>{stringLengthHandler(userName)}</td>
                 <SNotationActionButtons>
                     <Button
                         disabled={ isNotationDisabled }

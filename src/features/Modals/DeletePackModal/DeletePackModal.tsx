@@ -5,6 +5,7 @@ import {useApiErrorsHandler} from "common/hooks/hooks";
 import {DeleteOutline} from "@styled-icons/material-outlined";
 import {Button} from "common/components/Button/Button";
 import styled from "styled-components";
+import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 
 type PT = {
     id: string
@@ -33,7 +34,7 @@ export const DeletePackModal =
             initViewMode={isPackDeleted}
             inputsChildrenSection={
                 <SP>
-                    Do you really wanna to remove <b>{name}</b>? <br/>
+                    Do you really wanna to remove <b>{stringLengthHandler(name)}</b>? <br/>
                     All Cards will be deleted.
                 </SP>
             }

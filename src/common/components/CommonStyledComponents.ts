@@ -1,5 +1,12 @@
 import styled from "styled-components";
+export const SAvatarImg = styled.img`
 
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+`
 export const SHelperText = styled.h6`
   font-size: 16px;
   font-weight: 400;

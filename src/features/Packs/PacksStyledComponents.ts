@@ -72,7 +72,6 @@ export const STableSection = styled.section`
 export const SNotationName = styled.td`
     width: 40vh;
     justify-self: start;
-    
     button {
         padding-inline: 0;
         border: none;

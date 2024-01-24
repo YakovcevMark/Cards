@@ -1,4 +1,4 @@
-import React, {ChangeEvent, MouseEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, MouseEvent, ReactNode, useRef, useState} from 'react';
 import {Button} from "common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
@@ -12,7 +12,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
-import {SHelperText, STitle, SPagesContainer} from "common/components/CommonStyledComponents";
+import {SAvatarImg, SHelperText, SPagesContainer, STitle} from "common/components/CommonStyledComponents";
+import {Preloader} from "common/components/Preloader/Preloader";
 
 type ProfileFormValues = {
     name?: string
@@ -20,13 +21,12 @@ type ProfileFormValues = {
 }
 export const Profile = () => {
     const [editMode, setEditMode] = useState<boolean>(false)
-    const inputRef = useRef<HTMLInputElement>(null)
     const [, {data, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
     const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
     const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-    const onUpdateProfile = useApiErrorsHandler(updateProfile)
+    const onUpdateProfile = useApiErrorsHandler(updateProfile,true)
     const onLogout = useApiErrorsHandler(logOut, true)
     const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
         defaultValues: ({
@@ -34,36 +34,15 @@ export const Profile = () => {
         }),
         resolver: yupResolver(NameSchema)
     })
-    const logoutHandler = async () => {
-        await onLogout()
+    const logoutHandler =  async () => {
+         await onLogout()
     }
-    const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
+    const onSubmit: SubmitHandler<ProfileFormValues> =  async (data) => {
         await onUpdateProfile({name: data.name})
         setEditMode(false)
     }
 
-    const changeAvatar = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        inputRef.current && inputRef.current.click();
-    };
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const fileObj = event.target.files && event.target.files[0];
-        const reader = new FileReader();
-        if (!fileObj) {
-            return;
-        }
-        reader.readAsDataURL(fileObj);
-        reader.onload = async () => {
-            if (reader.result) {
-                await onUpdateProfile({avatar: reader.result});
-            }
-        };
-        reader.onerror = (error) => {
-            console.log('Error: ', error);
-        };
-    };
-    let content = !editMode && !loadingInit
+    let content = !editMode && !loadingInit && data
         ? (
             <>
                 <span>
@@ -93,94 +72,128 @@ export const Profile = () => {
                 </Input>
             </>
         )
-    return (
-        <>
-            <BackArrowBlock/>
-            <SForm onSubmit={handleSubmit(onSubmit)}>
-                <SProfileContainer>
-                    <STitle>Personal Information</STitle>
-                    <SAvatar>
-                        <img src={userPNG && data?.avatar} alt="avatar"/>
-                        <input
-                            type="file"
-                            style={{display: "none"}}
-                            ref={inputRef}
-                            onChange={handleFileChange}
-                        />
-                        <button
-                            onClick={changeAvatar}>
-                            <PhotoCamera/>
-                        </button>
-                    </SAvatar>
-                    <SNickName>
-                        {content}
-                    </SNickName>
-                    <SHelperText>
-                        {data!.email}
-                    </SHelperText>
-                    <Button
-                        disabled={isLogOutLoading}
-                        onClick={logoutHandler}
-                        gray>
+
+    return !data ? <Preloader/>  : <>
+        <BackArrowBlock/>
+        <SForm onSubmit={handleSubmit(onSubmit)}>
+            <SProfileContainer>
+                <STitle>Personal Information</STitle>
+                <SAvatar>
+                    <SAvatarImg src={userPNG && data?.avatar} alt="avatar"/>
+                    <ImageInput
+                        isIcon
+                        onChange={(file) => onUpdateProfile({avatar: file})}>
+                        <PhotoCamera/>
+                    </ImageInput>
+                </SAvatar>
+                <SNickName>
+                    {content}
+                </SNickName>
+                <SHelperText>
+                    {data!.email}
+                </SHelperText>
+                <Button
+                    disabled={isLogOutLoading}
+                    onClick={logoutHandler}
+                    gray>
                         <span>
                             <SLogOutIcon
                                 style={{width: "2.5vh"}}/>
                             Log out
                         </span>
-                    </Button>
-                </SProfileContainer>
-            </SForm>
-        </>
-    );
+                </Button>
+            </SProfileContainer>
+        </SForm>
+    </>
 };
-
+type PT = {
+    children: ReactNode
+    onChange: (file: string | ArrayBuffer) => void
+    isIcon?:boolean
+}
+const ImageInput =
+    ({
+         isIcon,
+         children,
+         onChange,
+     }: PT) => {
+        const inputRef = useRef<HTMLInputElement>(null)
+        const changeAvatar = (e: MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            inputRef.current && inputRef.current.click();
+        };
+        const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+            const fileObj = event.target.files && event.target.files[0];
+            const reader = new FileReader();
+            if (!fileObj) {
+                return;
+            }
+            reader.readAsDataURL(fileObj);
+            reader.onload = () => {
+                if (reader.result) {
+                    onChange(reader.result)
+                }
+            };
+            reader.onerror = (error) => {
+                console.log('Error: ', error);
+            };
+        };
+        return <>
+            <input
+                type="file"
+                accept={"image/*"}
+                style={{display: "none"}}
+                ref={inputRef}
+                onChange={handleFileChange}
+            />
+            <Button
+                icon = {isIcon}
+                onClick={changeAvatar}>
+                {children}
+            </Button>
+        </>
+    }
 const SLogOutIcon = styled(Logout)`
     width: 2vh;
 `
 const SForm = styled.form`
-display: grid
+    display: grid
 `
 const SProfileContainer = styled(SPagesContainer)`
-  display: grid;
-  justify-items: center;
-  grid-template-rows: 15% 30% 20% 15% 30%;
+    display: grid;
+    justify-items: center;
+    grid-template-rows: 15% 30% 20% 15% 30%;
 `
+
 const SAvatar = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 15vh;
-  height: 15vh;
+    position: relative;
+    overflow: hidden;
+    width: 15vh;
+    height: 15vh;
+    
+    button {
+        border: white 1px solid;
+        width: 5vh;
+        height: 5vh;
+        background-color: #b7b0b0;
+        object-fit: cover;
 
-  img {
-    border-radius: 50%;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
+        svg {
+            color: white;
+            width: 100%;
+            height: 100%;
+        }
 
-  button {
-    border: white 1px solid;
-    width: 5vh;
-    height: 5vh;
-    background-color: #b7b0b0;
-    object-fit: cover;
-
-    svg {
-      color: white;
-      width: 100%;
-      height: 100%;
+        position: absolute;
+        border-radius: 50%;
+        left: 10vh;
+        bottom: 0;
     }
-
-    position: absolute;
-    border-radius: 50%;
-    left: 10vh;
-    bottom: 0;
-  }
 `
 const SNickName = styled.div`
-  width: 100%;
-  justify-items: center;
-  display: grid;
-  align-items: center;
-  font-weight: bold;
+    width: 100%;
+    justify-items: center;
+    display: grid;
+    align-items: center;
+    font-weight: bold;
 `

@@ -6,15 +6,22 @@ import {useCreatePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {CreateAndEditPackSchema} from "utils/YupValidators/Validators";
 
 export type AddNewPackModel = {
     name: string
-    private: boolean
+    private?: boolean
 }
 
 export const AddNewPackModal = () => {
-        const {register, handleSubmit, formState: {errors}} = useForm<AddNewPackModel>({
-            // resolver: yupResolver(RegisterSchema)
+        const {
+            register,
+            handleSubmit,
+            resetField,
+            formState: {errors}
+        } = useForm<AddNewPackModel>({
+            resolver: yupResolver(CreateAndEditPackSchema)
         })
         const [createPack, {
             isLoading: isPackCreating,
@@ -24,6 +31,7 @@ export const AddNewPackModal = () => {
         const createPackValidator = useApiErrorsHandler(createPack)
         const onSubmit: SubmitHandler<AddNewPackModel> = async (data) => {
             await createPackValidator(data)
+            resetField("name")
         }
         return (
             <BasicModal

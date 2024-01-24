@@ -7,10 +7,12 @@ import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {CreateAndEditPackSchema} from "utils/YupValidators/Validators";
 
 export type AddNewPackModel = {
     name: string
-    private: boolean
+    private?: boolean
 }
 type PT = {
     id: string
@@ -30,8 +32,8 @@ export const EditPackModal =
             defaultValues: {
                 name: packName,
                 private: isPrivatePack,
-            }
-            // resolver: yupResolver(RegisterSchema)
+            },
+            resolver: yupResolver(CreateAndEditPackSchema)
         })
         const [updatePack, {
             isLoading: isPackUpdating,

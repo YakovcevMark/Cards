@@ -1,9 +1,10 @@
 import React from 'react';
-import {handleStringLength} from "utils/DataUtils/handleStringsUtils";
-import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
+import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
+import {SNotation, SNotationActionButtons} from "../../PacksStyledComponents";
 import {EditCardModal} from "features/Modals/EditCardModal/EditCardModal";
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
 import {NotationGrade} from "features/Packs/Pack/CardNotation/NotationGrade/NotationGrade";
+import styled from "styled-components";
 
 type PT = {
     id: string
@@ -25,18 +26,23 @@ export const CardNotation =
      }: PT) => {
         return (
             <SNotation>
-                <SNotationQuestion>
-                    {handleStringLength(question)}
-                </SNotationQuestion>
-                <td>{handleStringLength(answer)}</td>
+                <STd>
+                    {stringLengthHandler(question)}
+                </STd>
+                <STd>{stringLengthHandler(answer)}</STd>
                 <td>{updated}</td>
                 <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
-                    <EditCardModal id={id}/>
+                    <EditCardModal
+                        question={question}
+                        answer={answer}
+                        id={id}/>
                     <DeleteCardModal id={id}/>
                 </SNotationActionButtons>
                 }
             </SNotation>
         );
     };
-const SNotationQuestion = SNotationName
+const STd = styled.td`
+    width:20vw;
+`

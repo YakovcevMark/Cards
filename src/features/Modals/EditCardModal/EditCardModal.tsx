@@ -6,62 +6,80 @@ import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {useUpdateCardMutation} from "features/Packs/packsApi";
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
+import {CreateAndEditCardSchema} from "utils/YupValidators/Validators";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 export type EditCardModel = {
     question: string
-    answer: boolean
+    answer: string
 }
 
-type PT = {
+type PT = EditCardModel & {
     id: string
 }
-export const EditCardModal = ({id}: PT) => {
-    const {register, handleSubmit, formState: {errors}} = useForm<EditCardModel>({
-        // resolver: yupResolver(RegisterSchema)
-    })
-    const [createCard, {
-        isLoading: isCardCreating,
-        isSuccess: isCardCreated,
-        reset
-    }] = useUpdateCardMutation()
-    const createCardValidator = useApiErrorsHandler(createCard)
-    const onSubmit: SubmitHandler<EditCardModel> = async (data) => {
-        await createCardValidator({
-            _id: id,
-            ...data
-        })
-    }
-    return (
-        <BasicModal
-            isIcon
-            buttonContent={<DriveFileRenameOutline/>}
-            initViewMode={isCardCreated}
-            resetQuery={reset}
-            title={"Edit new card"}
-            setFormSubmit={handleSubmit(onSubmit)}
-            inputsChildrenSection={
-                <>
-                    <Input
-                        label={"Question"}
-                        register={register}
-                        error={errors.question?.message}
-                        disabled={isCardCreating}
-                    />
-                    <Input
-                        label={"Answer"}
-                        register={register}
-                        error={errors.answer?.message}
-                        disabled={isCardCreating}
-                    />
-                </>
+export const EditCardModal =
+    ({
+         id,
+         question,
+         answer
+     }: PT) => {
+
+        const [createCard, {
+            isLoading: isCardCreating,
+            isSuccess: isCardCreated,
+            reset
+        }] = useUpdateCardMutation()
+
+        const {
+            register,
+            handleSubmit,
+            formState: {errors}
+        } = useForm<EditCardModel>({
+            resolver: yupResolver(CreateAndEditCardSchema),
+            defaultValues:{
+                question,
+                answer
             }
-            controlChildrenSection={
-                <Button
-                    type={"submit"}
-                    disabled={isCardCreating}>
-                    Edit
-                </Button>
-            }/>
-    );
-};
+        })
+
+        const createCardValidator = useApiErrorsHandler(createCard)
+        const onSubmit: SubmitHandler<EditCardModel> = async (data) => {
+            await createCardValidator({
+                _id: id,
+                ...data
+            })
+        }
+        return (
+            <BasicModal
+                isIcon
+                buttonContent={<DriveFileRenameOutline/>}
+                initViewMode={isCardCreated}
+                resetQuery={reset}
+                title={"Edit new card"}
+                setFormSubmit={handleSubmit(onSubmit)}
+                inputsChildrenSection={
+                    <>
+                        <Input
+                            label={"Question"}
+                            register={register}
+                            error={errors.question?.message}
+                            disabled={isCardCreating}
+                        />
+                        <Input
+                            label={"Answer"}
+                            register={register}
+                            error={errors.answer?.message}
+                            disabled={isCardCreating}
+                        />
+                    </>
+                }
+                controlChildrenSection={
+                    <Button
+                        type={"submit"}
+                        disabled={isCardCreating}>
+                        Edit
+                    </Button>
+                }/>
+        );
+    };
 

@@ -6,6 +6,16 @@ const email = {
 const password = {
     password: yup.string().min(7).max(20).required("Password is a required field")
 }
+export const CreateAndEditPackSchema = yup
+    .object({
+        name: yup.string().min(3).max(30).required(),
+        private:yup.boolean().optional()
+    })
+export const CreateAndEditCardSchema = yup
+    .object({
+        question: yup.string().min(1).max(100).required(),
+        answer: yup.string().min(1).max(100).required(),
+    })
 export const RegisterSchema = yup
     .object({
         ...email,

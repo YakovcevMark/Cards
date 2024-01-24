@@ -11,7 +11,7 @@ import {Message} from "common/components/Alert/Message";
 export function App() {
 
     const [getInitialized, {
-        data, isSuccess, isLoading
+        data, isSuccess, isLoading, isUninitialized
     }] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -21,28 +21,30 @@ export function App() {
         onGetInitialized()
     }, [onGetInitialized])
 
-    return isLoading ? <Preloader/> : (
-        <Container>
+    console.log(data, isSuccess, isLoading, isUninitialized);
+
+    return isUninitialized || isLoading ? <Preloader/> : (
+        <SContainer>
             <Header
                 showMode={isSuccess}
                 name={data?.name}
                 avatar={data?.avatar}/>
-            <Content>
+            <SContent>
                 <AppRoutes/>
                 <Message/>
-            </Content>
-        </Container>
+            </SContent>
+        </SContainer>
     );
 }
 
-const Container = styled.div`
+const SContainer = styled.div`
     width: 90%;
     height: 100vh;
     display: grid;
     grid-template: 1fr 9fr/100%;
     margin: 0 auto;
 `
-const Content = styled.section`
+const SContent = styled.section`
     display: grid;
     align-content: start;
 `

@@ -21,8 +21,8 @@ export const DeleteCardModal =
             isSuccess: isCardDeleted,
         }] = useDeleteCardMutation()
         const deleteCardValidator = useApiErrorsHandler(deleteCard)
-        const deleteCardButtonHandler = async () => {
-            await deleteCardValidator({id})
+        const deleteCardButtonHandler =  () => {
+            deleteCardValidator({id})
         }
         return <BasicModal
             isIcon

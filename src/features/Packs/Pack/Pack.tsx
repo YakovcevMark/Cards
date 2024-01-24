@@ -164,7 +164,7 @@ export const Pack = () => {
                             key={c._id}
                             id={c._id}
                             question={c.question}
-                            answer={c.question}
+                            answer={c.answer}
                             updated={c.updated}
                             grade={c.grade}
                             isOwner={isOwner}/>)

@@ -7,7 +7,7 @@ import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
 import {useLogoutMutation} from "features/authPages/authApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {SHoverModule} from "common/components/CommonStyledComponents";
+import {SAvatarImg, SHoverModule} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
 
 type HeaderT = {
@@ -35,7 +35,7 @@ export const Header =
             showMode
                 ? <Avatar>
                     <b>{name}</b>
-                    <img src={avatar} alt="avatarka"/>
+                    <SSAvatarImg src={avatar} alt="avatarka"/>
                     <SSHoverModule>
                         <button
                             onClick={profileButtonHandler}>
@@ -65,6 +65,11 @@ export const Header =
         );
     };
 
+const SSAvatarImg=styled(SAvatarImg)`
+    width: 5vh;
+    height: 5vh;
+`
+
 const SSHoverModule = styled(SHoverModule)`
     top:6vh;
 `
@@ -76,7 +81,6 @@ const SRobotSVG = styled.div`
     }
 `
 const StyledHeader = styled.header`
-  //background-color: blue;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -90,12 +94,7 @@ const Avatar = styled.div`
   align-items: center;
   position: relative;
 
-  img {
-    border-radius: 50%;
-    width: 5vh;
-    height: 5vh;
-    object-fit: cover;
-  }
+ 
 `
 const ControlSection = styled.span`
   height: 100%;
