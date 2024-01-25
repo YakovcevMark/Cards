@@ -63,7 +63,7 @@ export const PackNotation =
                     {isOwner && <>
                         <EditPackModal
                             id={id}
-                            packName={packName}
+                            name={packName}
                             isPrivatePack={isPrivate}
                             deckCover={deckCover}/>
                         <DeletePackModal

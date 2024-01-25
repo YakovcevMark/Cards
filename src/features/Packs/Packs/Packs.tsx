@@ -18,7 +18,7 @@ import {useInitializeMutation} from "../../authPages/authApi";
 import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {PackNotation} from "./PackNotation/PackNotation";
-import {AddNewPackModal} from "features/Modals/AddNewPackModal/AddNewPackModal";
+import {CreatePackModal} from "features/Modals/CreatePackModal/CreatePackModal";
 import {Switch} from "common/components/Switch/Switch";
 import {Button} from "common/components/Button/Button";
 
@@ -74,7 +74,7 @@ export const Packs = () => {
     return <SPackPagesContainer>
         <SHeaderSection>
             <STitle>Pack list</STitle>
-            <AddNewPackModal/>
+            <CreatePackModal/>
         </SHeaderSection>
         <SSettingsSection>
             <SSetting>

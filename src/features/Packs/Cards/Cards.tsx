@@ -90,7 +90,7 @@ export const Cards = () => {
                           <SSHoverModule>
                               <EditPackModal
                                   id={cardsPack_id!}
-                                  packName={packData.packName}
+                                  name={packData.packName}
                                   isPrivatePack={packData.packPrivate}
                                   deckCover={packData?.packDeckCover}>
                                   <span>Edit</span>

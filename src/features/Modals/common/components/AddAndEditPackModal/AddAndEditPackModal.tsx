@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react';
+import React, {useState} from 'react';
 import {BasicModal} from "features/Modals/BasicModal/BasicModal";
 import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -8,60 +8,66 @@ import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateAndEditPackSchema} from "utils/YupValidators/Validators";
 import {ShowInputImage} from "features/Modals/common/components/ShowInputImage/ShowInputImage";
+import {EditModalPT} from "features/Modals/EditPackModal/EditPackModal";
 
 type AddAndEditPackModalFT = {
     name: string
     private?: boolean
     deckCover?: string
 }
-type PT = {
-    id?: string
-    packName?: string
-    isPrivatePack?: boolean
-    children?: ReactNode
-    deckCover?: string
+type PT = Partial<EditModalPT> &{
+    resetQuery?: () => void
     type: "Edit" | "Create"
-    submitFormHandler: (value: AddAndEditPackModalFT & { _id?: string }) => void
+    actionHandler: (value: AddAndEditPackModalFT & { _id?: string }) => Promise<void>
     shouldModalClose: boolean
     isControlDisabled: boolean
 }
 export const AddAndEditPackModal =
     ({
          id,
-         packName,
+         name,
          isPrivatePack,
          children,
          deckCover,
-         submitFormHandler,
+         actionHandler,
          type,
          shouldModalClose,
-         isControlDisabled
+         isControlDisabled,
+         resetQuery
      }: PT) => {
         const [cover, setCover] = useState(deckCover || "")
-        const {register, handleSubmit, formState: {errors}} = useForm<AddAndEditPackModalFT>({
+        const {
+            register,
+            handleSubmit,
+            reset,
+            formState: {errors}
+        } = useForm<AddAndEditPackModalFT>({
             defaultValues: {
-                name: packName,
+                name: name,
                 private: isPrivatePack,
             },
             resolver: yupResolver(CreateAndEditPackSchema)
         })
-        const onSubmit: SubmitHandler<AddAndEditPackModalFT> = (data) => {
-            submitFormHandler({
+        const onSubmit: SubmitHandler<AddAndEditPackModalFT> = async (data) => {
+            await actionHandler({
                 _id: id,
                 deckCover: cover,
                 ...data
             })
+            reset()
+            setCover("")
         }
         return (
             <BasicModal
-                isIcon
+                isIcon={type === "Edit"}
                 buttonContent={
                     type === "Edit"
                         ? <DriveFileRenameOutline/>
                         : "Create new pack"
                 }
-                shouldModalClose={shouldModalClose}
                 title={`${type} pack`}
+                shouldModalClose={shouldModalClose}
+                resetQuery={resetQuery}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
@@ -88,7 +94,7 @@ export const AddAndEditPackModal =
                     <Button
                         type={"submit"}
                         disabled={isControlDisabled}>
-                        `${type}`
+                        {`${type}`}
                     </Button>
                 }>
                 {children}
