@@ -48,5 +48,5 @@ const StyledMessage = styled.div`
     opacity: 0.5;
     transition: opacity 0.2s ease-in-out;
     animation: ${opacityKeyframe} 2.5s alternate infinite;
-    z-index: 22;
+    z-index: 9999;
 `

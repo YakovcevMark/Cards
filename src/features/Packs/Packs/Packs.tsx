@@ -1,10 +1,9 @@
-import React, {MouseEvent, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {DoubleSlider} from "common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
 import {Th} from "common/components/Th/Th";
 import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
-import {secondColor} from "assets/stylesheets/colors";
 import {useLazyGetPacksQuery} from "../packsApi";
 import {
     SHeaderSection,
@@ -20,8 +19,10 @@ import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "commo
 import {Preloader} from "common/components/Preloader/Preloader";
 import {PackNotation} from "./PackNotation/PackNotation";
 import {AddNewPackModal} from "features/Modals/AddNewPackModal/AddNewPackModal";
+import {Switch} from "common/components/Switch/Switch";
+import {Button} from "common/components/Button/Button";
 
-export const PacksList = () => {
+export const Packs = () => {
 
 
     const [, {data: userData}] = useInitializeMutation({
@@ -66,13 +67,6 @@ export const PacksList = () => {
 
     const [packName, setPackName] = useSearchWithDelay(fetchParams.packName, setPackNameSearchParam, 1500)
 
-    const changeAccessory = (e: MouseEvent<HTMLButtonElement>) =>
-        setUserIdSearchParam(e.currentTarget.value)
-
-    const clearButtonHandler = () => {
-        setSearchParams({})
-    }
-
     if (fetchPacksError || !packsData) {
         return <Preloader/>
     }
@@ -94,20 +88,11 @@ export const PacksList = () => {
             </SSetting>
             <SSetting>
                 <STitle>Show packs cards</STitle>
-                <SButtonSection>
-                    <button
-                        className={fetchParams.user_id ? "active" : ""}
-                        onClick={changeAccessory}
-                        value={userData!._id}>
-                        My
-                    </button>
-                    <button
-                        className={fetchParams.user_id ? "" : "active"}
-                        onClick={changeAccessory}
-                        value={""}>
-                        All
-                    </button>
-                </SButtonSection>
+                <Switch
+                    optionsNames={["My", "All"]}
+                    optionsValues={[userData!._id, ""]}
+                    changeHandler={setUserIdSearchParam}
+                    condition={fetchParams.user_id}/>
             </SSetting>
 
             <SSetting>
@@ -123,10 +108,11 @@ export const PacksList = () => {
 
             <SSetting>
                 <STitle>Clear</STitle>
-                <button
-                    onClick={clearButtonHandler}>
+                <SButton
+                    icon
+                    onClick={() => setSearchParams({})}>
                     <RestartAlt/>
-                </button>
+                </SButton>
             </SSetting>
         </SSettingsSection>
         {
@@ -163,15 +149,18 @@ export const PacksList = () => {
                             </thead>
                             <tbody>
                             {
-                                packsData!.cardPacks.map(c => <PackNotation
-                                    key={c._id}
-                                    id={c._id}
-                                    packName={c.name}
-                                    userName={c.user_name}
-                                    updated={c.updated}
-                                    cardsCount={c.cardsCount}
-                                    isOwner={userData!._id === c.user_id}
-                                    isPrivate={c.private}/>)
+                                packsData!.cardPacks.map(c =>
+                                    <PackNotation
+                                        key={c._id}
+                                        id={c._id}
+                                        packName={c.name}
+                                        userName={c.user_name}
+                                        updated={c.updated}
+                                        cardsCount={c.cardsCount}
+                                        isOwner={userData!._id === c.user_id}
+                                        isPrivate={c.private}
+                                        deckCover={c?.deckCover}
+                                    />)
                             }
                             </tbody>
                         </table>
@@ -193,21 +182,10 @@ export const PacksList = () => {
     </SPackPagesContainer>
 };
 
-
+const SButton = styled(Button)`
+    width: 100%;
+    height: 100%;
+`
 const SSearchInput = styled.input`
     border: 1px solid rgba(0, 0, 0, 0.2)
 `
-const SButtonSection = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    button {
-        font-size: 20px;
-    }
-
-    .active {
-        color: white;
-        background-color: ${secondColor};
-    }
-`
-

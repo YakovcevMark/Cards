@@ -4,7 +4,7 @@ export const SPackPagesContainer = styled.div`
     display: grid;
     grid-template-rows: 1fr 1fr 5fr 1fr;
     grid-gap: 2vh;
-    
+
 `
 export const SHeaderSection = styled.section`
     display: grid;
@@ -55,15 +55,15 @@ export const SSetting = styled.article`
 `
 export const STableSection = styled.section`
     height: auto;
-    //border: 1px red solid;
-
     table {
         width: 100%;
         border-spacing: 0;
         border-collapse: collapse;
+
         tr:nth-child(2n) {
             background-color: #e1e1e1;
         }
+
         td {
             border-bottom: 1px solid rgba(0, 0, 0, 0.28);
         }
@@ -72,12 +72,21 @@ export const STableSection = styled.section`
 export const SNotationName = styled.td`
     width: 40vh;
     justify-self: start;
+
+    div {
+        display: flex;
+        align-items: center;
+
+    }
+
     button {
+        margin-right: 1vw;
+        align-self: center;
         padding-inline: 0;
         border: none;
         font-weight: bold;
         cursor: pointer;
-        background-color: inherit;
+        //background-color: inherit;
 
         &:disabled {
             font-weight: bold;
@@ -87,6 +96,7 @@ export const SNotationName = styled.td`
 `
 export const SNotationActionButtons = styled.td`
     width: 16vh;
+
     button {
         margin: 0 5px;
     }
@@ -101,4 +111,7 @@ export const SNoSuchItemMessage = styled.span`
     justify-self: center;
     align-self: center;
     font-weight: lighter;
+`
+export const SCover = styled.img`
+    height: 4vh;
 `

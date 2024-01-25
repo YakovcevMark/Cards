@@ -13,7 +13,7 @@ import {
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 
 type NewPasswordValues = {
     password: string

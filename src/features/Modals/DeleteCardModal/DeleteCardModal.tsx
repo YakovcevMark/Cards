@@ -28,7 +28,7 @@ export const DeleteCardModal =
             isIcon
             title={"Delete Card"}
             buttonContent={<DeleteOutline/>}
-            initViewMode={isCardDeleted}
+            shouldModalClose={isCardDeleted}
             inputsChildrenSection={
                 <SP>
                     Do you really wanna to remove this card?

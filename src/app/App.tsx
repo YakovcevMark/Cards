@@ -3,15 +3,15 @@ import styled from "styled-components";
 import {useInitializeMutation} from "features/authPages/authApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {Header} from "./Header/Header";
-import {AppRoutes} from "common/components/Routes/AppRoutes";
 import {Message} from "common/components/Alert/Message";
+import {Header} from "app/Header/Header";
+import {Outlet} from "react-router-dom";
 
 
 export function App() {
 
     const [getInitialized, {
-        data, isSuccess, isLoading, isUninitialized
+        isLoading, isUninitialized
     }] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -21,22 +21,22 @@ export function App() {
         onGetInitialized()
     }, [onGetInitialized])
 
-    console.log(data, isSuccess, isLoading, isUninitialized);
 
     return isUninitialized || isLoading ? <Preloader/> : (
+        // return (
         <SContainer>
-            <Header
-                showMode={isSuccess}
-                name={data?.name}
-                avatar={data?.avatar}/>
+            <Header/>
             <SContent>
-                <AppRoutes/>
+                <Outlet/>
                 <Message/>
             </SContent>
         </SContainer>
     );
 }
-
+const SContent = styled.section`
+    display: grid;
+    align-content: start;
+`
 const SContainer = styled.div`
     width: 90%;
     height: 100vh;
@@ -44,8 +44,6 @@ const SContainer = styled.div`
     grid-template: 1fr 9fr/100%;
     margin: 0 auto;
 `
-const SContent = styled.section`
-    display: grid;
-    align-content: start;
-`
+
+
 

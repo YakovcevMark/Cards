@@ -2,8 +2,6 @@ import React, {ReactNode, useState} from 'react';
 import {BasicModal} from "features/Modals/BasicModal/BasicModal";
 import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useUpdatePackMutation} from "features/Packs/packsApi";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
@@ -11,40 +9,44 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateAndEditPackSchema} from "utils/YupValidators/Validators";
 import {ShowInputImage} from "features/Modals/common/components/ShowInputImage/ShowInputImage";
 
-export type AddNewPackModel = {
+type AddAndEditPackModalFT = {
     name: string
     private?: boolean
-}
-type PT = {
-    id: string
-    packName: string
-    isPrivatePack: boolean
-    children?: ReactNode
     deckCover?: string
 }
-export const EditPackModal =
+type PT = {
+    id?: string
+    packName?: string
+    isPrivatePack?: boolean
+    children?: ReactNode
+    deckCover?: string
+    type: "Edit" | "Create"
+    submitFormHandler: (value: AddAndEditPackModalFT & { _id?: string }) => void
+    shouldModalClose: boolean
+    isControlDisabled: boolean
+}
+export const AddAndEditPackModal =
     ({
          id,
          packName,
          isPrivatePack,
          children,
-         deckCover
+         deckCover,
+         submitFormHandler,
+         type,
+         shouldModalClose,
+         isControlDisabled
      }: PT) => {
         const [cover, setCover] = useState(deckCover || "")
-        const {register, handleSubmit, formState: {errors}} = useForm<AddNewPackModel>({
+        const {register, handleSubmit, formState: {errors}} = useForm<AddAndEditPackModalFT>({
             defaultValues: {
                 name: packName,
                 private: isPrivatePack,
             },
             resolver: yupResolver(CreateAndEditPackSchema)
         })
-        const [updatePack, {
-            isLoading: isPackUpdating,
-            isSuccess: isPackUpdated
-        }] = useUpdatePackMutation()
-        const updatePackValidator = useApiErrorsHandler(updatePack)
-        const onSubmit: SubmitHandler<AddNewPackModel> = async (data) => {
-            await updatePackValidator({
+        const onSubmit: SubmitHandler<AddAndEditPackModalFT> = (data) => {
+            submitFormHandler({
                 _id: id,
                 deckCover: cover,
                 ...data
@@ -53,9 +55,13 @@ export const EditPackModal =
         return (
             <BasicModal
                 isIcon
-                buttonContent={<DriveFileRenameOutline/>}
-                shouldModalClose={isPackUpdated}
-                title={"Edit cards"}
+                buttonContent={
+                    type === "Edit"
+                        ? <DriveFileRenameOutline/>
+                        : "Create new pack"
+                }
+                shouldModalClose={shouldModalClose}
+                title={`${type} pack`}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
@@ -64,15 +70,15 @@ export const EditPackModal =
                             changeCoverHandler={setCover}
                             buttonBody={"Change cover"}/>
                         <Input
-                            label={"Name cards"}
+                            label={`Name pack`}
                             registerFieldName={"name"}
                             register={register}
                             error={errors.name?.message}
-                            disabled={isPackUpdating}
+                            disabled={isControlDisabled}
                         />
                         <Checkbox
                             register={register}
-                            disabled={isPackUpdating}
+                            disabled={isControlDisabled}
                             registrFieldName={"private"}>
                             Private pack?
                         </Checkbox>
@@ -81,8 +87,8 @@ export const EditPackModal =
                 controlChildrenSection={
                     <Button
                         type={"submit"}
-                        disabled={isPackUpdating}>
-                        Edit
+                        disabled={isControlDisabled}>
+                        `${type}`
                     </Button>
                 }>
                 {children}

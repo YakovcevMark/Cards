@@ -1,12 +1,17 @@
 import React, {FormEvent, ReactNode, useCallback, useEffect, useState} from "react";
 import {useEscapeKey} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
-import {SModalBackground, SModalContent, SModalControlSection} from "features/Modals/ModalsStyledComponents";
-import {SForm, SInputsSection, STitle} from "common/components/CommonStyledComponents";
+import {
+    SModalBackground,
+    SModalContent,
+    SModalControlSection,
+    SModalInputsSection
+} from "features/Modals/ModalsStyledComponents";
+import {SForm, STitle} from "common/components/CommonStyledComponents";
 
 type PT = {
     isIcon?: boolean
-    initViewMode: boolean
+    shouldModalClose: boolean
     inputsChildrenSection: ReactNode
     controlChildrenSection: ReactNode
     buttonContent: ReactNode | string
@@ -17,7 +22,7 @@ type PT = {
 }
 export const BasicModal =
     ({
-         initViewMode,
+         shouldModalClose,
          buttonContent,
          inputsChildrenSection,
          controlChildrenSection,
@@ -35,8 +40,8 @@ export const BasicModal =
         }, [setViewMode, resetQuery])
 
         useEffect(() => {
-            viewMode && initViewMode && updateModalStateHandler()
-        }, [viewMode, initViewMode, updateModalStateHandler]);
+            viewMode && shouldModalClose && updateModalStateHandler()
+        }, [viewMode, shouldModalClose, updateModalStateHandler]);
         const switchViewModeOn = () => setViewMode(true);
         const switchViewModeOff = () => setViewMode(false);
 
@@ -56,9 +61,9 @@ export const BasicModal =
                         <STitle>
                             {title}
                         </STitle>
-                        <SInputsSection>
+                        <SModalInputsSection>
                             {inputsChildrenSection}
-                        </SInputsSection>
+                        </SModalInputsSection>
                         <SModalControlSection>
                             <Button
                                 gray

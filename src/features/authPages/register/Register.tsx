@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 import {Button} from "common/components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {PATH} from "common/components/Routes/AppRoutes";

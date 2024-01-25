@@ -4,9 +4,10 @@ import {useNavigate} from "react-router-dom";
 import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 import {Button} from "common/components/Button/Button";
 import {PATH} from "common/components/Routes/AppRoutes";
-import {SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
+import {SCover, SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
+import styled from "styled-components";
 
 type PT = {
     id: string
@@ -16,6 +17,7 @@ type PT = {
     cardsCount: number
     isOwner: boolean
     isPrivate: boolean
+    deckCover?: string
 }
 
 export const PackNotation =
@@ -26,29 +28,34 @@ export const PackNotation =
          packName,
          isOwner,
          isPrivate,
+         deckCover,
          id
      }: PT) => {
         const nav = useNavigate()
-        const showPackButtonHandler = () => nav(`${PATH.pack}/${id}`)
+        const showPackButtonHandler = () => nav(`${PATH.cards}/${id}`)
         const schoolButtonHandler = () => nav(`${PATH.learn}/${id}`)
-        const isNotationDisabled = cardsCount === 0 ;
+        const isNotationDisabled = cardsCount === 0;
         return (
             <SNotation>
                 <SNotationName>
-                    <b>
-                        <button
-                            disabled={ isNotationDisabled && !isOwner }
-                            onClick={showPackButtonHandler}>
-                            {stringLengthHandler(packName)}
-                        </button>
-                    </b>
+                    <div>
+                        <b>
+                            <button
+                                style={{backgroundImage:`${deckCover}`}}
+                                disabled={isNotationDisabled && !isOwner}
+                                onClick={showPackButtonHandler}>
+                                {stringLengthHandler(packName)}
+                            </button>
+                        </b>
+                        {deckCover && <SCover src={deckCover} alt="deckCover"/>}
+                    </div>
                 </SNotationName>
                 <td>{cardsCount}</td>
                 <td>{updated}</td>
                 <td>{stringLengthHandler(userName)}</td>
                 <SNotationActionButtons>
                     <Button
-                        disabled={ isNotationDisabled }
+                        disabled={isNotationDisabled}
                         onClick={schoolButtonHandler}
                         icon>
                         <School/>
@@ -57,7 +64,8 @@ export const PackNotation =
                         <EditPackModal
                             id={id}
                             packName={packName}
-                            isPrivatePack={isPrivate}/>
+                            isPrivatePack={isPrivate}
+                            deckCover={deckCover}/>
                         <DeletePackModal
                             id={id}
                             name={packName}/>

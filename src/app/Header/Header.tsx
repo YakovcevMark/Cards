@@ -1,26 +1,24 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {Button} from "common/components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
 import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
-import {useLogoutMutation} from "features/authPages/authApi";
+import {useInitializeMutation, useLogoutMutation} from "features/authPages/authApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {SAvatarImg, SHoverModule} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
 
-type HeaderT = {
-    showMode: boolean
-    name?: string
-    avatar?: string
-}
+
 export const Header =
-    ({
-         showMode,
-         avatar,
-         name,
-     }: HeaderT) => {
+    () => {
+        const [,{
+            isSuccess:showMode,
+            data,
+        }] = useInitializeMutation({
+            fixedCacheKey: 'shared-postMe-post',
+        })
 
         const nav = useNavigate()
         const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
@@ -30,12 +28,11 @@ export const Header =
         const profileButtonHandler = () => nav(PATH.profile);
         const logOutButtonHandler = async () => await onLogout()
 
-
         let controlSectionContent =
             showMode
                 ? <Avatar>
-                    <b>{name}</b>
-                    <SSAvatarImg src={avatar} alt="avatarka"/>
+                    <b>{data?.name}</b>
+                    <SSAvatarImg src={data?.avatar} alt="avatarka"/>
                     <SSHoverModule>
                         <button
                             onClick={profileButtonHandler}>
@@ -57,9 +54,7 @@ export const Header =
                     <RobotSVG/>
                 </SRobotSVG>
                 <ControlSection>
-                    {
-                        controlSectionContent
-                    }
+                    {controlSectionContent}
                 </ControlSection>
             </StyledHeader>
         );

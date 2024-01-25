@@ -9,7 +9,7 @@ const password = {
 export const CreateAndEditPackSchema = yup
     .object({
         name: yup.string().min(3).max(30).required(),
-        private:yup.boolean().optional()
+        private:yup.boolean().optional(),
     })
 export const CreateAndEditCardSchema = yup
     .object({

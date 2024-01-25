@@ -1,6 +1,6 @@
 import React from 'react';
 import {BasicModal} from "features/Modals/BasicModal/BasicModal";
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
@@ -47,7 +47,7 @@ export const AddNewCardModal =
         return (
             <BasicModal
                 buttonContent={"Add new card"}
-                initViewMode={isCardCreated}
+                shouldModalClose={isCardCreated}
                 resetQuery={reset}
                 title={"Add new card"}
                 setFormSubmit={handleSubmit(onSubmit)}

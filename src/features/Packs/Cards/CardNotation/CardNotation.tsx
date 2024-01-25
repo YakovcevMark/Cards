@@ -3,7 +3,7 @@ import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 import {SNotation, SNotationActionButtons} from "../../PacksStyledComponents";
 import {EditCardModal} from "features/Modals/EditCardModal/EditCardModal";
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
-import {NotationGrade} from "features/Packs/Pack/CardNotation/NotationGrade/NotationGrade";
+import {NotationGrade} from "features/Packs/Cards/CardNotation/NotationGrade/NotationGrade";
 import styled from "styled-components";
 
 type PT = {

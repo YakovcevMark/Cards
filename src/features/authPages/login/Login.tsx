@@ -3,7 +3,7 @@ import {Button} from "common/components/Button/Button";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {HelperLink} from "common/components/HelperLink/HelperLink";
 import styled from "styled-components";
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
 import {NavLink} from "react-router-dom";

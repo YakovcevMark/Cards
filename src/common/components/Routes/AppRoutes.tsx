@@ -1,66 +1,75 @@
-import {Navigate, Outlet, Route, Routes} from "react-router-dom";
+import {createHashRouter, Navigate, Outlet} from "react-router-dom";
 import {Login} from "features/authPages/login/Login";
 import {Register} from "features/authPages/register/Register";
 import {PasswordRecovery} from "features/authPages/passwordRecovery/PasswordRecovery";
 import {PasswordNew} from "features/authPages/passwordNew/PasswordNew";
 import {Profile} from "features/Profile/Profile";
-import React, {memo} from "react";
+import React from "react";
 import {useInitializeMutation} from "features/authPages/authApi";
-import {PacksList} from "features/Packs/PacksList/PacksList";
-import {Pack} from "features/Packs/Pack/Pack";
+import {Packs} from "features/Packs/Packs/Packs";
+import {Cards} from "features/Packs/Cards/Cards";
 import {LearnPack} from "features/Packs/LearnPack/LearnPack";
-
-export const PATH = {
-    login: "/login",
-    register: "/register",
-    passwordRecovery: "/passwordRecovery",
-    passwordNew: "/passwordNew",
-    profile: "/Profile",
-    packs: "/packs",
-    pack: "/pack",
-    learn: "/learn"
+import {App} from "app/App";
+import {PageNotFound} from "common/components/PageNotFoung/PageNotFound";
+const PrivatePath = ({isLoggedIn}:{isLoggedIn?:boolean}) => {
+    const [, {
+        isUninitialized,
+        isSuccess: isAppInitializedSuccessfully,
+        isError: haveErrorWithLoggedIn
+    }] = useInitializeMutation({
+        fixedCacheKey: 'shared-postMe-post',
+    })
+    return isLoggedIn
+        ? isAppInitializedSuccessfully || isUninitialized ? <Outlet/> : <Navigate to={PATH.login}/>
+        : haveErrorWithLoggedIn || isUninitialized ? <Outlet/> : <Navigate to={PATH.packs}/>
 }
+export const PATH = {
+    auth: "/auth",
+    login: "/auth/login",
+    register: "/auth/register",
+    passwordRecovery: "/auth/passwordRecovery",
+    passwordNew: "/auth/passwordNew",
+    packs: "/",
+    profile: "/profile",
+    cards: "/cards",
+    learn: "/learn"
+} as const
 
-export const AppRoutes = memo(() => {
-
-        const [, {
-            isUninitialized,
-            isSuccess: isLoggedIn,
-            isError: haveErrorWithLoggedIn
-        }] = useInitializeMutation({
-            fixedCacheKey: 'shared-postMe-post',
-        })
-
-        return (
-            <Routes>
-                <Route element={
-                    <PrivateRoutes
-                        condition={haveErrorWithLoggedIn || isUninitialized}
-                        redirectPath={PATH.packs}/>
-                }>
-                    <Route path={PATH.login} element={<Login/>}/>
-                    <Route path={PATH.register} element={<Register/>}/>
-                    <Route path={PATH.passwordRecovery} element={<PasswordRecovery/>}/>
-                    <Route path={`${PATH.passwordNew}/:token`} element={<PasswordNew/>}/>
-                </Route>
-
-                <Route element={
-                    <PrivateRoutes
-                        condition={isLoggedIn || isUninitialized}
-                        redirectPath={PATH.login}/>
-                }>
-                    <Route path={PATH.profile} element={<Profile/>}/>
-                    <Route path={""} element={<PacksList/>}/>
-                    <Route path={PATH.packs} element={<PacksList/>}/>
-                    <Route path={`${PATH.pack}/:cardsPack_id`} element={<Pack/>}/>
-                    <Route path={`${PATH.learn}/:cardsPack_id`} element={<LearnPack/>}/>
-                </Route>
-            </Routes>
-        );
-    }
-);
-const PrivateRoutes =
-    ({condition, redirectPath}: { condition: boolean, redirectPath: string }) =>
-        condition ? <Outlet/> : <Navigate to={redirectPath}/>
-
-
+export const router = createHashRouter([{
+    path: "/",
+    element: <App/>,
+    errorElement: <PageNotFound/>,
+    children: [{
+        path: "/",
+        element: <PrivatePath isLoggedIn/>,
+        children: [{
+            path: PATH.profile,
+            element: <Profile/>
+        },{
+            path: PATH.packs,
+            element: <Packs/>
+        }, {
+            path: `${PATH.cards}/:cardsPack_id`,
+            element: <Cards/>
+        }, {
+            path: `${PATH.learn}/:cardsPack_id`,
+            element: <LearnPack/>
+        }]
+    }, {
+        path: PATH.auth,
+        element: <PrivatePath />,
+        children: [{
+            path: PATH.login,
+            element: <Login/>
+        }, {
+            path: PATH.register,
+            element: <Register/>
+        }, {
+            path: PATH.passwordNew,
+            element: <PasswordNew/>
+        }, {
+            path: PATH.passwordRecovery,
+            element: <PasswordRecovery/>
+        }]
+    }]
+}])

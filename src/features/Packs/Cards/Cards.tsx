@@ -1,10 +1,11 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Button} from "common/components/Button/Button";
 import {Th} from "common/components/Th/Th";
 import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
 import {
+    SCover,
     SHeaderSection,
     SNoSuchItemMessage,
     SPackPagesContainer,
@@ -26,21 +27,22 @@ import {PATH} from "common/components/Routes/AppRoutes";
 import {AddNewCardModal} from "features/Modals/AddNewCardModal/AddNewCardModal";
 
 
-export const Pack = () => {
+export const Cards = () => {
     const {cardsPack_id} = useParams()
     const {searchParams, useMySetSearchParams} = useAppSearchParams();
+    const [isOwner, setIsOwner] = useState(false)
     const nav = useNavigate()
 
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-
     const [fetchCards, {
         data: packData,
         isError: haveNotSuchPack,
     }] = useLazyGetCardsQuery({
         refetchOnReconnect: true,
     })
+
     const fetchCardsValidator = useApiErrorsHandler(fetchCards)
 
     const fetchParams = useMemo(() => {
@@ -58,7 +60,11 @@ export const Pack = () => {
             ...fetchParams
         })
     }, [fetchCardsValidator, fetchParams, cardsPack_id]);
-
+    useEffect(() => {
+        packData
+        && userData
+        && setIsOwner(packData.packUserId === userData!._id)
+    }, [packData, userData]);
 
     const setPageSearchParam = useMySetSearchParams("page")
     const setSortCardsSearchParam = useMySetSearchParams("sortCards")
@@ -68,27 +74,25 @@ export const Pack = () => {
     const [cardQuestion, setCardQuestion] = useSearchWithDelay(fetchParams.cardQuestion, setCardQuestionSearchParam, 1500)
 
 
-    let isOwner = false
-    if (packData) {
-        isOwner = packData.packUserId === userData!._id;
-    }
-
     if (haveNotSuchPack) {
         return <Navigate to={PATH.packs}/>
     }
     const schoolButtonHandler = () => nav(`${PATH.learn}/${cardsPack_id}`)
-    return !packData ? <Preloader/> : <SSPackPagesContainer>
-        <BackArrowBlock/>
-        <SHeaderSection>
-            <SSTitle>
-                {packData.packName}
-                {isOwner && <span>
+    return !packData
+        ? <Preloader/>
+        : <SSPackPagesContainer>
+            <BackArrowBlock/>
+            <SHeaderSection>
+                <SSTitle>
+                    {packData.packName}
+                    {isOwner && <span>
                         <Tune/>
                           <SSHoverModule>
                               <EditPackModal
                                   id={cardsPack_id!}
                                   packName={packData.packName}
-                                  isPrivatePack={packData.packPrivate}>
+                                  isPrivatePack={packData.packPrivate}
+                                  deckCover={packData?.packDeckCover}>
                                   <span>Edit</span>
                               </EditPackModal>
                               <DeletePackModal
@@ -105,88 +109,94 @@ export const Pack = () => {
                             </Button>
                         </SSHoverModule>
                     </span>
+                    }
+                </SSTitle>
+                {packData.packDeckCover && <SSCover src={packData.packDeckCover} alt="deckCover"/>}
+
+                {isOwner
+                    ? <AddNewCardModal
+                        cardsPack_id={cardsPack_id!}/>
+                    : <Button
+                        onClick={schoolButtonHandler}>
+                        Learn to pack
+                    </Button>
                 }
-            </SSTitle>
-            {isOwner
-                ? <AddNewCardModal
-                    cardsPack_id={cardsPack_id!}/>
-                : <Button
-                    onClick={schoolButtonHandler}>
-                    Learn to pack
-                </Button>
+
+            </SHeaderSection>
+            <SSettingsSection>
+                <SSetting>
+                    <STitle>Search</STitle>
+                    <StyledSearchInput
+                        type={"search"}
+                        placeholder={"Provide tour text"}
+                        value={cardQuestion}
+                        onChange={(e) => setCardQuestion(e.currentTarget.value)}
+                    />
+                </SSetting>
+            </SSettingsSection>
+            {packData.cards.length
+                ? <>
+                    <STableSection>
+                        <table>
+                            <thead>
+                            <Th
+                                filterValue={"question"}
+                                onChange={setSortCardsSearchParam}
+                                searchValue={fetchParams.sortCards}>
+                                Question
+                            </Th>
+                            <Th
+                                filterValue={"answer"}
+                                onChange={setSortCardsSearchParam}
+                                searchValue={fetchParams.sortCards}>
+                                Answer
+                            </Th>
+                            <Th
+                                filterValue={"updated"}
+                                onChange={setSortCardsSearchParam}
+                                searchValue={fetchParams.sortCards}>
+                                Last Updated
+                            </Th>
+                            <Th
+                                filterValue={"grade"}
+                                onChange={setSortCardsSearchParam}
+                                searchValue={fetchParams.sortCards}>
+                                Grade
+                            </Th>
+                            {isOwner && <th>Actions</th>}
+                            </thead>
+                            <tbody>
+                            {packData.cards.map(c => <CardNotation
+                                key={c._id}
+                                id={c._id}
+                                question={c.question}
+                                answer={c.answer}
+                                updated={c.updated}
+                                grade={c.grade}
+                                isOwner={isOwner}/>)
+                            }
+                            </tbody>
+                        </table>
+                    </STableSection>
+                    <Pagination
+                        itemsName={"Cards"}
+                        currentPage={packData.page}
+                        totalItemsCount={packData.cardsTotalCount}
+                        pageSize={packData.pageCount}
+                        pageChanged={setPageSearchParam}
+                        pageSizeChanged={setPageCountSearchParam}/>
+                </>
+                : <SNoSuchItemMessage>
+                    NoItemsWithSuchParams
+                </SNoSuchItemMessage>
             }
 
-        </SHeaderSection>
-        <SSettingsSection>
-            <SSetting>
-                <STitle>Search</STitle>
-                <StyledSearchInput
-                    type={"search"}
-                    placeholder={"Provide tour text"}
-                    value={cardQuestion}
-                    onChange={(e) => setCardQuestion(e.currentTarget.value)}
-                />
-            </SSetting>
-        </SSettingsSection>
-        {packData.cards.length
-            ? <>
-                <STableSection>
-                    <table>
-                        <thead>
-                        <Th
-                            filterValue={"question"}
-                            onChange={setSortCardsSearchParam}
-                            searchValue={fetchParams.sortCards}>
-                            Question
-                        </Th>
-                        <Th
-                            filterValue={"answer"}
-                            onChange={setSortCardsSearchParam}
-                            searchValue={fetchParams.sortCards}>
-                            Answer
-                        </Th>
-                        <Th
-                            filterValue={"updated"}
-                            onChange={setSortCardsSearchParam}
-                            searchValue={fetchParams.sortCards}>
-                            Last Updated
-                        </Th>
-                        <Th
-                            filterValue={"grade"}
-                            onChange={setSortCardsSearchParam}
-                            searchValue={fetchParams.sortCards}>
-                            Grade
-                        </Th>
-                        {isOwner && <th>Actions</th>}
-                        </thead>
-                        <tbody>
-                        {packData.cards.map(c => <CardNotation
-                            key={c._id}
-                            id={c._id}
-                            question={c.question}
-                            answer={c.answer}
-                            updated={c.updated}
-                            grade={c.grade}
-                            isOwner={isOwner}/>)
-                        }
-                        </tbody>
-                    </table>
-                </STableSection>
-                <Pagination
-                    itemsName={"Cards"}
-                    currentPage={packData.page}
-                    totalItemsCount={packData.cardsTotalCount}
-                    pageSize={packData.pageCount}
-                    pageChanged={setPageSearchParam}
-                    pageSizeChanged={setPageCountSearchParam}/>
-            </>
-            : <SNoSuchItemMessage>
-                NoItemsWithSuchParams
-            </SNoSuchItemMessage>
-        }
-
-    </SSPackPagesContainer>
+        </SSPackPagesContainer>
 };
+const SSCover = styled(SCover)`
+    position: absolute;
+    height: 10vh;
+`
 const SSPackPagesContainer = styled(SPackPagesContainer)`
     grid-template-rows: 3vh 5vh 1fr 5fr 1fr;
 `

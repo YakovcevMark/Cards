@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import {SPagesContainer} from "common/components/CommonStyledComponents";
+import {SInputsSection, SPagesContainer} from "common/components/CommonStyledComponents";
 import {secondColor} from "assets/stylesheets/colors";
 
 export const SModal = styled.div`
     display: grid;
-    place-items: center;
 `
 export const SModalContent = styled(SPagesContainer)`
     display: grid;
@@ -35,7 +34,11 @@ export const SModalControlSection = styled.div`
     justify-content: space-between;
     align-self: end;
     grid-template-columns:repeat(2, 150px);
+    padding: 2vh 0;
     button{
        width:100%
     }
+`
+export const SModalInputsSection = styled(SInputsSection)`
+    justify-items: unset;
 `

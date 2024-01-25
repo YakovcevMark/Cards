@@ -29,6 +29,7 @@ export type CardsPack = CommonPackAndCardTypes & {
     name: string
     path: string
     cardsCount: number
+    deckCover: string
 }
 export type FetchPacksParams = CommonFetchParams & PaginationInfo & {
     packName: string

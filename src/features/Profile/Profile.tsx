@@ -1,9 +1,9 @@
-import React, {ChangeEvent, MouseEvent, ReactNode, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {Button} from "common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
@@ -14,6 +14,7 @@ import {useApiErrorsHandler} from "common/hooks/hooks";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
 import {SAvatarImg, SHelperText, SPagesContainer, STitle} from "common/components/CommonStyledComponents";
 import {Preloader} from "common/components/Preloader/Preloader";
+import {ImageInput} from "common/components/Inputs/ImageInput/ImageInput";
 
 type ProfileFormValues = {
     name?: string
@@ -106,53 +107,7 @@ export const Profile = () => {
         </SForm>
     </>
 };
-type PT = {
-    children: ReactNode
-    onChange: (file: string | ArrayBuffer) => void
-    isIcon?:boolean
-}
-const ImageInput =
-    ({
-         isIcon,
-         children,
-         onChange,
-     }: PT) => {
-        const inputRef = useRef<HTMLInputElement>(null)
-        const changeAvatar = (e: MouseEvent<HTMLButtonElement>) => {
-            e.preventDefault();
-            inputRef.current && inputRef.current.click();
-        };
-        const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-            const fileObj = event.target.files && event.target.files[0];
-            const reader = new FileReader();
-            if (!fileObj) {
-                return;
-            }
-            reader.readAsDataURL(fileObj);
-            reader.onload = () => {
-                if (reader.result) {
-                    onChange(reader.result)
-                }
-            };
-            reader.onerror = (error) => {
-                console.log('Error: ', error);
-            };
-        };
-        return <>
-            <input
-                type="file"
-                accept={"image/*"}
-                style={{display: "none"}}
-                ref={inputRef}
-                onChange={handleFileChange}
-            />
-            <Button
-                icon = {isIcon}
-                onClick={changeAvatar}>
-                {children}
-            </Button>
-        </>
-    }
+
 const SLogOutIcon = styled(Logout)`
     width: 2vh;
 `

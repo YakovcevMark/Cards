@@ -3,7 +3,7 @@ import {Button} from "common/components/Button/Button";
 import {HelperLink} from "common/components/HelperLink/HelperLink";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Input} from "common/components/Input/Input";
+import {Input} from "common/components/Inputs/Input";
 import {EmailRecovery} from "./EmailRecovery/EmailRecovery";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {EmailSchema} from "utils/YupValidators/Validators";

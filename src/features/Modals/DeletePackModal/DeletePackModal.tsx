@@ -29,9 +29,9 @@ export const DeletePackModal =
         }
         return <BasicModal
             isIcon
-            title={"Delete Pack"}
+            title={"Delete Cards"}
             buttonContent={<DeleteOutline/>}
-            initViewMode={isPackDeleted}
+            shouldModalClose={isPackDeleted}
             inputsChildrenSection={
                 <SP>
                     Do you really wanna to remove <b>{stringLengthHandler(name)}</b>? <br/>

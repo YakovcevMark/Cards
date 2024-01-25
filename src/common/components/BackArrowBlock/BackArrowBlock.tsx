@@ -35,7 +35,7 @@ const StyledBackArrowBlock = styled.button`
   border: none;
   width: 18vh;
   height: 5vh;
-
+  background: transparent;
   display: grid;
   grid-template-columns: 2.5vh 1fr;
   align-items: center;
