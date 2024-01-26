@@ -1,11 +1,11 @@
 import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
-import {secondColor} from "../../../assets/stylesheets/colors";
+import {secondColor} from "assets/stylesheets/colors";
 
 type PT = {
     min: number,
     max: number,
-    // onChange: ({min, max}: { min: number, max: number }) => void
+    // imageHandler: ({min, max}: { min: number, max: number }) => void
     onMouseUpMin: (value: string) => void
     onMouseUpMax: (value: string) => void
 }
@@ -15,7 +15,7 @@ export const DoubleSlider = memo(
          max,
          onMouseUpMin,
          onMouseUpMax,
-         // onChange
+         // imageHandler
      }: PT) => {
         const [minVal, setMinVal] = useState(min);
         const [maxVal, setMaxVal] = useState(max);
@@ -51,8 +51,8 @@ export const DoubleSlider = memo(
 
         // Get min and max values when their state changes
         // useEffect(() => {
-        //     onChange({min: +minVal, max: +maxVal});
-        // }, [minVal, maxVal, onChange]);
+        //     imageHandler({min: +minVal, max: +maxVal});
+        // }, [minVal, maxVal, imageHandler]);
 
         return (
             <StyledSlider>
@@ -64,7 +64,7 @@ export const DoubleSlider = memo(
                     {/*    min={min}*/}
                     {/*    max={+maxVal - 1}*/}
                     {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                    {/*    onChange={(e) => {*/}
+                    {/*    imageHandler={(e) => {*/}
                     {/*        const val = +e.currentTarget.value*/}
                     {/*        if (!val || val > maxVal || val < min)*/}
                     {/*            setMinVal(min)*/}
@@ -109,7 +109,7 @@ export const DoubleSlider = memo(
                     {/*    min={+minVal + 1}*/}
                     {/*    max={max}*/}
                     {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                    {/*    onChange={(e) => {*/}
+                    {/*    imageHandler={(e) => {*/}
                     {/*        const val = +e.currentTarget.value*/}
                     {/*        if (!val || val < minVal || val > max)*/}
                     {/*            setMaxVal(max)*/}

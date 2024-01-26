@@ -1,19 +1,21 @@
 import React, {ChangeEvent, MouseEvent, ReactNode, useRef} from "react";
 import {Button} from "common/components/Button/Button";
 
-type PT = {
-    children: ReactNode
-    onChange: (file: string ) => void
+export type ImageInputPT = {
+    children?: ReactNode
+    imageHandler: (file: string ) => void
     isIcon?:boolean
+    buttonBody:ReactNode | string
     className?:string
 }
 export const ImageInput =
     ({
          isIcon,
          children,
-         onChange,
+         imageHandler,
          className,
-     }: PT) => {
+         buttonBody,
+     }: ImageInputPT) => {
         const inputRef = useRef<HTMLInputElement>(null)
         const changeAvatar = (e: MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
@@ -28,7 +30,7 @@ export const ImageInput =
             reader.readAsDataURL(fileObj);
             reader.onload = () => {
                 if (reader.result) {
-                    onChange(reader.result as string)
+                    imageHandler(reader.result as string)
                 }
             };
             reader.onerror = (error) => {
@@ -44,10 +46,12 @@ export const ImageInput =
                 onChange={handleFileChange}
             />
             <Button
+                type={"button"}
                 icon = {isIcon}
                 onClick={changeAvatar}
                 className={className}>
-                {children}
+                {buttonBody}
             </Button>
+            {children}
         </>
     }

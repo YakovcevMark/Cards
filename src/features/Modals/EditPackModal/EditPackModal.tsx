@@ -1,10 +1,10 @@
 import React, {ReactNode} from 'react';
 import {useUpdatePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {AddAndEditPackModal} from "features/Modals/common/components/AddAndEditPackModal/AddAndEditPackModal";
+import {CreateAndEditPackModal} from "features/Modals/common/components/CreateAndEditPackModal/CreateAndEditPackModal";
 
 
-export type EditModalPT = {
+export type EditPackModalPT = {
     id: string
     name: string
     isPrivatePack: boolean
@@ -15,7 +15,7 @@ export const EditPackModal =
     ({
          children,
          ...rest
-     }: EditModalPT) => {
+     }: EditPackModalPT) => {
 
         const [updatePack, {
             isLoading: isPackUpdating,
@@ -24,7 +24,7 @@ export const EditPackModal =
         }] = useUpdatePackMutation()
         const updatePackValidator = useApiErrorsHandler(updatePack)
 
-        return <AddAndEditPackModal
+        return <CreateAndEditPackModal
             type={"Edit"}
             isControlDisabled={isPackUpdating}
             shouldModalClose={isPackUpdated}
@@ -32,6 +32,6 @@ export const EditPackModal =
             resetQuery={reset}
             {...rest}>
             {children}
-        </AddAndEditPackModal>
+        </CreateAndEditPackModal>
     }
 

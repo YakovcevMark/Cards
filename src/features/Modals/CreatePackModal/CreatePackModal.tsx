@@ -1,7 +1,7 @@
 import React from 'react';
 import {useCreatePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {AddAndEditPackModal} from "features/Modals/common/components/AddAndEditPackModal/AddAndEditPackModal";
+import {CreateAndEditPackModal} from "features/Modals/common/components/CreateAndEditPackModal/CreateAndEditPackModal";
 
 export const CreatePackModal = () => {
     const [createPack, {
@@ -10,7 +10,7 @@ export const CreatePackModal = () => {
         reset
     }] = useCreatePackMutation()
     const createPackValidator = useApiErrorsHandler(createPack)
-    return <AddAndEditPackModal
+    return <CreateAndEditPackModal
         type={"Create"}
         actionHandler={createPackValidator}
         shouldModalClose={isPackCreated}

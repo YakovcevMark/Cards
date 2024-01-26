@@ -9,7 +9,7 @@ import {
 } from "features/Modals/ModalsStyledComponents";
 import {SForm, STitle} from "common/components/CommonStyledComponents";
 
-type PT = {
+export type BasicModalPT = {
     isIcon?: boolean
     shouldModalClose: boolean
     inputsChildrenSection: ReactNode
@@ -31,7 +31,8 @@ export const BasicModal =
          resetQuery,
          isIcon,
          children
-     }: PT) => {
+     }: BasicModalPT) => {
+
         const [viewMode, setViewMode] = useState(false)
 
         const updateModalStateHandler = useCallback(() => {
@@ -42,20 +43,21 @@ export const BasicModal =
         useEffect(() => {
             viewMode && shouldModalClose && updateModalStateHandler()
         }, [viewMode, shouldModalClose, updateModalStateHandler]);
-        const switchViewModeOn = () => setViewMode(true);
-        const switchViewModeOff = () => setViewMode(false);
 
-        useEscapeKey(switchViewModeOff)
+        const switchViewMode = useCallback(() => setViewMode(viewMode => !viewMode), [setViewMode]);
+
+        useEscapeKey(switchViewMode)
         return <>
             <Button
-                onClick={switchViewModeOn}
+                onClick={switchViewMode}
                 icon={isIcon}>
                 {buttonContent}
                 {children}
             </Button>
+
             {viewMode && <>
                 <SModalBackground
-                    onClick={switchViewModeOff}/>
+                    onClick={switchViewMode}/>
                 <SModalContent>
                     <SForm onSubmit={setFormSubmit}>
                         <STitle>
@@ -68,7 +70,7 @@ export const BasicModal =
                             <Button
                                 gray
                                 type={"button"}
-                                onClick={switchViewModeOff}>
+                                onClick={switchViewMode}>
                                 Cancel
                             </Button>
                             {controlChildrenSection}

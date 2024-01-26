@@ -1,5 +1,5 @@
 import React from 'react';
-import {BasicModal} from "features/Modals/BasicModal/BasicModal";
+import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModal";
 import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useApiErrorsHandler} from "common/hooks/hooks";
@@ -9,12 +9,14 @@ import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
 import {CreateAndEditCardSchema} from "utils/YupValidators/Validators";
 import {yupResolver} from "@hookform/resolvers/yup";
 
-export type EditCardModel = {
-    question: string
-    answer: string
+export type EditCardModalFT = {
+    question?: string
+    questionImg?:string
+    answer?: string
+    answerImg?:string
 }
 
-type PT = EditCardModel & {
+export type EditCardModalPT = EditCardModalFT & {
     id: string
 }
 export const EditCardModal =
@@ -22,7 +24,7 @@ export const EditCardModal =
          id,
          question,
          answer
-     }: PT) => {
+     }: EditCardModalPT) => {
 
         const [createCard, {
             isLoading: isCardCreating,
@@ -34,7 +36,7 @@ export const EditCardModal =
             register,
             handleSubmit,
             formState: {errors}
-        } = useForm<EditCardModel>({
+        } = useForm<EditCardModalFT>({
             resolver: yupResolver(CreateAndEditCardSchema),
             defaultValues:{
                 question,
@@ -43,7 +45,7 @@ export const EditCardModal =
         })
 
         const createCardValidator = useApiErrorsHandler(createCard)
-        const onSubmit: SubmitHandler<EditCardModel> = async (data) => {
+        const onSubmit: SubmitHandler<EditCardModalFT> = async (data) => {
             await createCardValidator({
                 _id: id,
                 ...data

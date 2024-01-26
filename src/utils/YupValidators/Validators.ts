@@ -13,8 +13,10 @@ export const CreateAndEditPackSchema = yup
     })
 export const CreateAndEditCardSchema = yup
     .object({
-        question: yup.string().min(1).max(100).required(),
-        answer: yup.string().min(1).max(100).required(),
+        question: yup.string().min(1).max(100).optional(),
+        questionImg: yup.string().optional(),
+        answer: yup.string().min(1).max(100).optional(),
+        answerImg: yup.string().optional(),
     })
 export const RegisterSchema = yup
     .object({

@@ -27,7 +27,7 @@ export const Profile = () => {
     })
     const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
     const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-    const onUpdateProfile = useApiErrorsHandler(updateProfile,true)
+    const onUpdateProfile = useApiErrorsHandler(updateProfile, true)
     const onLogout = useApiErrorsHandler(logOut, true)
     const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
         defaultValues: ({
@@ -35,10 +35,10 @@ export const Profile = () => {
         }),
         resolver: yupResolver(NameSchema)
     })
-    const logoutHandler =  async () => {
-         await onLogout()
+    const logoutHandler = async () => {
+        await onLogout()
     }
-    const onSubmit: SubmitHandler<ProfileFormValues> =  async (data) => {
+    const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
         await onUpdateProfile({name: data.name})
         setEditMode(false)
     }
@@ -67,6 +67,7 @@ export const Profile = () => {
                     register={register}
                 >
                     <Button
+                        type={"submit"}
                         disabled={loadingUpdate}>
                         save
                     </Button>
@@ -74,7 +75,7 @@ export const Profile = () => {
             </>
         )
 
-    return !data ? <Preloader/>  : <>
+    return !data ? <Preloader/> : <>
         <BackArrowBlock/>
         <SForm onSubmit={handleSubmit(onSubmit)}>
             <SProfileContainer>
@@ -83,9 +84,8 @@ export const Profile = () => {
                     <SAvatarImg src={userPNG && data?.avatar} alt="avatar"/>
                     <ImageInput
                         isIcon
-                        onChange={(file) => onUpdateProfile({avatar: file})}>
-                        <PhotoCamera/>
-                    </ImageInput>
+                        buttonBody={<PhotoCamera/>}
+                        imageHandler={(file) => onUpdateProfile({avatar: file})}/>
                 </SAvatar>
                 <SNickName>
                     {content}
@@ -125,7 +125,7 @@ const SAvatar = styled.div`
     overflow: hidden;
     width: 15vh;
     height: 15vh;
-    
+
     button {
         border: white 1px solid;
         width: 5vh;

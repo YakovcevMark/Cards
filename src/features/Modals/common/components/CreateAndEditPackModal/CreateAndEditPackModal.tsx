@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BasicModal} from "features/Modals/BasicModal/BasicModal";
+import {BasicModal, BasicModalPT} from "features/Modals/common/components/BasicModal/BasicModal";
 import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Button} from "common/components/Button/Button";
@@ -7,22 +7,20 @@ import {Checkbox} from "common/components/Checkbox/Checkbox";
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {CreateAndEditPackSchema} from "utils/YupValidators/Validators";
-import {ShowInputImage} from "features/Modals/common/components/ShowInputImage/ShowInputImage";
-import {EditModalPT} from "features/Modals/EditPackModal/EditPackModal";
+import {ShowImageInput} from "features/Modals/common/components/ShowInputImage/ShowImageInput";
+import {EditPackModalPT} from "features/Modals/EditPackModal/EditPackModal";
 
 type AddAndEditPackModalFT = {
     name: string
     private?: boolean
     deckCover?: string
 }
-type PT = Partial<EditModalPT> &{
-    resetQuery?: () => void
+type PT = Partial<EditPackModalPT> & Pick<BasicModalPT,"resetQuery" | "shouldModalClose"> &{
     type: "Edit" | "Create"
     actionHandler: (value: AddAndEditPackModalFT & { _id?: string }) => Promise<void>
-    shouldModalClose: boolean
     isControlDisabled: boolean
 }
-export const AddAndEditPackModal =
+export const CreateAndEditPackModal =
     ({
          id,
          name,
@@ -43,7 +41,7 @@ export const AddAndEditPackModal =
             formState: {errors}
         } = useForm<AddAndEditPackModalFT>({
             defaultValues: {
-                name: name,
+                name,
                 private: isPrivatePack,
             },
             resolver: yupResolver(CreateAndEditPackSchema)
@@ -71,10 +69,11 @@ export const AddAndEditPackModal =
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
-                        <ShowInputImage
-                            cover={cover}
-                            changeCoverHandler={setCover}
-                            buttonBody={"Change cover"}/>
+                        <ShowImageInput
+                            image={cover}
+                            imageHandler={setCover}
+                            clearImageHandler={() => setCover("")}
+                            buttonBody={"Change image"}/>
                         <Input
                             label={`Name pack`}
                             registerFieldName={"name"}
@@ -101,4 +100,3 @@ export const AddAndEditPackModal =
             </BasicModal>
         );
     };
-

@@ -110,8 +110,8 @@ export const Cards = () => {
                         </SSHoverModule>
                     </span>
                     }
+                    {packData.packDeckCover && <SSCover src={packData.packDeckCover} alt="deckCover"/>}
                 </SSTitle>
-                {packData.packDeckCover && <SSCover src={packData.packDeckCover} alt="deckCover"/>}
 
                 {isOwner
                     ? <AddNewCardModal
@@ -139,44 +139,54 @@ export const Cards = () => {
                     <STableSection>
                         <table>
                             <thead>
-                            <Th
-                                filterValue={"question"}
-                                onChange={setSortCardsSearchParam}
-                                searchValue={fetchParams.sortCards}>
-                                Question
-                            </Th>
-                            <Th
-                                filterValue={"answer"}
-                                onChange={setSortCardsSearchParam}
-                                searchValue={fetchParams.sortCards}>
-                                Answer
-                            </Th>
-                            <Th
-                                filterValue={"updated"}
-                                onChange={setSortCardsSearchParam}
-                                searchValue={fetchParams.sortCards}>
-                                Last Updated
-                            </Th>
-                            <Th
-                                filterValue={"grade"}
-                                onChange={setSortCardsSearchParam}
-                                searchValue={fetchParams.sortCards}>
-                                Grade
-                            </Th>
-                            {isOwner && <th>Actions</th>}
+                            <tr>
+                                <Th
+                                    filterValue={"question"}
+                                    onChange={setSortCardsSearchParam}
+                                    searchValue={fetchParams.sortCards}>
+                                    Question
+                                </Th>
+                                <Th
+                                    filterValue={"answer"}
+                                    onChange={setSortCardsSearchParam}
+                                    searchValue={fetchParams.sortCards}>
+                                    Answer
+                                </Th>
+                                <Th
+                                    filterValue={"updated"}
+                                    onChange={setSortCardsSearchParam}
+                                    searchValue={fetchParams.sortCards}>
+                                    Last Updated
+                                </Th>
+                                <Th
+                                    filterValue={"grade"}
+                                    onChange={setSortCardsSearchParam}
+                                    searchValue={fetchParams.sortCards}>
+                                    Grade
+                                </Th>
+                                {isOwner && <th>Actions</th>}
+                            </tr>
                             </thead>
-                            <tbody>
-                            {packData.cards.map(c => <CardNotation
-                                key={c._id}
-                                id={c._id}
-                                question={c.question}
-                                answer={c.answer}
-                                updated={c.updated}
-                                grade={c.grade}
-                                isOwner={isOwner}/>)
-                            }
-                            </tbody>
                         </table>
+                        <div style={{overflowX: "auto", height: "500px"}}>
+                            <table>
+
+                                <tbody>
+                                {packData.cards.map(c => <CardNotation
+                                    key={c._id}
+                                    id={c._id}
+                                    question={c.question}
+                                    questionImg={c.questionImg}
+                                    answer={c.answer}
+                                    answerImg={c.answerImg}
+                                    updated={c.updated}
+                                    grade={c.grade}
+                                    isOwner={isOwner}/>)
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+
                     </STableSection>
                     <Pagination
                         itemsName={"Cards"}
@@ -193,12 +203,12 @@ export const Cards = () => {
 
         </SSPackPagesContainer>
 };
+
 const SSCover = styled(SCover)`
-    position: absolute;
     height: 10vh;
 `
 const SSPackPagesContainer = styled(SPackPagesContainer)`
-    grid-template-rows: 3vh 5vh 1fr 5fr 1fr;
+    grid-template-rows: 3vh 5vh 1fr 5fr auto;
 `
 const StyledSearchInput = styled.input`
     border: 1px solid rgba(0, 0, 0, 0.2)
@@ -206,13 +216,17 @@ const StyledSearchInput = styled.input`
 const SSTitle = styled(STitle)`
     position: relative;
     height: 5vh;
-
-    &:hover {
-        div {
-            display: grid;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    span {
+        &:hover {
+            div {
+                display: grid;
+                width: 50%;
+            }
         }
+        padding-right: 1vw;
     }
-
     svg {
         padding-left: 10px;
         width: 3vh;

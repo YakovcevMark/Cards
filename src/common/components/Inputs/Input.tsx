@@ -4,12 +4,10 @@ import {antoColor, secondColor} from "assets/stylesheets/colors";
 import {UseFormRegister} from "react-hook-form";
 import {Visibility, VisibilityOff} from "@styled-icons/material"
 import {SHelperText} from "../CommonStyledComponents";
+import {camelize} from "utils/DataUtils/handleStringsUtils";
 
 
-const camelize = (s: string) => {
-    return s.toLowerCase()
-        .replace(/\W+(.)/g, (match, chr) => chr.toUpperCase())
-}
+
 
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 

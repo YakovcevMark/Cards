@@ -55,10 +55,16 @@ export const SSetting = styled.article`
 `
 export const STableSection = styled.section`
     height: auto;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.58);
+    box-shadow: 1px 2px 7px black;
     table {
+        thead{
+            margin-top: 1vh;
+        }
         width: 100%;
         border-spacing: 0;
         border-collapse: collapse;
+        table-layout: fixed;
 
         tr:nth-child(2n) {
             background-color: #e1e1e1;
@@ -66,7 +72,22 @@ export const STableSection = styled.section`
 
         td {
             border-bottom: 1px solid rgba(0, 0, 0, 0.28);
+
         }
+
+
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
 `
 export const SNotationName = styled.td`

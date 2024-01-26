@@ -54,9 +54,10 @@ export type PackPostData = Omit<CommonPackAndCardTypes, "created" | "_id" | "upd
 
 export type Card = CommonPackAndCardTypes & {
     answer: string
+    answerImg: string
     question: string
-    cardsPack_id: string
     questionImg: string
+    cardsPack_id: string
     comments: string
 }
 type FetchCardsParams = CommonFetchParams & PaginationInfo & {

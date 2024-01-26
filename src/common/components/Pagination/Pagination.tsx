@@ -79,10 +79,10 @@ export const Pagination = memo(
 );
 const StyledPagination = styled.section`
     justify-self: start;
-    align-self: start;
+    align-self: center;
     display: flex;
     justify-content: center;
-    padding: 5px;
+    //padding: 5px;
 
     span {
         align-self: center;

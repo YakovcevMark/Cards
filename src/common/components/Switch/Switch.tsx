@@ -21,12 +21,13 @@ export const Switch =
             $length={optionsValues.length}
             className={className}>
             {
-                optionsNames.map((o, i) =>
+                optionsValues.map((o, i) =>
                     <button
-                        className={condition === optionsValues[i] ? "active" : ""}
-                        onClick={() => changeHandler(optionsValues[i])}
-                        value={optionsValues[i]}>
-                        {o}
+                        type={"button"}
+                        className={condition === o ? "active" : ""}
+                        onClick={() => changeHandler(o)}
+                        value={o}>
+                        {optionsNames[i]}
                     </button>
                 )
             }
@@ -37,11 +38,13 @@ const SButtonSection = styled.section<{ $length: number }>`
     display: grid;
     width: 100%;
     grid-template-columns: repeat(${props => props.$length}, 1fr);
-
     button {
         font-size: 20px;
+        width:100%;
+        &:hover:enabled{
+            cursor: pointer;
+        }
     }
-
     .active {
         color: white;
         background-color: ${secondColor};

@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {BasicModal} from "features/Modals/BasicModal/BasicModal";
+import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModal";
 import {useDeletePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {DeleteOutline} from "@styled-icons/material-outlined";

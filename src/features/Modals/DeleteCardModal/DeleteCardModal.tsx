@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {BasicModal} from "features/Modals/BasicModal/BasicModal";
+import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModal";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {DeleteOutline} from "@styled-icons/material-outlined";
 import {Button} from "common/components/Button/Button";
@@ -21,8 +21,8 @@ export const DeleteCardModal =
             isSuccess: isCardDeleted,
         }] = useDeleteCardMutation()
         const deleteCardValidator = useApiErrorsHandler(deleteCard)
-        const deleteCardButtonHandler =  () => {
-            deleteCardValidator({id})
+        const deleteCardButtonHandler =  async () => {
+            await deleteCardValidator({id})
         }
         return <BasicModal
             isIcon

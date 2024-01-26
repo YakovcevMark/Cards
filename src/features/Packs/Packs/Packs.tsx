@@ -100,7 +100,7 @@ export const Packs = () => {
                 <DoubleSlider
                     min={packsData!.minCardsCount}
                     max={packsData!.maxCardsCount}
-                    // onChange={({min, max}) => console.log(`min: ${min} max: ${max}`)}
+                    // imageHandler={({min, max}) => console.log(`min: ${min} max: ${max}`)}
                     onMouseUpMin={setMinSearchParam}
                     onMouseUpMax={setMaxSearchParam}
                 />
@@ -121,31 +121,33 @@ export const Packs = () => {
                     <STableSection>
                         <table>
                             <thead>
-                            <Th
-                                filterValue={"name"}
-                                onChange={setSortPacksSearchParam}
-                                searchValue={fetchParams.sortPacks}>
-                                Name
-                            </Th>
-                            <Th
-                                filterValue={"cardsCount"}
-                                onChange={setSortPacksSearchParam}
-                                searchValue={fetchParams.sortPacks}>
-                                Cards
-                            </Th>
-                            <Th
-                                filterValue={"updated"}
-                                onChange={setSortPacksSearchParam}
-                                searchValue={fetchParams.sortPacks}>
-                                Last Updated
-                            </Th>
-                            <Th
-                                filterValue={"user_name"}
-                                onChange={setSortPacksSearchParam}
-                                searchValue={fetchParams.sortPacks}>
-                                Created By
-                            </Th>
-                            <th>Actions</th>
+                            <tr>
+                                <Th
+                                    filterValue={"name"}
+                                    onChange={setSortPacksSearchParam}
+                                    searchValue={fetchParams.sortPacks}>
+                                    Name
+                                </Th>
+                                <Th
+                                    filterValue={"cardsCount"}
+                                    onChange={setSortPacksSearchParam}
+                                    searchValue={fetchParams.sortPacks}>
+                                    Cards
+                                </Th>
+                                <Th
+                                    filterValue={"updated"}
+                                    onChange={setSortPacksSearchParam}
+                                    searchValue={fetchParams.sortPacks}>
+                                    Last Updated
+                                </Th>
+                                <Th
+                                    filterValue={"user_name"}
+                                    onChange={setSortPacksSearchParam}
+                                    searchValue={fetchParams.sortPacks}>
+                                    Created By
+                                </Th>
+                                <th>Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
                             {

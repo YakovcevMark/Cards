@@ -27,12 +27,14 @@ export const Button: React.FC<SuperButtonPropsType> = memo(
         const finalColor = color ? color : red ? 'rgba(255, 54, 54, 1)' : gray ? grayColor : secondColor;
         return !icon ? (
             <SButton
+                type={"button"}
                 color={finalColor}
                 {...restProps}>
                 {children}
             </SButton>
         ) : (
             <IconButton
+                type={"button"}
                 color={finalColor}
                 {...restProps}>
                 {children}
@@ -45,48 +47,40 @@ const IconButton = styled.button<{ color: string }>`
     width: 4vh;
     height: 4vh;
     background-color: transparent;
+
     svg {
         width: 100%;
         height: 100%;
     }
-    &:hover {
+
+    &:hover:enabled {
         cursor: pointer;
-        &:enabled{
-            svg{
-                fill: ${secondColor};
-            }
-        }
-        &:disabled{
-            pointer-events: none;
+        svg {
+            fill: ${secondColor};
         }
     }
-   
 `
 const SButton = styled.button<{ color: string }>`
-  padding: 0 10px;
-  height: 36px;
-  border-radius: 30px;
-  border: 0;
-  background: ${({color}) => secondColor && color};
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: ${({color}) => color === grayColor ? secondColor : mainColor};
-  box-shadow: 0 4px 18px 0 ${buttonShadow};
-  transition: 0.5s;
+    padding: 0 10px;
+    height: 36px;
+    border-radius: 30px;
+    border: 0;
+    background: ${({color}) => secondColor && color};
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: ${({color}) => color === grayColor ? secondColor : mainColor};
+    box-shadow: 0 4px 18px 0 ${buttonShadow};
+    transition: 0.5s;
 
-  &:hover {
+  &:hover:enabled {
     -webkit-box-shadow: inset 0 0 0 1px ${antoColor};
     -moz-box-shadow: inset 0 0 0 1px ${antoColor};
     box-shadow: inset 0 0 0 1px ${antoColor};
     cursor: pointer;
-
-    &:disabled {
-      box-shadow: none;
-    }
   }
 
   &:disabled {

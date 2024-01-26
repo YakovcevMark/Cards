@@ -68,7 +68,7 @@ export const SPagesContainer = styled.div`
   justify-self: center;
   padding-top: 20px;
   border-radius: 10px;
-  width: 50vh;
+  width: 500px;
   height: 65vh;
   background: white;
 `

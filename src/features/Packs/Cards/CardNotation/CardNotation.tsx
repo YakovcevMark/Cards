@@ -11,6 +11,8 @@ type PT = {
     updated: string
     question: string
     answer: string
+    questionImg: string
+    answerImg: string
     grade: number
     isOwner: boolean
 }
@@ -19,7 +21,9 @@ export const CardNotation =
     ({
          updated,
          question,
+         questionImg,
          answer,
+         answerImg,
          isOwner,
          grade,
          id
@@ -27,9 +31,17 @@ export const CardNotation =
         return (
             <SNotation>
                 <STd>
-                    {stringLengthHandler(question)}
+                    {questionImg
+                        ? <SImage src={questionImg} alt={"questionImg"}/>
+                        : stringLengthHandler(question)
+                    }
                 </STd>
-                <STd>{stringLengthHandler(answer)}</STd>
+                <STd>
+                    {answerImg
+                        ? <SImage src={answerImg} alt={"answerImg"}/>
+                        : stringLengthHandler(answer)
+                    }
+                </STd>
                 <td>{updated}</td>
                 <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
@@ -43,6 +55,9 @@ export const CardNotation =
             </SNotation>
         );
     };
+const SImage = styled.img`
+    height:70px
+`
 const STd = styled.td`
-    width:20vw;
+    width: 20vw;
 `

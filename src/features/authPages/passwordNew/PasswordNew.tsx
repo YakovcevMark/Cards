@@ -6,14 +6,15 @@ import {PasswordSchema} from "utils/YupValidators/Validators";
 import {useSetNewPasswordMutation} from "../authApi";
 import {Navigate, useParams} from "react-router-dom";
 import {PATH} from "common/components/Routes/AppRoutes";
+import {Input} from "common/components/Inputs/Input";
 import {
-    SControlSection, SForm,
+    SControlSection,
+    SForm,
     SHelperText,
     SInputsSection,
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
-import {Input} from "common/components/Inputs/Input";
 
 type NewPasswordValues = {
     password: string
@@ -21,7 +22,11 @@ type NewPasswordValues = {
 export const PasswordNew = () => {
 
     const {token} = useParams()
-    const [recoveryPassport, {isLoading, isSuccess}] = useSetNewPasswordMutation()
+    const [recoveryPassport, {
+        isLoading,
+        isSuccess,
+    }] = useSetNewPasswordMutation()
+
     const {register, handleSubmit, formState: {errors}} = useForm<NewPasswordValues>({
         resolver: yupResolver(PasswordSchema)
     })

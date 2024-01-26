@@ -1,5 +1,5 @@
 import axios from "axios";
-import {RegisterFormData, Response, UserDataResponse} from "../../features/authPages/authApi";
+import {RegisterFormData, Response, UserDataResponse} from "features/authPages/authApi";
 
 const settings = {
     withCredentials: true

@@ -1,12 +1,12 @@
-import React from 'react';
-import {BasicModal} from "features/Modals/BasicModal/BasicModal";
-import {Input} from "common/components/Inputs/Input";
+import React, {useState} from 'react';
+import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModal";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Button} from "common/components/Button/Button";
 import {useCreateCardMutation} from "features/Packs/packsApi";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {CreateAndEditCardSchema} from "utils/YupValidators/Validators";
+import {
+    CreateAndEditCardInputBlock
+} from "features/Modals/common/components/CreateAndEditCardModal/CreateAndEditCardInputBlock/CreateAndEditCardInputBlock";
 
 export type AddNewCardModel = {
     question: string
@@ -20,13 +20,16 @@ export const AddNewCardModal =
          cardsPack_id
      }: PT) => {
 
+        const [questionImage, setQuestionImage] = useState("")
+        const [answerImage, setAnswerImage] = useState("")
+
         const {
             register,
             handleSubmit,
             reset: resetFormData,
             formState: {errors}
         } = useForm<AddNewCardModel>({
-            resolver: yupResolver(CreateAndEditCardSchema)
+            // resolver: yupResolver(CreateAndEditCardSchema)
         })
 
         const [createCard, {
@@ -34,16 +37,18 @@ export const AddNewCardModal =
             isSuccess: isCardCreated,
             reset
         }] = useCreateCardMutation()
-
         const createCardValidator = useApiErrorsHandler(createCard)
         const onSubmit: SubmitHandler<AddNewCardModel> = async (data) => {
             await createCardValidator({
                 cardsPack_id,
+                questionImg: questionImage,
+                answerImg: answerImage,
                 ...data
             })
             resetFormData();
+            setQuestionImage("")
+            setAnswerImage("")
         }
-
         return (
             <BasicModal
                 buttonContent={"Add new card"}
@@ -53,17 +58,23 @@ export const AddNewCardModal =
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
-                        <Input
-                            label={"Question"}
-                            register={register}
-                            error={errors.question?.message}
-                            disabled={isCardCreating}
+                        <CreateAndEditCardInputBlock
+                            name={"Question"}
+                            imageHandler={setQuestionImage}
+                            image={questionImage}
+                            textRegister={register}
+                            textError={errors.question?.message}
+                            shouldInputDisabled={isCardCreating}
+                            clearImageHandler={() => setQuestionImage("")}
                         />
-                        <Input
-                            label={"Answer"}
-                            register={register}
-                            error={errors.answer?.message}
-                            disabled={isCardCreating}
+                        <CreateAndEditCardInputBlock
+                            name={"Answer"}
+                            imageHandler={setAnswerImage}
+                            image={answerImage}
+                            textRegister={register}
+                            textError={errors.answer?.message}
+                            shouldInputDisabled={isCardCreating}
+                            clearImageHandler={() => setAnswerImage("")}
                         />
                     </>
                 }

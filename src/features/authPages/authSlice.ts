@@ -9,8 +9,8 @@
 //     }
 // }
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
-import {authApi} from "../../dal/api";
-import {setAppError, setAppStatus, setInitialized} from "../../app/appSlice";
+import {authApi} from "dal/api";
+import {setAppError, setAppStatus, setInitialized} from "app/appSlice";
 import {RegisterFormData} from "./authApi";
 
 export const login = createAsyncThunk('auth/login', async (payload: RegisterFormData & { rememberMe: boolean; }) => {

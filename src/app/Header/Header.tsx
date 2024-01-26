@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Button} from "common/components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
@@ -13,21 +13,22 @@ import {PATH} from "common/components/Routes/AppRoutes";
 
 export const Header =
     () => {
-        const [,{
-            isSuccess:showMode,
+        const [, {
+            isSuccess: showMode,
             data,
         }] = useInitializeMutation({
             fixedCacheKey: 'shared-postMe-post',
         })
 
         const nav = useNavigate()
-        const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
+        const [logOut, {isLoading: isLogOutLoading, isSuccess}] = useLogoutMutation()
         const onLogout = useApiErrorsHandler(logOut, true)
-
-        const singInButtonHandler = () => nav(PATH.login)
+        const singInButtonHandler = useCallback(() => nav(PATH.login),[nav])
+        useEffect(() => {
+            isSuccess && singInButtonHandler()
+        }, [isSuccess, singInButtonHandler]);
         const profileButtonHandler = () => nav(PATH.profile);
         const logOutButtonHandler = async () => await onLogout()
-
         let controlSectionContent =
             showMode
                 ? <Avatar>
@@ -60,13 +61,13 @@ export const Header =
         );
     };
 
-const SSAvatarImg=styled(SAvatarImg)`
+const SSAvatarImg = styled(SAvatarImg)`
     width: 5vh;
     height: 5vh;
 `
 
 const SSHoverModule = styled(SHoverModule)`
-    top:6vh;
+    top: 6vh;
 `
 const SRobotSVG = styled.div`
     svg {
@@ -76,32 +77,32 @@ const SRobotSVG = styled.div`
     }
 `
 const StyledHeader = styled.header`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
 `
 
 const Avatar = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-  align-items: center;
-  position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    position: relative;
 
- 
+
 `
 const ControlSection = styled.span`
-  height: 100%;
-  margin-right: 10px;
-  justify-self: end;
-  display: grid;
-  align-content: center;
-    
-  &:hover {
-    div {
-      display: grid;
+    height: 100%;
+    margin-right: 10px;
+    justify-self: end;
+    display: grid;
+    align-content: center;
+
+    &:hover {
+        div {
+            display: grid;
+        }
     }
-  }
 `
 
