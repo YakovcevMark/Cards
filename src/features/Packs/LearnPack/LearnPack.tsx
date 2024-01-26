@@ -44,7 +44,7 @@ export const LearnPack = () => {
 
 
     useEffect(() => {
-        fetchCardsValidator({
+       fetchCardsValidator({
             cardsPack_id,
             pageCount: 100
         })
@@ -73,7 +73,7 @@ export const LearnPack = () => {
                 <SSTitle>Learn Pack"{"packName"}"</SSTitle>
                 <p>
                     <b>Question: </b>
-                    {card.question}
+                    {card.questionImg ? <SImg src={card.questionImg}/> : <span>{card.question}</span>}
                     <SHelperText>
                         Number of attempts to answer a question: {card.shots}
                     </SHelperText>
@@ -82,7 +82,7 @@ export const LearnPack = () => {
                     ? <>
                         <p>
                             <b>Answer: </b>
-                            {card.answer}
+                            {card.answerImg ? <SImg src={card.answerImg}/> : <span>{card.answer}</span>}
                         </p>
                         <Grade
                             grade={grade}
@@ -103,6 +103,10 @@ export const LearnPack = () => {
         </>
     );
 };
+const SImg = styled.img`
+    width:100%;
+    
+`
 const SSPagesContainer = styled(SPagesContainer)`
     display: grid;
     padding: 1vh;
@@ -111,4 +115,5 @@ const SSPagesContainer = styled(SPagesContainer)`
 const SSTitle = styled(STitle)`
     justify-self: center;
 `
+
 

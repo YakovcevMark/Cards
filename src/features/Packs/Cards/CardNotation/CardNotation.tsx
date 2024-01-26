@@ -1,18 +1,13 @@
 import React from 'react';
 import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 import {SNotation, SNotationActionButtons} from "../../PacksStyledComponents";
-import {EditCardModal} from "features/Modals/EditCardModal/EditCardModal";
+import {EditCardModal, EditCardModalPT} from "features/Modals/EditCardModal/EditCardModal";
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
 import {NotationGrade} from "features/Packs/Cards/CardNotation/NotationGrade/NotationGrade";
 import styled from "styled-components";
 
-type PT = {
-    id: string
+type PT = EditCardModalPT &{
     updated: string
-    question: string
-    answer: string
-    questionImg: string
-    answerImg: string
     grade: number
     isOwner: boolean
 }
@@ -47,7 +42,9 @@ export const CardNotation =
                 {isOwner && <SNotationActionButtons>
                     <EditCardModal
                         question={question}
+                        questionImg={questionImg}
                         answer={answer}
+                        answerImg={answerImg}
                         id={id}/>
                     <DeleteCardModal id={id}/>
                 </SNotationActionButtons>

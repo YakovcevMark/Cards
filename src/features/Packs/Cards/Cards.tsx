@@ -24,7 +24,7 @@ import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {PATH} from "common/components/Routes/AppRoutes";
-import {AddNewCardModal} from "features/Modals/AddNewCardModal/AddNewCardModal";
+import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
 
 
 export const Cards = () => {
@@ -114,7 +114,7 @@ export const Cards = () => {
                 </SSTitle>
 
                 {isOwner
-                    ? <AddNewCardModal
+                    ? <CreateCardModal
                         cardsPack_id={cardsPack_id!}/>
                     : <Button
                         onClick={schoolButtonHandler}>
