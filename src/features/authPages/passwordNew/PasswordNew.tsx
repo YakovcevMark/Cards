@@ -6,7 +6,6 @@ import {PasswordSchema} from "utils/YupValidators/Validators";
 import {useSetNewPasswordMutation} from "../authApi";
 import {Navigate, useParams} from "react-router-dom";
 import {PATH} from "common/components/Routes/AppRoutes";
-import {Input} from "common/components/Inputs/Input";
 import {
     SControlSection,
     SForm,
@@ -15,6 +14,7 @@ import {
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
+import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
 
 type NewPasswordValues = {
     password: string
@@ -41,9 +41,8 @@ export const PasswordNew = () => {
             <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Create new password</STitle>
                 <SInputsSection>
-                    <Input
-                        type={'password'}
-                        label={"Password"}
+                    <PasswordInput
+                        placeholder={"Password"}
                         disabled={isLoading}
                         error={errors.password?.message}
                         register={register}/>

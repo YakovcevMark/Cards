@@ -73,14 +73,14 @@ export const CreateAndEditPackModal =
                             image={cover}
                             imageHandler={setCover}
                             clearImageHandler={() => setCover("")}
-                            buttonBody={"Change image"}/>
+                            buttonBody={"Change image"}
+                            disabled={isControlDisabled}/>
                         <Input
-                            label={`Name pack`}
+                            placeholder={`Name pack`}
                             registerFieldName={"name"}
                             register={register}
                             error={errors.name?.message}
-                            disabled={isControlDisabled}
-                        />
+                            disabled={isControlDisabled}/>
                         <Checkbox
                             register={register}
                             disabled={isControlDisabled}

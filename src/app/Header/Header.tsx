@@ -7,8 +7,9 @@ import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation} from "features/authPages/authApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {SAvatarImg, SHoverModule} from "common/components/CommonStyledComponents";
+import {SAvatarImg} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
+import {SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
 
 
 export const Header =
@@ -35,17 +36,17 @@ export const Header =
                     <b>{data?.name}</b>
                     <SSAvatarImg src={data?.avatar} alt="avatarka"/>
                     <SSHoverModule>
-                        <button
+                        <SButtonWithIcon
                             onClick={profileButtonHandler}>
                             <Person/>
                             <span>Profile</span>
-                        </button>
-                        <button
+                        </SButtonWithIcon>
+                        <SButtonWithIcon
                             onClick={logOutButtonHandler}
                             disabled={isLogOutLoading}>
                             <Logout/>
                             <span>LogOut</span>
-                        </button>
+                        </SButtonWithIcon>
                     </SSHoverModule>
                 </Avatar>
                 : <Button onClick={singInButtonHandler}>Sing In</Button>

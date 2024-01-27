@@ -23,6 +23,7 @@ export const Switch =
             {
                 optionsValues.map((o, i) =>
                     <button
+                        key={o}
                         type={"button"}
                         className={condition === o ? "active" : ""}
                         onClick={() => changeHandler(o)}

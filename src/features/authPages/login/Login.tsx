@@ -18,6 +18,7 @@ import {
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
+import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
 
 type LoginValues = {
     email: string
@@ -45,18 +46,15 @@ export const Login = () => {
                 onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Sing In</STitle>
                 <Input
-                    label={"Email"}
+                    placeholder={"Email"}
                     disabled={isLoading}
                     error={errors.email?.message}
-                    register={register}
-                />
-                <Input
-                    label={"Password"}
-                    type={"password"}
+                    register={register}/>
+                <PasswordInput
+                    placeholder={"Password"}
                     disabled={isLoading}
                     error={errors.password?.message}
-                    register={register}
-                />
+                    register={register}/>
                 <Checkbox
                     disabled={isLoading}
                     register={register}
@@ -71,6 +69,7 @@ export const Login = () => {
                 <SControlSection>
                     <SButtonControl>
                         <Button
+                            type={"submit"}
                             disabled={isLoading}>
                             Login
                         </Button>

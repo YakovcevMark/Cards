@@ -1,7 +1,7 @@
 import React, {ChangeEvent, MouseEvent, ReactNode, useRef} from "react";
-import {Button} from "common/components/Button/Button";
+import {Button, ButtonPT} from "common/components/Button/Button";
 
-export type ImageInputPT = {
+export type ImageInputPT = ButtonPT & {
     children?: ReactNode
     imageHandler: (file: string ) => void
     isIcon?:boolean
@@ -15,6 +15,7 @@ export const ImageInput =
          imageHandler,
          className,
          buttonBody,
+        ...rest
      }: ImageInputPT) => {
         const inputRef = useRef<HTMLInputElement>(null)
         const changeAvatar = (e: MouseEvent<HTMLButtonElement>) => {
@@ -49,7 +50,8 @@ export const ImageInput =
                 type={"button"}
                 icon = {isIcon}
                 onClick={changeAvatar}
-                className={className}>
+                className={className}
+                {...rest}>
                 {buttonBody}
             </Button>
             {children}

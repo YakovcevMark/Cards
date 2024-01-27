@@ -3,17 +3,16 @@ import styled from "styled-components";
 import {antoColor, buttonShadow, grayColor, mainColor, secondColor} from "assets/stylesheets/colors";
 
 
-// тип пропсов обычной кнопки, children в котором храниться название кнопки там уже описан
 type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
-type SuperButtonPropsType = DefaultButtonPropsType & {
+export type ButtonPT = DefaultButtonPropsType & {
     red?: boolean
     gray?: boolean
     icon?: boolean
     color?: boolean
 }
 
-export const Button: React.FC<SuperButtonPropsType> = memo(
+export const Button: React.FC<ButtonPT> = memo(
     (
         {
             red,
@@ -21,7 +20,7 @@ export const Button: React.FC<SuperButtonPropsType> = memo(
             color,
             icon,
             children,
-            ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
+            ...restProps
         }
     ) => {
         const finalColor = color ? color : red ? 'rgba(255, 54, 54, 1)' : gray ? grayColor : secondColor;

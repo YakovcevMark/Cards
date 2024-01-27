@@ -1,56 +1,22 @@
-import React, {ReactNode} from 'react';
-import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModal";
+import React from 'react';
 import {useDeletePackMutation} from "features/Packs/packsApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {DeleteOutline} from "@styled-icons/material-outlined";
-import {Button} from "common/components/Button/Button";
-import styled from "styled-components";
-import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
+import {
+    DeletePackAndCardModal,
+    NeedsPropsToDeleteCardOrPack
+} from "features/Modals/common/components/DeletePackAndCardModal/DeletePackAndCardModal";
 
-type PT = {
-    id: string
-    name: string
-    children?: ReactNode
-}
+type PT = NeedsPropsToDeleteCardOrPack
 export const DeletePackModal =
-    ({
-         id,
-         name,
-         children
-
-     }: PT) => {
+    (props: PT) => {
         const [deletePack, {
             isLoading: isDeletingPack,
             isSuccess: isPackDeleted,
         }] = useDeletePackMutation()
         const deletePackValidator = useApiErrorsHandler(deletePack)
-        const deletePackButtonHandler = async () => {
-            await deletePackValidator({id})
-        }
-        return <BasicModal
-            isIcon
-            title={"Delete Cards"}
-            buttonContent={<DeleteOutline/>}
+        return <DeletePackAndCardModal
             shouldModalClose={isPackDeleted}
-            inputsChildrenSection={
-                <SP>
-                    Do you really wanna to remove <b>{stringLengthHandler(name)}</b>? <br/>
-                    All Cards will be deleted.
-                </SP>
-            }
-            controlChildrenSection={
-                <Button
-                    red
-                    type={"submit"}
-                    onClick={deletePackButtonHandler}
-                    disabled={isDeletingPack}>
-                    Delete
-                </Button>
-            }>
-            {children}
-        </BasicModal>
-    };
-const SP = styled.p`
-    justify-self: start;
-    font-size: 22px;
-`
+            isControlDisabled={isDeletingPack}
+            actionHandler={deletePackValidator}
+            {...props}/>
+    }

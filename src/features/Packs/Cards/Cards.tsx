@@ -13,7 +13,7 @@ import {
     SSettingsSection,
     STableSection
 } from "../PacksStyledComponents";
-import {SHoverModule, STitle} from "common/components/CommonStyledComponents";
+import {STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
 import {useInitializeMutation} from "../../authPages/authApi";
 import {CardNotation} from "./CardNotation/CardNotation";
@@ -25,6 +25,7 @@ import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
+import {SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
 
 
 export const Cards = () => {
@@ -88,25 +89,29 @@ export const Cards = () => {
                     {isOwner && <span>
                         <Tune/>
                           <SSHoverModule>
-                              <EditPackModal
-                                  id={cardsPack_id!}
-                                  name={packData.packName}
-                                  isPrivatePack={packData.packPrivate}
-                                  deckCover={packData?.packDeckCover}>
+                               <SButtonWithIcon>
+                                  <EditPackModal
+                                      id={cardsPack_id!}
+                                      name={packData.packName}
+                                      isPrivatePack={packData.packPrivate}
+                                      deckCover={packData?.packDeckCover}>
+                                  </EditPackModal>
                                   <span>Edit</span>
-                              </EditPackModal>
-                              <DeletePackModal
-                                  id={cardsPack_id!}
-                                  name={packData.packName}>
+                               </SButtonWithIcon>
+                              <SButtonWithIcon>
+                                  <DeletePackModal
+                                      id={cardsPack_id!}
+                                      name={packData.packName}>
+                                  </DeletePackModal>
                                   <span>Delete</span>
-                              </DeletePackModal>
-                              <Button
-                                  icon
+                              </SButtonWithIcon>
+                              <SButtonWithIcon
+                                  // icon
                                   disabled={!Boolean(packData.cards.length)}
                                   onClick={schoolButtonHandler}>
                                 <School/>
                                 <span>Learn</span>
-                            </Button>
+                            </SButtonWithIcon>
                         </SSHoverModule>
                     </span>
                     }
@@ -214,19 +219,22 @@ const StyledSearchInput = styled.input`
     border: 1px solid rgba(0, 0, 0, 0.2)
 `
 const SSTitle = styled(STitle)`
-    position: relative;
     height: 5vh;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+
     span {
+        position: relative;
+
         &:hover {
             div {
                 display: grid;
-                width: 50%;
             }
         }
+
         padding-right: 1vw;
     }
+
     svg {
         padding-left: 10px;
         width: 3vh;

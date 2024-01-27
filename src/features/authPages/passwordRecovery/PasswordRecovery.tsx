@@ -40,7 +40,7 @@ export const PasswordRecovery = () => {
                 <STitle>Forgot your password?</STitle>
                 <SInputsSection>
                     <Input
-                        label={'Email'}
+                        placeholder={'Email'}
                         disabled={isLoading}
                         error={errors.email?.message}
                         register={register}/>

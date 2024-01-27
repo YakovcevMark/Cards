@@ -43,7 +43,7 @@ export const CreateAndEditCardInputBlock =
 
             {type === "text"
                 ? <Input
-                    label={name}
+                    placeholder={name}
                     register={textRegister}
                     error={textError}
                     disabled={shouldInputDisabled}/>

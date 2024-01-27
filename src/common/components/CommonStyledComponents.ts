@@ -1,4 +1,16 @@
 import styled from "styled-components";
+export const SDopInputControl = styled.div`
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    &:hover {
+        cursor: pointer;
+    }
+`
+
 export const SAvatarImg = styled.img`
 
     border-radius: 50%;
@@ -23,46 +35,7 @@ export const STitle = styled.h1`
   letter-spacing: 0;
   text-align: left;
 `
-export const SHoverModule = styled.div`
-    //background-color: blueviolet;
-    display: none;
-    border: 1px rgba(0, 0, 0, 0.47) solid;
-    position: absolute;
-    top: 7vh;
-    right: 3vh;
-    z-index: 99;
 
-    button {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1vh 1fr;
-        grid-gap: 15px;
-        align-items: center;
-        padding: 1vh;
-        border: none;
-        //background-color: burlywood;
-        background-color: white;
-
-        svg {
-            width: 2vh;
-            padding-right: 1vh;
-
-            &:enabled {
-                fill: black;
-            }
-        }
-
-        span {
-            justify-self: start;
-            padding-left: 1vh;
-        }
-
-        &:enabled:hover {
-            background-color: #d2d2d2;
-            cursor: pointer;
-        }
-    }
-`
 export const SPagesContainer = styled.div`
   align-self: center;
   justify-self: center;

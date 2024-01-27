@@ -15,6 +15,7 @@ import {
     STitle
 } from "common/components/CommonStyledComponents";
 import {SModalControlSection} from "features/Modals/ModalsStyledComponents";
+import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
 
 type RegisterFormValues = {
     email: string
@@ -47,19 +48,17 @@ export const Register = () => {
                 <STitle>Sing Up</STitle>
                 <SInputsSection>
                     <Input
-                        label={"Email"}
+                        placeholder={"Email"}
                         disabled={isLoading}
                         error={errors.email?.message}
                         register={register}/>
-                    <Input
-                        label={"Password"}
-                        type={"password"}
+                    <PasswordInput
+                        placeholder={"Password"}
                         disabled={isLoading}
                         error={errors.password?.message}
                         register={register}/>
-                    <Input
-                        label={"Confirm password"}
-                        type={"password"}
+                    <PasswordInput
+                        placeholder={"Confirm password"}
                         disabled={isLoading}
                         error={errors.confirmPassword?.message}
                         register={register}/>

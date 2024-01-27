@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from "common/components/Button/Button";
 import {PhotoCamera} from "@styled-icons/material-outlined/PhotoCamera"
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined"
@@ -12,29 +12,53 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "utils/YupValidators/Validators";
 import {useApiErrorsHandler} from "common/hooks/hooks";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
-import {SAvatarImg, SHelperText, SPagesContainer, STitle} from "common/components/CommonStyledComponents";
-import {Preloader} from "common/components/Preloader/Preloader";
+import {
+    SAvatarImg,
+    SDopInputControl,
+    SHelperText,
+    SPagesContainer,
+    STitle
+} from "common/components/CommonStyledComponents";
 import {ImageInput} from "common/components/Inputs/ImageInput/ImageInput";
+import {useNavigate} from "react-router-dom";
+import {PATH} from "common/components/Routes/AppRoutes";
 
 type ProfileFormValues = {
     name?: string
     avatar?: string
 }
 export const Profile = () => {
+    const nav = useNavigate()
     const [editMode, setEditMode] = useState<boolean>(false)
+
     const [, {data, isLoading: loadingInit}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
-    const [updateProfile, {isLoading: loadingUpdate}] = useUpdateProfileMutation()
-    const [logOut, {isLoading: isLogOutLoading}] = useLogoutMutation()
-    const onUpdateProfile = useApiErrorsHandler(updateProfile, true)
-    const onLogout = useApiErrorsHandler(logOut, true)
-    const {register, handleSubmit, formState: {errors}} = useForm<ProfileFormValues>({
+
+    const [updateProfile, {
+        isLoading: loadingUpdate
+    }] = useUpdateProfileMutation()
+
+    const [logOut, {
+        isLoading: isLogOutLoading,
+        isSuccess: isLogOutSuccess,
+    }] = useLogoutMutation()
+
+    const {
+        register,
+        handleSubmit,
+        formState: {
+            errors
+        }
+    } = useForm<ProfileFormValues>({
         defaultValues: ({
             name: loadingInit ? "" : data?.name
         }),
         resolver: yupResolver(NameSchema)
     })
+
+    const onUpdateProfile = useApiErrorsHandler(updateProfile, true)
+    const onLogout = useApiErrorsHandler(logOut, true)
     const logoutHandler = async () => {
         await onLogout()
     }
@@ -43,8 +67,29 @@ export const Profile = () => {
         setEditMode(false)
     }
 
-    let content = !editMode && !loadingInit && data
+    useEffect(() => {
+        isLogOutSuccess && nav(PATH.login)
+    }, [isLogOutSuccess, nav]);
+
+    let content = editMode
         ? (
+            <>
+                <Input
+                    placeholder={"Name"}
+                    disabled={loadingUpdate}
+                    error={errors.name?.message}
+                    register={register}
+                >
+                    <SDopInputControl>
+                        <Button
+                            type={"submit"}
+                            disabled={loadingUpdate}>
+                            save
+                        </Button>
+                    </SDopInputControl>
+                </Input>
+            </>
+        ) : (
             <>
                 <span>
                     {data!.name}
@@ -58,24 +103,9 @@ export const Profile = () => {
                 </span>
             </>
         )
-        : (
-            <>
-                <Input
-                    label={"Name"}
-                    disabled={loadingUpdate}
-                    error={errors.name?.message}
-                    register={register}
-                >
-                    <Button
-                        type={"submit"}
-                        disabled={loadingUpdate}>
-                        save
-                    </Button>
-                </Input>
-            </>
-        )
 
-    return !data ? <Preloader/> : <>
+
+    return <>
         <BackArrowBlock/>
         <SForm onSubmit={handleSubmit(onSubmit)}>
             <SProfileContainer>
