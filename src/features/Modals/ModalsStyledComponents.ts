@@ -12,12 +12,18 @@ export const SModalContent = styled(SPagesContainer)`
     box-shadow: 0 0 1vh ${secondColor};
     background: white;
     border-radius: 3px;
-    z-index: 21;
     position: absolute;
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+    z-index: 21;
+`
+export const SModalRelativeBlock = styled.div`
+    z-index: 20;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
 `
 export const SModalBackground = styled.div`
     width: 100vw;

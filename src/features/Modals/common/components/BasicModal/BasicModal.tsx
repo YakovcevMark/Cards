@@ -19,6 +19,7 @@ export type BasicModalPT = {
     setFormSubmit?: (data: FormEvent<HTMLFormElement>) => void
     resetQuery?: () => void
     children?: ReactNode
+    className?:string
 }
 export const BasicModal =
     ({
@@ -30,7 +31,8 @@ export const BasicModal =
          setFormSubmit,
          resetQuery,
          isIcon,
-         children
+         children,
+         className
      }: BasicModalPT) => {
 
         const [viewMode, setViewMode] = useState(false)
@@ -50,7 +52,8 @@ export const BasicModal =
         return <>
             <Button
                 onClick={switchViewMode}
-                icon={isIcon}>
+                icon={isIcon}
+                className={className}>
                 {buttonContent}
                 {children}
             </Button>

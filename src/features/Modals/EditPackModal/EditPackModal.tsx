@@ -10,6 +10,7 @@ export type EditPackModalPT = {
     isPrivatePack: boolean
     children?: ReactNode
     deckCover?: string
+    className?: string
 }
 export const EditPackModal =
     ({

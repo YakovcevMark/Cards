@@ -45,7 +45,7 @@ export const SPagesContainer = styled.div`
   height: 65vh;
   background: white;
 `
-export const SForm =styled.form`
+export const SForm = styled.form`
     display: grid;
     width: 90%;
     height: 90%;

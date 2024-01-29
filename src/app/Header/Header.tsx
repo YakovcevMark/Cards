@@ -91,7 +91,6 @@ const Avatar = styled.div`
     align-items: center;
     position: relative;
 
-
 `
 const ControlSection = styled.span`
     height: 100%;

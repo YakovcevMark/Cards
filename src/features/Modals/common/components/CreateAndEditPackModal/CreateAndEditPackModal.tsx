@@ -15,7 +15,7 @@ type AddAndEditPackModalFT = {
     private?: boolean
     deckCover?: string
 }
-type PT = Partial<EditPackModalPT> & Pick<BasicModalPT,"resetQuery" | "shouldModalClose"> &{
+type PT = Partial<EditPackModalPT> & Pick<BasicModalPT, "resetQuery" | "shouldModalClose" | "className"> & {
     type: "Edit" | "Create"
     actionHandler: (value: AddAndEditPackModalFT & { _id?: string }) => Promise<void>
     isControlDisabled: boolean
@@ -29,9 +29,8 @@ export const CreateAndEditPackModal =
          deckCover,
          actionHandler,
          type,
-         shouldModalClose,
          isControlDisabled,
-         resetQuery
+         ...rest
      }: PT) => {
         const [cover, setCover] = useState(deckCover || "")
         const {
@@ -55,6 +54,7 @@ export const CreateAndEditPackModal =
             reset()
             setCover("")
         }
+
         return (
             <BasicModal
                 isIcon={type === "Edit"}
@@ -64,8 +64,6 @@ export const CreateAndEditPackModal =
                         : "Create new pack"
                 }
                 title={`${type} pack`}
-                shouldModalClose={shouldModalClose}
-                resetQuery={resetQuery}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
@@ -95,7 +93,8 @@ export const CreateAndEditPackModal =
                         disabled={isControlDisabled}>
                         {`${type}`}
                     </Button>
-                }>
+                }
+                {...rest}>
                 {children}
             </BasicModal>
         );
