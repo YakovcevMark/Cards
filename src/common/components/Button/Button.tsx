@@ -24,42 +24,18 @@ export const Button: React.FC<ButtonPT> = memo(
         }
     ) => {
         const finalColor = color ? color : red ? 'rgba(255, 54, 54, 1)' : gray ? grayColor : secondColor;
-        return !icon ? (
-            <SButton
+        return<SButton
                 type={"button"}
                 color={finalColor}
                 {...restProps}>
                 {children}
             </SButton>
-        ) : (
-            <IconButton
-                type={"button"}
-                color={finalColor}
-                {...restProps}>
-                {children}
-            </IconButton>
-        )
     }
 )
-const IconButton = styled.button<{ color: string }>`
-    border: none;
-    width: 4vh;
-    height: 4vh;
-    background-color: transparent;
 
-    svg {
-        width: 100%;
-        height: 100%;
-    }
 
-    &:hover:enabled {
-        cursor: pointer;
-        svg {
-            fill: ${secondColor};
-        }
-    }
-`
-const SButton = styled.button<{ color: string }>`
+const SButton = styled.button<{ color?: string }>`
+
     padding: 0 10px;
     height: 36px;
     border-radius: 30px;
@@ -75,14 +51,14 @@ const SButton = styled.button<{ color: string }>`
     box-shadow: 0 4px 18px 0 ${buttonShadow};
     transition: 0.5s;
 
-  &:hover:enabled {
-    -webkit-box-shadow: inset 0 0 0 1px ${antoColor};
-    -moz-box-shadow: inset 0 0 0 1px ${antoColor};
-    box-shadow: inset 0 0 0 1px ${antoColor};
-    cursor: pointer;
-  }
+    &:hover:enabled {
+        -webkit-box-shadow: inset 0 0 0 1px ${antoColor};
+        -moz-box-shadow: inset 0 0 0 1px ${antoColor};
+        box-shadow: inset 0 0 0 1px ${antoColor};
+        cursor: pointer;
+    }
 
-  &:disabled {
-    opacity: 0.7;
-  }
+    &:disabled {
+        opacity: 0.7;
+    }
 `

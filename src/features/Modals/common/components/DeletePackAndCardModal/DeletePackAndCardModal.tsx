@@ -8,7 +8,8 @@ import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 export type NeedsPropsToDeleteCardOrPack = {
     id: string
     name?: string
-    children?:ReactNode
+    children?: ReactNode
+    className?: string
 }
 type PT = NeedsPropsToDeleteCardOrPack & {
     actionHandler: (value: NeedsPropsToDeleteCardOrPack) => Promise<void>
@@ -22,7 +23,7 @@ export const DeletePackAndCardModal =
          actionHandler,
          children,
          isControlDisabled,
-         shouldModalClose,
+         ...rest
      }: PT) => {
         const deletePackButtonHandler = async () => {
             await actionHandler({
@@ -35,7 +36,6 @@ export const DeletePackAndCardModal =
             isIcon
             title={`Delete ${type}`}
             buttonContent={<DeleteOutline/>}
-            shouldModalClose={shouldModalClose}
             inputsChildrenSection={
                 <SP>
                     Do you really wanna to remove
@@ -58,7 +58,8 @@ export const DeletePackAndCardModal =
                     disabled={isControlDisabled}>
                     Delete
                 </Button>
-            }>
+            }
+            {...rest}>
             {children}
         </BasicModal>
     };

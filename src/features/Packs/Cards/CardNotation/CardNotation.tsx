@@ -5,8 +5,9 @@ import {EditCardModal, EditCardModalPT} from "features/Modals/EditCardModal/Edit
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
 import {NotationGrade} from "features/Packs/Cards/CardNotation/NotationGrade/NotationGrade";
 import styled from "styled-components";
+import {IconButtonStyles} from "common/components/CommonStyledComponents";
 
-type PT = EditCardModalPT &{
+type PT = EditCardModalPT & {
     updated: string
     grade: number
     isOwner: boolean
@@ -40,20 +41,26 @@ export const CardNotation =
                 <td>{updated}</td>
                 <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
-                    <EditCardModal
+                    <SEditCardModal
                         question={question}
                         questionImg={questionImg}
                         answer={answer}
                         answerImg={answerImg}
                         id={id}/>
-                    <DeleteCardModal id={id}/>
+                    <SDeleteCardModal id={id}/>
                 </SNotationActionButtons>
                 }
             </SNotation>
         );
     };
+const SEditCardModal = styled(EditCardModal)`
+    ${IconButtonStyles}
+`
+const SDeleteCardModal = styled(DeleteCardModal)`
+    ${IconButtonStyles}
+`
 const SImage = styled.img`
-    height:70px
+    height: 70px
 `
 const STd = styled.td`
     width: 20vw;

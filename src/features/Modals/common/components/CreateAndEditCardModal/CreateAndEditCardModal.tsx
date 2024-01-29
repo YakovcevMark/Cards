@@ -11,7 +11,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {DriveFileRenameOutline} from "@styled-icons/material-outlined";
 
 type AddAndEditCardModalFT = Omit<Partial<EditCardModalPT>, "_id">
-type PT = Partial<EditCardModalPT> & Pick<BasicModalPT, "resetQuery" | "shouldModalClose"> & {
+type PT = Partial<EditCardModalPT> & Pick<BasicModalPT, "resetQuery" | "shouldModalClose" | "className" | "children"> & {
     cardsPack_id?: string
     id?: string
     type: "Edit" | "Create"
@@ -26,12 +26,12 @@ export const CreateAndEditCardModal =
          type,
          actionHandler,
          isControlDisabled,
-         resetQuery,
          answer,
-         shouldModalClose,
          questionImg,
          question,
-         answerImg
+         answerImg,
+         children,
+        ...rest
      }: PT) => {
 
         const [questionImage, setQuestionImage] = useState(questionImg || "")
@@ -71,8 +71,6 @@ export const CreateAndEditCardModal =
                         : "Create new Card"
                 }
                 title={`${type} pack`}
-                shouldModalClose={shouldModalClose}
-                resetQuery={resetQuery}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>
@@ -102,7 +100,10 @@ export const CreateAndEditCardModal =
                         disabled={isControlDisabled}>
                         {`${type}`}
                     </Button>
-                }/>
+                }
+                {...rest}>
+                {children}
+            </BasicModal>
         );
     };
 

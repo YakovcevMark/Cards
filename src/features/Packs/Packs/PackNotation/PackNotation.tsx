@@ -2,11 +2,11 @@ import React from 'react';
 import {School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
 import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
-import {Button} from "common/components/Button/Button";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {SCover, SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
+import {IconButtonStyles, SIconButton} from "common/components/CommonStyledComponents";
 import styled from "styled-components";
 
 type PT = {
@@ -54,19 +54,18 @@ export const PackNotation =
                 <td>{updated}</td>
                 <td>{stringLengthHandler(userName)}</td>
                 <SNotationActionButtons>
-                    <Button
+                    <SIconButton
                         disabled={isNotationDisabled}
-                        onClick={schoolButtonHandler}
-                        icon>
+                        onClick={schoolButtonHandler}>
                         <School/>
-                    </Button>
+                    </SIconButton>
                     {isOwner && <>
-                        <EditPackModal
+                        <SEditPackModal
                             id={id}
                             name={packName}
                             isPrivatePack={isPrivate}
                             deckCover={deckCover}/>
-                        <DeletePackModal
+                        <SDeletePackModal
                             id={id}
                             name={packName}/>
                     </>
@@ -75,3 +74,9 @@ export const PackNotation =
             </SNotation>
         );
     };
+const SDeletePackModal = styled(DeletePackModal)`
+    ${IconButtonStyles}
+`
+const SEditPackModal = styled(EditPackModal)`
+    ${IconButtonStyles}
+`

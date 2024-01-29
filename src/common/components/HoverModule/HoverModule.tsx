@@ -1,5 +1,5 @@
 import React, {ReactNode, useState} from 'react';
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 type PT = {
     className?: string
@@ -26,8 +26,7 @@ export const HoverModule =
             </SHoverModule>
         );
     };
-
-export const SButtonWithIcon = styled.button`
+export const ButtonWithIconStyles = css`
     width: 100%;
     display: grid;
     grid-template-columns: 1vh 1fr;
@@ -37,7 +36,8 @@ export const SButtonWithIcon = styled.button`
     border: none;
     //background-color: burlywood;
     background-color: white;
-
+    color:black;
+    border-radius: 0;
     svg {
         width: 2vh;
         padding-right: 1vh;
@@ -55,16 +55,12 @@ export const SButtonWithIcon = styled.button`
     &:enabled:hover {
         background-color: #d2d2d2;
         cursor: pointer;
+        
     }
 
-
 `
-const SModule = styled.section`
-    border: 1px rgba(0, 0, 0, 0.47) solid;
-    position: absolute;
-    top: 7vh;
-    right: 3vh;
-    z-index: 99;
+export const SButtonWithIcon = styled.button`
+    ${ButtonWithIconStyles}
 `
 export const SHoverModule = styled.div`
     //background-color: blueviolet;

@@ -108,11 +108,11 @@ export const Packs = () => {
 
             <SSetting>
                 <STitle>Clear</STitle>
-                <SButton
-                    icon
+                <Button
+                    className="icon"
                     onClick={() => setSearchParams({})}>
                     <RestartAlt/>
-                </SButton>
+                </Button>
             </SSetting>
         </SSettingsSection>
         {
@@ -184,10 +184,10 @@ export const Packs = () => {
     </SPackPagesContainer>
 };
 
-const SButton = styled(Button)`
-    width: 100%;
-    height: 100%;
-`
+// const SSIconButton = styled(SIconButton)`
+//     width: 100%;
+//     height: 100%;
+// `
 const SSearchInput = styled.input`
     border: 1px solid rgba(0, 0, 0, 0.2)
 `

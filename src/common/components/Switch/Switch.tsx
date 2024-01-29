@@ -40,6 +40,7 @@ const SButtonSection = styled.section<{ $length: number }>`
     width: 100%;
     grid-template-columns: repeat(${props => props.$length}, 1fr);
     button {
+        border: 1px solid rgba(0, 0, 0, 0.2);
         font-size: 20px;
         width:100%;
         &:hover:enabled{

@@ -1,4 +1,37 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
+import {secondColor} from "assets/stylesheets/colors";
+import {Button} from "common/components/Button/Button";
+export const IconButtonStyles = css`
+    border: none;
+    border-radius: 0;
+    width: 4vh;
+    height: 4vh;
+    background: transparent;
+    color: black;
+    box-shadow: none;
+
+    svg {
+        width: 3vh;
+        height: 3vh;
+    }
+
+    &:disabled {
+        color: rgba(0, 0, 0, 0.7);
+    }
+
+    &:hover:enabled {
+        svg {
+            fill: ${secondColor};
+        }
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+`
+export const SIconButton = styled(Button)`
+    ${IconButtonStyles}
+`
 export const SDopInputControl = styled.div`
     position: absolute;
     top: 15px;

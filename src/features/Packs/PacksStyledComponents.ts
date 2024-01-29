@@ -37,10 +37,6 @@ export const SSetting = styled.article`
     grid-template-rows: 1fr 3fr;
     height: 10vh;
 
-    button {
-        border: 1px solid rgba(0, 0, 0, 0.2)
-    }
-
     label {
         position: relative;
     }

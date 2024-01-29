@@ -25,7 +25,7 @@ import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
-import {SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
+import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
 
 
 export const Cards = () => {
@@ -89,24 +89,19 @@ export const Cards = () => {
                     {isOwner && <span>
                         <Tune/>
                           <SSHoverModule>
-                               <SButtonWithIcon>
-                                  <EditPackModal
+                                  <SEditPackModal
                                       id={cardsPack_id!}
                                       name={packData.packName}
                                       isPrivatePack={packData.packPrivate}
                                       deckCover={packData?.packDeckCover}>
-                                  </EditPackModal>
                                   <span>Edit</span>
-                               </SButtonWithIcon>
-                              <SButtonWithIcon>
-                                  <DeletePackModal
+                                  </SEditPackModal>
+                                  <SDeletePackModal
                                       id={cardsPack_id!}
                                       name={packData.packName}>
-                                  </DeletePackModal>
-                                  <span>Delete</span>
-                              </SButtonWithIcon>
+                                         <span>Delete</span>
+                                  </SDeletePackModal>
                               <SButtonWithIcon
-                                  // icon
                                   disabled={!Boolean(packData.cards.length)}
                                   onClick={schoolButtonHandler}>
                                 <School/>
@@ -208,7 +203,12 @@ export const Cards = () => {
 
         </SSPackPagesContainer>
 };
-
+const SEditPackModal = styled(EditPackModal)`
+    ${ButtonWithIconStyles}
+`
+const SDeletePackModal = styled(DeletePackModal)`
+    ${ButtonWithIconStyles}
+`
 const SSCover = styled(SCover)`
     height: 10vh;
 `

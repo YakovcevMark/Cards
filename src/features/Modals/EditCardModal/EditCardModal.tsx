@@ -10,6 +10,7 @@ export type EditCardModalPT = {
     questionImg: string
     answer: string
     answerImg: string
+    className?:string
 }
 export const EditCardModal =
     (props: EditCardModalPT) => {
