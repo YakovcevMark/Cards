@@ -26,18 +26,18 @@ export const CardNotation =
      }: PT) => {
         return (
             <SNotation>
-                <STd>
+                <td>
                     {questionImg
                         ? <SImage src={questionImg} alt={"questionImg"}/>
                         : stringLengthHandler(question)
                     }
-                </STd>
-                <STd>
+                </td>
+                <td>
                     {answerImg
                         ? <SImage src={answerImg} alt={"answerImg"}/>
                         : stringLengthHandler(answer)
                     }
-                </STd>
+                </td>
                 <td>{updated}</td>
                 <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
@@ -60,8 +60,5 @@ const SDeleteCardModal = styled(DeleteCardModal)`
     ${IconButtonStyles}
 `
 const SImage = styled.img`
-    height: 70px
-`
-const STd = styled.td`
-    width: 20vw;
+    height: 80px
 `

@@ -54,7 +54,7 @@ const SButton = styled.button<{ color?: string }>`
     &:hover:enabled {
         -webkit-box-shadow: inset 0 0 0 1px ${antoColor};
         -moz-box-shadow: inset 0 0 0 1px ${antoColor};
-        box-shadow: inset 0 0 0 1px ${antoColor};
+        box-shadow: 0 4px 18px 10px ${buttonShadow};
         cursor: pointer;
     }
 

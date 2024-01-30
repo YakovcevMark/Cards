@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SPackPagesContainer = styled.div`
     display: grid;
-    grid-template-rows: 1fr 1fr 5fr 1fr;
+    grid-template-rows: 1fr 1fr auto auto;
     grid-gap: 2vh;
 
 `
@@ -52,15 +52,26 @@ export const SSetting = styled.article`
 export const STableSection = styled.section`
     height: auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.58);
-    box-shadow: 1px 2px 7px black;
+
+
     table {
-        thead{
-            margin-top: 1vh;
-        }
         width: 100%;
         border-spacing: 0;
         border-collapse: collapse;
         table-layout: fixed;
+
+        thead {
+            margin-top: 1vh;
+
+            th {
+                width: 13vw;
+            }
+
+            th:last-child {
+                width: 5vw;
+            }
+        }
+
 
         tr:nth-child(2n) {
             background-color: #e1e1e1;
@@ -71,6 +82,24 @@ export const STableSection = styled.section`
 
         }
 
+        thead, tbody, tr {
+            display: table;
+            width: 100%;
+        }
+
+        tbody {
+            display: block;
+            height: 500px;
+            overflow: auto;
+
+            td {
+                width: 13.5vw;
+            }
+
+            td:last-child {
+                width: 5vw;
+            }
+        }
 
     }
 
@@ -87,7 +116,6 @@ export const STableSection = styled.section`
     }
 `
 export const SNotationName = styled.td`
-    width: 40vh;
     justify-self: start;
 
     div {

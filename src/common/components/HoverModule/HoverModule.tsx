@@ -1,5 +1,5 @@
 import React, {ReactNode, useState} from 'react';
-import styled, {css} from "styled-components";
+import {SHoverModule} from "common/components/CommonStyledComponents";
 
 type PT = {
     className?: string
@@ -19,56 +19,13 @@ export const HoverModule =
                 className={className}
                 onMouseEnter={() => setSeeMode(true)}
                 onMouseLeave={() => setSeeMode(false)}>
+                {moduleChildrenBody}
                 {seeMode && <section>
-                    {moduleChildrenBody}
+                    {children}
                 </section>}
-                {children}
             </SHoverModule>
         );
     };
-export const ButtonWithIconStyles = css`
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1vh 1fr;
-    grid-gap: 15px;
-    align-items: center;
-    padding: 1vh;
-    border: none;
-    //background-color: burlywood;
-    background-color: white;
-    color:black;
-    border-radius: 0;
-    svg {
-        width: 2vh;
-        padding-right: 1vh;
 
-        &:enabled {
-            fill: black;
-        }
-    }
 
-    span {
-        justify-self: start;
-        padding-left: 1vh;
-    }
 
-    &:enabled:hover {
-        background-color: #d2d2d2;
-        cursor: pointer;
-        
-    }
-
-`
-export const SButtonWithIcon = styled.button`
-    ${ButtonWithIconStyles}
-`
-export const SHoverModule = styled.div`
-    //background-color: blueviolet;
-    display: none;
-    border: 1px rgba(0, 0, 0, 0.47) solid;
-    position: absolute;
-    top: 7vh;
-    right: 3vh;
-    z-index: 99;
-    width: 100%;
-`

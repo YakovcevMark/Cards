@@ -7,10 +7,8 @@ import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
 import {useInitializeMutation, useLogoutMutation} from "features/authPages/authApi";
 import {useApiErrorsHandler} from "common/hooks/hooks";
-import {SAvatarImg} from "common/components/CommonStyledComponents";
+import {SAvatarImg, SButtonWithIcon, SHoverModule} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
-import {SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
-
 
 export const Header =
     () => {
@@ -69,6 +67,8 @@ const SSAvatarImg = styled(SAvatarImg)`
 
 const SSHoverModule = styled(SHoverModule)`
     top: 6vh;
+    right: 5vw;
+
 `
 const SRobotSVG = styled.div`
     svg {

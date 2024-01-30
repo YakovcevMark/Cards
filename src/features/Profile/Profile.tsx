@@ -15,7 +15,7 @@ import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
 import {
     SAvatarImg,
     SDopInputControl,
-    SHelperText,
+    SHelperText, SIconButton,
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
@@ -93,13 +93,13 @@ export const Profile = () => {
             <>
                 <span>
                     {data!.name}
-                    <Button
+                    <SIconButton
                         icon
                         onClick={() => {
                             setEditMode(mode => !mode)
                         }}>
                     <DriveFileRenameOutline/>
-                </Button>
+                </SIconButton>
                 </span>
             </>
         )

@@ -51,16 +51,15 @@ export const useAppSearchParams = () => {
 /**
  * useSearchWithDelay - custom hook, witch return same functional as `useState`
  * and trigger the function after `delay`, with value, that it's `useState` gave you.
- * @param initValue - initialValue
  * @param triggerFn - some function, would you like to trigger after delay
  * @param delay - delay of trigger your function
+ * @param initValue - initialValue
  */
-export const useSearchWithDelay = (initValue = "", triggerFn: any, delay = 1000) => {
+export const useSearchWithDelay = (triggerFn: any, delay = 1000, initValue = "") => {
     const [value, setValue] = useState(initValue);
 
     useEffect(() => {
         const timerId = setTimeout(() => {
-            // console.log(value)
             if (value !== initValue)
                 triggerFn(value)
         }, delay)

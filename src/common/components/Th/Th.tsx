@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Eject} from "@styled-icons/material";
 
-type PT = {
+export type ThPT = {
     filterValue: string
     searchValue: string
     children?: ReactNode
@@ -15,7 +15,7 @@ export const Th =
          searchValue,
          children,
          onChange
-     }: PT) => {
+     }: ThPT) => {
 
         const [mode, setMode] = useState<"firstMode" | "secondMode" | "default">("default")
         const changeModeHandler = () => {

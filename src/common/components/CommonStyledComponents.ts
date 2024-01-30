@@ -1,6 +1,58 @@
 import styled, {css} from "styled-components";
 import {secondColor} from "assets/stylesheets/colors";
 import {Button} from "common/components/Button/Button";
+export const SHoverModule = styled.div`
+    display: none;
+    box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.45);
+    position: absolute;
+    top: 7vh;
+    right: 3vh;
+    z-index: 99;
+`
+export const ButtonWithIconStyles = css`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1vh 1fr;
+    grid-gap: 15px;
+    align-items: center;
+    padding: 1vh;
+    border: none;
+    background-color: white;
+    color: black;
+    border-radius: 0;
+
+    svg {
+        width: 2vh;
+        padding-right: 1vh;
+
+        &:enabled {
+            fill: black;
+        }
+    }
+
+    span {
+        justify-self: start;
+        padding-left: 1vh;
+    }
+
+    &:enabled:hover {
+        background-color: #d2d2d2;
+        cursor: pointer;
+
+    }
+
+    &:disabled {
+        opacity: 0.7;
+
+        svg {
+            fill: rgba(0, 0, 0, 0.7);
+        }
+    }
+
+`
+export const SButtonWithIcon = styled(Button)`
+    ${ButtonWithIconStyles}
+`
 export const IconButtonStyles = css`
     border: none;
     border-radius: 0;
@@ -27,7 +79,19 @@ export const IconButtonStyles = css`
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
+        border: none;
     }
+
+    &:hover {
+        &:disabled {
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            border: none;
+            cursor:auto;
+        }
+    }
+}
 `
 export const SIconButton = styled(Button)`
     ${IconButtonStyles}
@@ -70,13 +134,17 @@ export const STitle = styled.h1`
 `
 
 export const SPagesContainer = styled.div`
-  align-self: center;
-  justify-self: center;
-  padding-top: 20px;
-  border-radius: 10px;
-  width: 500px;
-  height: 65vh;
-  background: white;
+    box-shadow: 1px 3px 10px 2px rgba(0, 0, 0, 0.6);
+    align-self: center;
+    justify-self: center;
+    padding-top: 20px;
+    border-radius: 10px;
+    width: 500px;
+    height: 65vh;
+    background: white;
+    @media (max-width: 526px) {
+        width: 100%;
+    }
 `
 export const SForm = styled.form`
     display: grid;

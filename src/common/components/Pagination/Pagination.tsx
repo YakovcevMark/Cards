@@ -11,6 +11,7 @@ export type PaginationPT = {
     pageSizeChanged: (p: string) => void
     portionSize?: number
     itemsName?: string
+    disabled?:boolean
 }
 export const Pagination = memo(
     ({
@@ -20,6 +21,7 @@ export const Pagination = memo(
          pageSize,
          currentPage,
          pageChanged,
+        disabled,
          portionSize = 5
      }: PaginationPT) => {
         const [portionNumber, setPortionNumber] = useState(1);
@@ -38,7 +40,7 @@ export const Pagination = memo(
             <StyledPagination>
 
                 <button
-                    disabled={portionNumber <= 1}
+                    disabled={portionNumber <= 1 || disabled}
                     onClick={() => setPortionNumber(portionNumber - 1)}>
                     <ChevronLeft/>
                 </button>
@@ -50,14 +52,15 @@ export const Pagination = memo(
                                            className={currentPage === p ? "selectedPage" : "paginationItem"}
                                            onClick={() => {
                                                pageChanged(p);
-                                           }}>
+                                           }}
+                                           disabled={disabled}>
                                 {p}
                             </button>
                         })
                 }
 
                 <button
-                    disabled={portionCount === portionNumber}
+                    disabled={portionCount === portionNumber || disabled}
                     onClick={() => setPortionNumber(portionNumber + 1)}>
                     <ChevronRight/>
                 </button>
@@ -66,9 +69,10 @@ export const Pagination = memo(
                     Show&nbsp;
                     <select
                         value={pageSize}
-                        onChange={e => pageSizeChanged(e.currentTarget.value)}>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
+                        onChange={e => pageSizeChanged(e.currentTarget.value)}
+                        disabled={disabled}>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                     &nbsp;{itemsName ? itemsName : "Items"} per Page
                 </span>
@@ -82,14 +86,12 @@ const StyledPagination = styled.section`
     align-self: center;
     display: flex;
     justify-content: center;
-    //padding: 5px;
 
     span {
         align-self: center;
     }
 
     button {
-        //background-color: blueviolet;
         border: none;
         border-radius: 3px;
         padding: 10px 15px;
@@ -102,7 +104,6 @@ const StyledPagination = styled.section`
     }
 
     svg {
-        //background-color: burlywood;
         width: 20px;
     }
 
@@ -111,9 +112,6 @@ const StyledPagination = styled.section`
         font-weight: bold;
         //padding: 0 20px;
     }
-
-    .paginationItem {
-        //padding: 0 5px;
-    }
+    
 
 `

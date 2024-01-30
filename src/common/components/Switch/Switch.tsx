@@ -8,6 +8,7 @@ type PT = {
     changeHandler: (value: string) => void
     condition: string
     className?: string
+    disabled?: boolean
 }
 export const Switch =
     ({
@@ -16,6 +17,7 @@ export const Switch =
          className,
          changeHandler,
          condition,
+        disabled
      }: PT) =>
         <SButtonSection
             $length={optionsValues.length}
@@ -27,7 +29,8 @@ export const Switch =
                         type={"button"}
                         className={condition === o ? "active" : ""}
                         onClick={() => changeHandler(o)}
-                        value={o}>
+                        value={o}
+                        disabled={disabled}>
                         {optionsNames[i]}
                     </button>
                 )
@@ -39,14 +42,26 @@ const SButtonSection = styled.section<{ $length: number }>`
     display: grid;
     width: 100%;
     grid-template-columns: repeat(${props => props.$length}, 1fr);
+
     button {
         border: 1px solid rgba(0, 0, 0, 0.2);
         font-size: 20px;
-        width:100%;
-        &:hover:enabled{
-            cursor: pointer;
+        width: 100%;
+
+        &:hover {
+            &:enabled {
+                cursor: pointer;
+                border: 1px solid rgba(0, 0, 0, 0.5);
+            }
+            
+            &:disabled {
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                cursor: auto;
+            }
         }
+
     }
+
     .active {
         color: white;
         background-color: ${secondColor};

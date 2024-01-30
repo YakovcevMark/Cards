@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Button} from "common/components/Button/Button";
-import {Th} from "common/components/Th/Th";
 import {Pagination} from "common/components/Pagination/Pagination";
 import styled from "styled-components";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
@@ -10,14 +9,12 @@ import {
     SNoSuchItemMessage,
     SPackPagesContainer,
     SSetting,
-    SSettingsSection,
-    STableSection
+    SSettingsSection
 } from "../PacksStyledComponents";
-import {STitle} from "common/components/CommonStyledComponents";
+import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
 import {useInitializeMutation} from "../../authPages/authApi";
-import {CardNotation} from "./CardNotation/CardNotation";
-import {useApiErrorsHandler, useAppSearchParams, useSearchWithDelay} from "common/hooks/hooks";
+import {useApiErrorsHandler, useAppSearchParams} from "common/hooks/hooks";
 import {useLazyGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
@@ -25,30 +22,32 @@ import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
-import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule} from "common/components/HoverModule/HoverModule";
+import {CardsTable} from "features/Packs/Cards/CardsTable/CardsTable";
+import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 
 
 export const Cards = () => {
     const {cardsPack_id} = useParams()
-    const {searchParams, useMySetSearchParams} = useAppSearchParams();
     const [isOwner, setIsOwner] = useState(false)
     const nav = useNavigate()
-
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
+
     const [fetchCards, {
         data: packData,
         isError: haveNotSuchPack,
+        isFetching: isCardsFetching
     }] = useLazyGetCardsQuery({
         refetchOnReconnect: true,
     })
-
     const fetchCardsValidator = useApiErrorsHandler(fetchCards)
+
+    const {searchParams, useMySetSearchParams} = useAppSearchParams();
 
     const fetchParams = useMemo(() => {
         return {
-            cardQuestion: searchParams.get("cardQuestion") || "",
+            cardQuestion: searchParams.get("cardQuestion") || undefined,
             sortCards: searchParams.get("sortCards") || "0grade",
             pageCount: searchParams.get("pageCount") || "10",
             page: searchParams.get("page") || "1",
@@ -60,7 +59,7 @@ export const Cards = () => {
             cardsPack_id,
             ...fetchParams
         })
-    }, [fetchCardsValidator, fetchParams, cardsPack_id]);
+    }, [fetchParams, cardsPack_id]);
     useEffect(() => {
         packData
         && userData
@@ -68,12 +67,7 @@ export const Cards = () => {
     }, [packData, userData]);
 
     const setPageSearchParam = useMySetSearchParams("page")
-    const setSortCardsSearchParam = useMySetSearchParams("sortCards")
-    const setCardQuestionSearchParam = useMySetSearchParams("cardQuestion")
     const setPageCountSearchParam = useMySetSearchParams("pageCount")
-
-    const [cardQuestion, setCardQuestion] = useSearchWithDelay(fetchParams.cardQuestion, setCardQuestionSearchParam, 1500)
-
 
     if (haveNotSuchPack) {
         return <Navigate to={PATH.packs}/>
@@ -126,69 +120,18 @@ export const Cards = () => {
             <SSettingsSection>
                 <SSetting>
                     <STitle>Search</STitle>
-                    <StyledSearchInput
-                        type={"search"}
+                    <SearchInput
+                        disabled={isCardsFetching}
+                        searchName={"cardQuestion"}
                         placeholder={"Provide tour text"}
-                        value={cardQuestion}
-                        onChange={(e) => setCardQuestion(e.currentTarget.value)}
                     />
                 </SSetting>
             </SSettingsSection>
             {packData.cards.length
                 ? <>
-                    <STableSection>
-                        <table>
-                            <thead>
-                            <tr>
-                                <Th
-                                    filterValue={"question"}
-                                    onChange={setSortCardsSearchParam}
-                                    searchValue={fetchParams.sortCards}>
-                                    Question
-                                </Th>
-                                <Th
-                                    filterValue={"answer"}
-                                    onChange={setSortCardsSearchParam}
-                                    searchValue={fetchParams.sortCards}>
-                                    Answer
-                                </Th>
-                                <Th
-                                    filterValue={"updated"}
-                                    onChange={setSortCardsSearchParam}
-                                    searchValue={fetchParams.sortCards}>
-                                    Last Updated
-                                </Th>
-                                <Th
-                                    filterValue={"grade"}
-                                    onChange={setSortCardsSearchParam}
-                                    searchValue={fetchParams.sortCards}>
-                                    Grade
-                                </Th>
-                                {isOwner && <th>Actions</th>}
-                            </tr>
-                            </thead>
-                        </table>
-                        <div style={{overflowX: "auto", height: "500px"}}>
-                            <table>
-
-                                <tbody>
-                                {packData.cards.map(c => <CardNotation
-                                    key={c._id}
-                                    id={c._id}
-                                    question={c.question}
-                                    questionImg={c.questionImg}
-                                    answer={c.answer}
-                                    answerImg={c.answerImg}
-                                    updated={c.updated}
-                                    grade={c.grade}
-                                    isOwner={isOwner}/>)
-                                }
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </STableSection>
+                    <CardsTable isOwner={isOwner} cards={packData.cards}/>
                     <Pagination
+                        disabled={isCardsFetching}
                         itemsName={"Cards"}
                         currentPage={packData.page}
                         totalItemsCount={packData.cardsTotalCount}
@@ -213,35 +156,26 @@ const SSCover = styled(SCover)`
     height: 10vh;
 `
 const SSPackPagesContainer = styled(SPackPagesContainer)`
-    grid-template-rows: 3vh 5vh 1fr 5fr auto;
-`
-const StyledSearchInput = styled.input`
-    border: 1px solid rgba(0, 0, 0, 0.2)
+    grid-template-rows: 3vh 5vh 1fr auto auto;
 `
 const SSTitle = styled(STitle)`
     height: 5vh;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-
     span {
         position: relative;
-
         &:hover {
             div {
                 display: grid;
             }
         }
-
         padding-right: 1vw;
     }
-
     svg {
-        padding-left: 10px;
         width: 3vh;
     }
 `
 const SSHoverModule = styled(SHoverModule)`
-    width: 100%;
-    top: 3vh;
-    left: 3vh;
+    top: 4vh;
+    left: -12vh;
 `

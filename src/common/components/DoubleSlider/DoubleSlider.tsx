@@ -5,9 +5,9 @@ import {secondColor} from "assets/stylesheets/colors";
 type PT = {
     min: number,
     max: number,
-    // imageHandler: ({min, max}: { min: number, max: number }) => void
     onMouseUpMin: (value: string) => void
     onMouseUpMax: (value: string) => void
+    disabled?:boolean
 }
 export const DoubleSlider = memo(
     ({
@@ -15,13 +15,13 @@ export const DoubleSlider = memo(
          max,
          onMouseUpMin,
          onMouseUpMax,
-         // imageHandler
+         disabled,
      }: PT) => {
         const [minVal, setMinVal] = useState(min);
         const [maxVal, setMaxVal] = useState(max);
         const range = useRef<HTMLDivElement>(null);
 
-        // Convert to percentage
+
         const getPercent = useCallback(
             (value: number) => Math.round(((value - min) / (max - min)) * 100),
             [min, max]
@@ -30,7 +30,7 @@ export const DoubleSlider = memo(
             setMaxVal(max)
             setMinVal(min)
         }, [max,min]);
-        // Set width of the range to decrease from the left side
+
         useEffect(() => {
             const minPercent = getPercent(minVal);
             const maxPercent = getPercent(maxVal);
@@ -40,7 +40,6 @@ export const DoubleSlider = memo(
             }
         }, [minVal, maxVal, getPercent]);
 
-        // Set width of the range to decrease from the right side
         useEffect(() => {
             const minPercent = getPercent(minVal);
             const maxPercent = getPercent(maxVal);
@@ -49,29 +48,12 @@ export const DoubleSlider = memo(
             }
         }, [maxVal, minVal, getPercent]);
 
-        // Get min and max values when their state changes
-        // useEffect(() => {
-        //     imageHandler({min: +minVal, max: +maxVal});
-        // }, [minVal, maxVal, imageHandler]);
+
 
         return (
             <StyledSlider>
                 <div className="slider__left-value">
                     {minVal}
-                    {/*<input*/}
-                    {/*    type="number"*/}
-                    {/*    value={minVal}*/}
-                    {/*    min={min}*/}
-                    {/*    max={+maxVal - 1}*/}
-                    {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                    {/*    imageHandler={(e) => {*/}
-                    {/*        const val = +e.currentTarget.value*/}
-                    {/*        if (!val || val > maxVal || val < min)*/}
-                    {/*            setMinVal(min)*/}
-                    {/*        else*/}
-                    {/*            setMinVal(val)*/}
-                    {/*    }}*/}
-                    {/*/>*/}
                 </div>
                 <input
                     type="range"
@@ -81,12 +63,11 @@ export const DoubleSlider = memo(
                     onChange={(event) => {
                         const value = Math.min(Number(event.target.value), maxVal - 1);
                         setMinVal(value);
-                        // onChangeMin()
                     }}
                     onMouseUp={e => onMouseUpMin(e.currentTarget.value)}
                     className="thumb thumb--left"
-                    // style={{zIndex: minVal > max - 100 && "5"}}
                     style={{zIndex: 5}}
+                    disabled={disabled}
                 />
                 <input
                     type="range"
@@ -99,30 +80,14 @@ export const DoubleSlider = memo(
                     }}
                     onMouseUp={e => onMouseUpMax(e.currentTarget.value)}
                     className="thumb thumb--right"
+                    disabled={disabled}
                 />
                 <div className="slider__right-value">
                     <span>{maxVal}</span>
-
-                    {/*<input*/}
-                    {/*    type="number"*/}
-                    {/*    value={maxVal}*/}
-                    {/*    min={+minVal + 1}*/}
-                    {/*    max={max}*/}
-                    {/*    style={{width: "40px", height: "25px", marginLeft: "-10px"}}*/}
-                    {/*    imageHandler={(e) => {*/}
-                    {/*        const val = +e.currentTarget.value*/}
-                    {/*        if (!val || val < minVal || val > max)*/}
-                    {/*            setMaxVal(max)*/}
-                    {/*        else*/}
-                    {/*            setMaxVal(val)*/}
-                    {/*    }}*/}
-                    {/*/>*/}
                 </div>
                 <div className="slider">
                     <div className="slider__track"/>
                     <div ref={range} className="slider__range"/>
-
-
                 </div>
             </StyledSlider>
         );

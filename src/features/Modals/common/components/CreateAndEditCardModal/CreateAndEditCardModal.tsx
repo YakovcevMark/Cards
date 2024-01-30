@@ -64,13 +64,12 @@ export const CreateAndEditCardModal =
         }
         return (
             <BasicModal
-                isIcon={type === "Edit"}
                 buttonContent={
                     type === "Edit"
                         ? <DriveFileRenameOutline/>
-                        : "Create new Card"
+                        : "Create new card"
                 }
-                title={`${type} pack`}
+                title={`${type} card`}
                 setFormSubmit={handleSubmit(onSubmit)}
                 inputsChildrenSection={
                     <>

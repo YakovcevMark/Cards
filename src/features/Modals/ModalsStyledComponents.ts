@@ -12,7 +12,7 @@ export const SModalContent = styled(SPagesContainer)`
     box-shadow: 0 0 1vh ${secondColor};
     background: white;
     border-radius: 3px;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     margin-right: -50%;

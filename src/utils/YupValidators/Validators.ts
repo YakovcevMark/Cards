@@ -13,9 +13,9 @@ export const CreateAndEditPackSchema = yup
     })
 export const CreateAndEditCardSchema = yup
     .object({
-        question: yup.string().min(1).max(100).optional(),
+        question: yup.string().optional(),
         questionImg: yup.string().optional(),
-        answer: yup.string().min(1).max(100).optional(),
+        answer: yup.string().optional(),
         answerImg: yup.string().optional(),
     })
 export const RegisterSchema = yup
