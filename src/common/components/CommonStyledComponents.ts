@@ -38,12 +38,11 @@ export const ButtonWithIconStyles = css`
     &:enabled:hover {
         background-color: #d2d2d2;
         cursor: pointer;
-
+        box-shadow: none;
     }
 
     &:disabled {
-        opacity: 0.7;
-
+        
         svg {
             fill: rgba(0, 0, 0, 0.7);
         }

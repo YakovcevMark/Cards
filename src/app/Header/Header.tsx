@@ -67,8 +67,7 @@ const SSAvatarImg = styled(SAvatarImg)`
 
 const SSHoverModule = styled(SHoverModule)`
     top: 6vh;
-    right: 5vw;
-
+    right: 1vw;
 `
 const SRobotSVG = styled.div`
     svg {
@@ -86,15 +85,15 @@ const StyledHeader = styled.header`
 const Avatar = styled.div`
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
     grid-gap: 10px;
     align-items: center;
     position: relative;
+    justify-items: end;
 
 `
 const ControlSection = styled.span`
     height: 100%;
-    margin-right: 10px;
     justify-self: end;
     display: grid;
     align-content: center;

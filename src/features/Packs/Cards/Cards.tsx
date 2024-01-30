@@ -177,5 +177,6 @@ const SSTitle = styled(STitle)`
 `
 const SSHoverModule = styled(SHoverModule)`
     top: 4vh;
-    left: -12vh;
+    left: -8vh;
+    box-shadow: none;
 `
