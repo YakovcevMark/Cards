@@ -71,10 +71,10 @@ export const Profile = () => {
         isLogOutSuccess && nav(PATH.login)
     }, [isLogOutSuccess, nav]);
 
-    let content = editMode
+    let content = editMode && data
         ? (
             <>
-                <Input
+                <SInput
                     placeholder={"Name"}
                     disabled={loadingUpdate}
                     error={errors.name?.message}
@@ -87,7 +87,7 @@ export const Profile = () => {
                             save
                         </Button>
                     </SDopInputControl>
-                </Input>
+                </SInput>
             </>
         ) : (
             <>
@@ -137,7 +137,9 @@ export const Profile = () => {
         </SForm>
     </>
 };
-
+const SInput = styled(Input)`
+    width:90%
+`
 const SLogOutIcon = styled(Logout)`
     width: 2vh;
 `

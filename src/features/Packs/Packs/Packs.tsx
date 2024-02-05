@@ -16,7 +16,6 @@ import {useApiErrorsHandler, useAppSearchParams} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {CreatePackModal} from "features/Modals/CreatePackModal/CreatePackModal";
 import {Switch} from "common/components/Switch/Switch";
-import {Button} from "common/components/Button/Button";
 import {PacksTable} from "features/Packs/Packs/PacksTable/PacksTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 

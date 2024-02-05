@@ -59,7 +59,7 @@ export const Cards = () => {
             cardsPack_id,
             ...fetchParams
         })
-    }, [fetchParams, cardsPack_id]);
+    }, [fetchCardsValidator, fetchParams, cardsPack_id]);
     useEffect(() => {
         packData
         && userData

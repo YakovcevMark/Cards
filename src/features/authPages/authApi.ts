@@ -65,7 +65,7 @@ export const authApi = createApi({
                     message: `<div style="background-color: lime; padding: 15px">
                                 password recovery link
                                 <a 
-                                    href='http://localhost:3000/#/set-new-password/$token$'>
+                                  href='https://yakovcevmark.github.io/Cards/#/auth/passwordNew/$token$'>
                                 link
                                 </a>
                              </div>`,

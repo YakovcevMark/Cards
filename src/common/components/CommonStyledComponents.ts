@@ -96,6 +96,7 @@ export const SIconButton = styled(Button)`
     ${IconButtonStyles}
 `
 export const SDopInputControl = styled.div`
+    z-index: 2;
     position: absolute;
     top: 15px;
     right: 30px;

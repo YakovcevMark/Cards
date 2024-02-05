@@ -65,7 +65,7 @@ export const router = createHashRouter([{
             path: PATH.register,
             element: <Register/>
         }, {
-            path: PATH.passwordNew,
+            path: `${PATH.passwordNew}/:token`,
             element: <PasswordNew/>
         }, {
             path: PATH.passwordRecovery,

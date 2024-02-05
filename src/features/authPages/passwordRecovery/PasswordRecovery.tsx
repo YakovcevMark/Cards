@@ -10,38 +10,43 @@ import {EmailSchema} from "utils/YupValidators/Validators";
 import {useRecoveryPasswordMutation} from "../authApi";
 import {
     SButtonControl,
-    SControlSection, SForm,
+    SControlSection,
+    SForm,
     SHelperText,
     SInputsSection,
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
+import {useApiErrorsHandler} from "common/hooks/hooks";
 
 type RecoveryValues = { email: string }
 export const PasswordRecovery = () => {
 
-    const [recoveryPassport, {isLoading}] = useRecoveryPasswordMutation()
-    const [email, setEmail] = useState<string>("")
+    const [recoveryPassport, {
+        isLoading: isSendingInstructions,
+        isSuccess: isInstructionsSended
+    }] = useRecoveryPasswordMutation()
 
+    const [email, setEmail] = useState<string>("")
 
     const {register, handleSubmit, formState: {errors}} = useForm<RecoveryValues>({
         resolver: yupResolver(EmailSchema)
 
     })
-
-    const onSubmit: SubmitHandler<RecoveryValues> = (data) => {
-        recoveryPassport(data)
+    const recoveryPassportValidate = useApiErrorsHandler(recoveryPassport)
+    const onSubmit: SubmitHandler<RecoveryValues> = async (data) => {
+        await recoveryPassportValidate(data)
         setEmail(data.email)
     }
 
-    return email ? <EmailRecovery email={email}/> : (
+    return email && isInstructionsSended ? <EmailRecovery email={email}/> : (
         <SPagesContainer>
             <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Forgot your password?</STitle>
                 <SInputsSection>
                     <Input
                         placeholder={'Email'}
-                        disabled={isLoading}
+                        disabled={isSendingInstructions}
                         error={errors.email?.message}
                         register={register}/>
                     <SHelperText>
@@ -52,7 +57,8 @@ export const PasswordRecovery = () => {
                 <SControlSection>
                     <SButtonControl>
                         <Button
-                            disabled={isLoading}>
+                            type={"submit"}
+                            disabled={isSendingInstructions}>
                             Send Instructions
                         </Button>
                     </SButtonControl>

@@ -15,6 +15,7 @@ import {
     STitle
 } from "common/components/CommonStyledComponents";
 import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
+import {useApiErrorsHandler} from "common/hooks/hooks";
 
 type NewPasswordValues = {
     password: string
@@ -22,28 +23,28 @@ type NewPasswordValues = {
 export const PasswordNew = () => {
 
     const {token} = useParams()
-    const [recoveryPassport, {
-        isLoading,
-        isSuccess,
+    const [setNewPassword, {
+        isLoading: isSettingNewPassword,
+        isSuccess: isNewPasswordSet,
     }] = useSetNewPasswordMutation()
 
     const {register, handleSubmit, formState: {errors}} = useForm<NewPasswordValues>({
         resolver: yupResolver(PasswordSchema)
     })
-
-    const onSubmit: SubmitHandler<NewPasswordValues> = (data) => {
+    const setNewPasswordValidate = useApiErrorsHandler(setNewPassword)
+    const onSubmit: SubmitHandler<NewPasswordValues> = async (data) => {
         const {password} = data
-        recoveryPassport({password, resetPasswordToken: token!})
+        await setNewPasswordValidate({password, resetPasswordToken: token!})
     }
 
-    return isSuccess ? <Navigate to={PATH.login}/> : (
+    return isNewPasswordSet ? <Navigate to={PATH.login}/> : (
         <SPagesContainer>
             <SForm onSubmit={handleSubmit(onSubmit)}>
                 <STitle>Create new password</STitle>
                 <SInputsSection>
                     <PasswordInput
                         placeholder={"Password"}
-                        disabled={isLoading}
+                        disabled={isSettingNewPassword}
                         error={errors.password?.message}
                         register={register}/>
                     <SHelperText>
@@ -53,7 +54,8 @@ export const PasswordNew = () => {
                 </SInputsSection>
                 <SControlSection>
                     <Button
-                        disabled={isLoading}>
+                        type={"submit"}
+                        disabled={isSettingNewPassword}>
                         Create new password
                     </Button>
                 </SControlSection>
