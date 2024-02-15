@@ -5,15 +5,18 @@ const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew 
 type PT = {
     gradeChangeHandler: (grade: number) => void
     grade: number
+    disabled: boolean
 }
 export const Grade =
     ({
          grade,
-         gradeChangeHandler
+         gradeChangeHandler,
+         disabled
      }: PT) => <SGrade>
         <p>Rate yourself:</p>
         {grades.map((g, i) => <SGradeOption>
             <input
+                disabled={disabled}
                 type="radio"
                 id={g}
                 value={i + 1}

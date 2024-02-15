@@ -26,6 +26,7 @@ export const PacksTable =
                 <tr>
                     {headers.map((h, i) =>
                         <Th
+                            key={i}
                             filterValue={i === 3 ? "user_name" : camelize(h)}
                             onChange={setSortPacksSearchParam}
                             searchValue={searchParams.get("sortPacks") || "0updated"}

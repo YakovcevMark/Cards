@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
-import {SHelperText, SPagesContainer, STitle} from "common/components/CommonStyledComponents";
+import {SPagesContainer, STitle} from "common/components/CommonStyledComponents";
 import styled from "styled-components";
 import {Card, useGradeCardMutation, useLazyGetCardsQuery} from "features/Packs/packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {useParams} from "react-router-dom";
-import {useApiErrorsHandler} from "common/hooks/hooks";
-import {Button} from "common/components/Button/Button";
-import {Grade} from "features/Packs/LearnPack/Grade/Grade";
+import {Answer} from "features/Packs/LearnPack/Answer/Answer";
+import {Question} from "features/Packs/LearnPack/Question/Question";
 
 const getCard = (cards: Card[]) => {
     const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
@@ -25,12 +24,13 @@ export const LearnPack = () => {
 
     const {cardsPack_id} = useParams()
     const [card, setCard] = useState<Card | null>(null)
-    const [viewMode, setViewMode] = useState(false)
-    const [grade, setGrade] = useState(1)
+    const [showAnswer, setShowAnswer] = useState(false)
+    const [grade, setGrade] = useState<1 | 2 | 3 | 4 | 5>(1)
 
+    const setShowAnswerFalse = () => setShowAnswer(false)
     const [fetchCards, {
         data: packData,
-        isFetching : isCardsFetching,
+        isFetching: isCardsFetching,
     }] = useLazyGetCardsQuery({
         refetchOnReconnect: true,
     })
@@ -39,28 +39,25 @@ export const LearnPack = () => {
         isLoading: isCardGrading,
     }] = useGradeCardMutation()
 
-    const fetchCardsValidator = useApiErrorsHandler(fetchCards)
-    const gradeCardValidator = useApiErrorsHandler(gradeCard)
-
 
     useEffect(() => {
-       fetchCardsValidator({
+        fetchCards({
             cardsPack_id,
             pageCount: 100
         })
-    }, [fetchCardsValidator, cardsPack_id]);
+    }, [fetchCards, cardsPack_id]);
 
     const newCardSetter = useCallback(() => {
         setGrade(1)
-        setViewMode(false)
+        setShowAnswerFalse();
         packData && setCard(getCard(packData.cards))
-    },[packData])
+    }, [packData])
 
     useEffect(() => {
         newCardSetter()
     }, [newCardSetter]);
     const nextButtonHandler = async () => {
-        await gradeCardValidator({
+        await gradeCard({
             card_id: card!._id,
             grade
         })
@@ -70,47 +67,27 @@ export const LearnPack = () => {
         <>
             <BackArrowBlock/>
             <SSPagesContainer>
-                <SSTitle>Learn Pack"{"packName"}"</SSTitle>
-                <p>
-                    <b>Question: </b>
-                    {card.questionImg ? <SImg src={card.questionImg}/> : <span>{card.question}</span>}
-                    <SHelperText>
-                        Number of attempts to answer a question: {card.shots}
-                    </SHelperText>
-                </p>
-                {viewMode
-                    ? <>
-                        <p>
-                            <b>Answer: </b>
-                            {card.answerImg ? <SImg src={card.answerImg}/> : <span>{card.answer}</span>}
-                        </p>
-                        <Grade
-                            grade={grade}
-                            gradeChangeHandler={setGrade}/>
-                        <Button
-                            type={"submit"}
-                            disabled={isCardGrading || isCardsFetching}
-                            onClick={nextButtonHandler}>
-                            Next
-                        </Button>
-                    </>
-                    : <Button
-                        onClick={() => setViewMode(true)}>
-                        Show Answer
-                    </Button>
+                <SSTitle>Pack {"packName"}</SSTitle>
+                {showAnswer
+                    ? <Answer
+                        card={card}
+                        hideAnswer={setShowAnswerFalse}
+                        nextButtonHandler={nextButtonHandler}
+                        isControlDisabled={isCardGrading || isCardsFetching}/>
+                    : <Question
+                        card={card}
+                        hideQuestion={() => setShowAnswer(true)}/>
                 }
             </SSPagesContainer>
         </>
     );
 };
-const SImg = styled.img`
-    width:100%;
-    
-`
+
 const SSPagesContainer = styled(SPagesContainer)`
     display: grid;
+    grid-gap: 10px;
     padding: 1vh;
-    height:auto;
+    height: 100%;
 `
 const SSTitle = styled(STitle)`
     justify-self: center;

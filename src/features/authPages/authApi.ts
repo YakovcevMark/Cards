@@ -98,3 +98,4 @@ export const {
     useSetNewPasswordMutation,
     useUpdateProfileMutation,
 } = authApi
+

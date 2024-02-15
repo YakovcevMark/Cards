@@ -14,7 +14,7 @@ import {
 import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
 import {useInitializeMutation} from "../../authPages/authApi";
-import {useApiErrorsHandler, useAppSearchParams} from "common/hooks/hooks";
+import {useAppSearchParams} from "common/hooks/hooks";
 import {useLazyGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
@@ -24,7 +24,6 @@ import {PATH} from "common/components/Routes/AppRoutes";
 import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
 import {CardsTable} from "features/Packs/Cards/CardsTable/CardsTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
-
 
 export const Cards = () => {
     const {cardsPack_id} = useParams()
@@ -41,7 +40,6 @@ export const Cards = () => {
     }] = useLazyGetCardsQuery({
         refetchOnReconnect: true,
     })
-    const fetchCardsValidator = useApiErrorsHandler(fetchCards)
 
     const {searchParams, useMySetSearchParams} = useAppSearchParams();
 
@@ -55,11 +53,13 @@ export const Cards = () => {
     }, [searchParams])
 
     useEffect(() => {
-        fetchCardsValidator({
+        fetchCards({
             cardsPack_id,
-            ...fetchParams
+            ...fetchParams,
+            page: +fetchParams.page,
+            pageCount: +fetchParams.pageCount
         })
-    }, [fetchCardsValidator, fetchParams, cardsPack_id]);
+    }, [fetchCards, fetchParams, cardsPack_id]);
     useEffect(() => {
         packData
         && userData
@@ -133,9 +133,9 @@ export const Cards = () => {
                     <Pagination
                         disabled={isCardsFetching}
                         itemsName={"Cards"}
-                        currentPage={packData.page}
+                        currentPage={+packData.page}
                         totalItemsCount={packData.cardsTotalCount}
-                        pageSize={packData.pageCount}
+                        pageSize={+packData.pageCount}
                         pageChanged={setPageSearchParam}
                         pageSizeChanged={setPageCountSearchParam}/>
                 </>
@@ -162,15 +162,19 @@ const SSTitle = styled(STitle)`
     height: 5vh;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+
     span {
         position: relative;
+
         &:hover {
             div {
                 display: grid;
             }
         }
+
         padding-right: 1vw;
     }
+
     svg {
         width: 3vh;
     }

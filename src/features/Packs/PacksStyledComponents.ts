@@ -115,6 +115,10 @@ export const STableSection = styled.section`
         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
 `
+export const SImg = styled.img`
+    width:80%;
+    justify-self: center;
+`
 export const SNotationName = styled.td`
     justify-self: start;
 

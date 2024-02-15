@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-type AppError = string | null;
+
+export type AppError = string | null;
 
 const initialState = {
     error: null as AppError,

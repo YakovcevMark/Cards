@@ -17,7 +17,7 @@ type AddAndEditPackModalFT = {
 }
 type PT = Partial<EditPackModalPT> & Pick<BasicModalPT, "resetQuery" | "shouldModalClose" | "className"> & {
     type: "Edit" | "Create"
-    actionHandler: (value: AddAndEditPackModalFT & { _id?: string }) => Promise<void>
+    actionHandler: any
     isControlDisabled: boolean
 }
 export const CreateAndEditPackModal =
@@ -30,6 +30,8 @@ export const CreateAndEditPackModal =
          actionHandler,
          type,
          isControlDisabled,
+         shouldModalClose,
+        resetQuery,
          ...rest
      }: PT) => {
         const [cover, setCover] = useState(deckCover || "")
@@ -47,12 +49,10 @@ export const CreateAndEditPackModal =
         })
         const onSubmit: SubmitHandler<AddAndEditPackModalFT> = async (data) => {
             await actionHandler({
-                _id: id,
+                _id: id || "",
                 deckCover: cover,
                 ...data
             })
-            reset()
-            setCover("")
         }
 
         return (
@@ -65,6 +65,12 @@ export const CreateAndEditPackModal =
                 }
                 title={`${type} pack`}
                 setFormSubmit={handleSubmit(onSubmit)}
+                shouldModalClose={shouldModalClose}
+                resetQuery={() => {
+                    resetQuery && resetQuery()
+                    reset()
+                    setCover("")
+                }}
                 inputsChildrenSection={
                     <>
                         <ShowImageInput

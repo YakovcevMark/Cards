@@ -179,7 +179,7 @@ export const packsApi = createApi({
             }),
             invalidatesTags: ['Card'],
         }),
-        gradeCard: build.mutation<Response, { card_id: boolean, grade: 1 | 2 | 3 | 4 | 5 }>({
+        gradeCard: build.mutation<Response, { card_id: string, grade: 1 | 2 | 3 | 4 | 5 }>({
             query: (body) => ({
                 url: 'grade',
                 method: 'PUT',
@@ -200,3 +200,7 @@ export const {
     useDeleteCardMutation,
     useGradeCardMutation,
 } = packsApi
+// export const packsApiEndpoints = packsApi.endpopiont
+// export const fetchPacks = packsApi.endpoints?.getPacks.matchRejected
+//@ts-ignore
+window.packApi = packsApi

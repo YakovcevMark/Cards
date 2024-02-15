@@ -12,7 +12,7 @@ import {
 } from "../PacksStyledComponents";
 import {SIconButton, STitle} from "common/components/CommonStyledComponents";
 import {useInitializeMutation} from "../../authPages/authApi";
-import {useApiErrorsHandler, useAppSearchParams} from "common/hooks/hooks";
+import {useAppSearchParams} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {CreatePackModal} from "features/Modals/CreatePackModal/CreatePackModal";
 import {Switch} from "common/components/Switch/Switch";
@@ -20,8 +20,6 @@ import {PacksTable} from "features/Packs/Packs/PacksTable/PacksTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 
 export const Packs = () => {
-
-
     const [, {data: userData}] = useInitializeMutation({
         fixedCacheKey: 'shared-postMe-post',
     })
@@ -34,8 +32,6 @@ export const Packs = () => {
         refetchOnReconnect: true,
     })
 
-    const fetchPackValidator = useApiErrorsHandler(fetchPacks)
-
     const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
     const fetchParams = useMemo(() => {
         return {
@@ -44,15 +40,19 @@ export const Packs = () => {
             max: searchParams.get("max") || "0",
             sortPacks: searchParams.get("sortPacks") || "0updated",
             user_id: searchParams.get("user_id") || "",
-            pageCount: searchParams.get("pageCount") || "50",
+            pageCount: searchParams.get("pageCount") || 50,
             block: searchParams.get("block") || "false",
-            page: searchParams.get("page") || "1",
+            page: searchParams.get("page") || 1,
         }
     }, [searchParams])
 
     useEffect(() => {
-        fetchPackValidator(fetchParams)
-    }, [fetchPackValidator, fetchParams]);
+        fetchPacks({
+            ...fetchParams,
+            page: +fetchParams.page,
+            pageCount: +fetchParams.pageCount
+        })
+    }, [fetchPacks, fetchParams]);
 
     const setUserIdSearchParam = useMySetSearchParams("user_id")
     const setPageSearchParam = useMySetSearchParams("page")

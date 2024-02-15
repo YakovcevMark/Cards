@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react';
 import {useUpdatePackMutation} from "features/Packs/packsApi";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {CreateAndEditPackModal} from "features/Modals/common/components/CreateAndEditPackModal/CreateAndEditPackModal";
 
 
@@ -23,13 +22,12 @@ export const EditPackModal =
             isSuccess: isPackUpdated,
             reset
         }] = useUpdatePackMutation()
-        const updatePackValidator = useApiErrorsHandler(updatePack)
 
         return <CreateAndEditPackModal
             type={"Edit"}
             isControlDisabled={isPackUpdating}
             shouldModalClose={isPackUpdated}
-            actionHandler={updatePackValidator}
+            actionHandler={updatePack}
             resetQuery={reset}
             {...rest}>
             {children}
