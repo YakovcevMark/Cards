@@ -49,7 +49,7 @@ export const CreateAndEditCardInputBlock =
                     disabled={shouldInputDisabled}/>
 
                 : <ShowImageInput
-                    buttonBody={`Change ${camelizeName}`}
+                    buttonBody={`${camelizeName}`}
                     image={image}
                     {...rest}/>
             }

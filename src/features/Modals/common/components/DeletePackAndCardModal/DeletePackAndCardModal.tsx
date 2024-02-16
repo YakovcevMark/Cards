@@ -12,7 +12,7 @@ export type NeedsPropsToDeleteCardOrPack = {
     className?: string
 }
 type PT = NeedsPropsToDeleteCardOrPack & {
-    actionHandler: (value: NeedsPropsToDeleteCardOrPack) => Promise<void>
+    actionHandler: any
     isControlDisabled: boolean
     shouldModalClose: boolean
 }

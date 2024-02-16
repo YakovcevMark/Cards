@@ -15,7 +15,6 @@ import {
     STitle
 } from "common/components/CommonStyledComponents";
 import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 
 type NewPasswordValues = {
     password: string
@@ -31,10 +30,9 @@ export const PasswordNew = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<NewPasswordValues>({
         resolver: yupResolver(PasswordSchema)
     })
-    const setNewPasswordValidate = useApiErrorsHandler(setNewPassword)
     const onSubmit: SubmitHandler<NewPasswordValues> = async (data) => {
         const {password} = data
-        await setNewPasswordValidate({password, resetPasswordToken: token!})
+        await setNewPassword({password, resetPasswordToken: token!})
     }
 
     return isNewPasswordSet ? <Navigate to={PATH.login}/> : (

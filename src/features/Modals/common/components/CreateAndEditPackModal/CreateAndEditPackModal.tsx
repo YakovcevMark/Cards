@@ -31,7 +31,7 @@ export const CreateAndEditPackModal =
          type,
          isControlDisabled,
          shouldModalClose,
-        resetQuery,
+         resetQuery,
          ...rest
      }: PT) => {
         const [cover, setCover] = useState(deckCover || "")
@@ -77,7 +77,7 @@ export const CreateAndEditPackModal =
                             image={cover}
                             imageHandler={setCover}
                             clearImageHandler={() => setCover("")}
-                            buttonBody={"Change image"}
+                            buttonBody={"cover"}
                             disabled={isControlDisabled}/>
                         <Input
                             placeholder={`Name pack`}

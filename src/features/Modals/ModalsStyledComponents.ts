@@ -7,7 +7,8 @@ export const SModal = styled.div`
 `
 export const SModalContent = styled(SPagesContainer)`
     display: grid;
-    height: auto;
+    max-height: 100vh;
+    height:auto;
     min-height: 30vh;
     box-shadow: 0 0 1vh ${secondColor};
     background: white;

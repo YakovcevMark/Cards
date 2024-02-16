@@ -1,5 +1,4 @@
 import React from 'react';
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {useCreateCardMutation} from "features/Packs/packsApi";
 import {CreateAndEditCardModal} from "features/Modals/common/components/CreateAndEditCardModal/CreateAndEditCardModal";
 
@@ -17,11 +16,10 @@ export const CreateCardModal =
             isSuccess: isCardCreated,
             reset
         }] = useCreateCardMutation()
-        const createCardValidator = useApiErrorsHandler(createCard)
 
         return <CreateAndEditCardModal
             type={"Create"}
-            actionHandler={createCardValidator}
+            actionHandler={createCard}
             shouldModalClose={isCardCreated}
             resetQuery={reset}
             cardsPack_id={id}

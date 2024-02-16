@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {DoubleSlider} from "common/components/DoubleSlider/DoubleSlider";
 import {RestartAlt} from "@styled-icons/material-outlined";
 import {Pagination} from "common/components/Pagination/Pagination";
-import {useLazyGetPacksQuery} from "../packsApi";
+import {useGetPacksQuery} from "../packsApi";
 import {
     SHeaderSection,
     SNoSuchItemMessage,
@@ -11,7 +11,7 @@ import {
     SSettingsSection
 } from "../PacksStyledComponents";
 import {SIconButton, STitle} from "common/components/CommonStyledComponents";
-import {useInitializeMutation} from "../../authPages/authApi";
+import {useInitializeQuery} from "../../authPages/authApi";
 import {useAppSearchParams} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {CreatePackModal} from "features/Modals/CreatePackModal/CreatePackModal";
@@ -20,17 +20,7 @@ import {PacksTable} from "features/Packs/Packs/PacksTable/PacksTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 
 export const Packs = () => {
-    const [, {data: userData}] = useInitializeMutation({
-        fixedCacheKey: 'shared-postMe-post',
-    })
-
-    const [fetchPacks, {
-        data: packsData,
-        isError: fetchPacksError,
-        isFetching: isFetchingPacks,
-    }] = useLazyGetPacksQuery({
-        refetchOnReconnect: true,
-    })
+    const {data: userData} = useInitializeQuery()
 
     const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
     const fetchParams = useMemo(() => {
@@ -46,13 +36,18 @@ export const Packs = () => {
         }
     }, [searchParams])
 
-    useEffect(() => {
-        fetchPacks({
-            ...fetchParams,
-            page: +fetchParams.page,
-            pageCount: +fetchParams.pageCount
-        })
-    }, [fetchPacks, fetchParams]);
+    const {
+        data: packsData,
+        isError: fetchPacksError,
+        isFetching: isFetchingPacks,
+    } = useGetPacksQuery({
+        ...fetchParams,
+        page: +fetchParams.page,
+        pageCount: +fetchParams.pageCount
+    }, {
+        refetchOnReconnect: true
+    })
+
 
     const setUserIdSearchParam = useMySetSearchParams("user_id")
     const setPageSearchParam = useMySetSearchParams("page")

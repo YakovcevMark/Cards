@@ -5,34 +5,38 @@ import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
 import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
-import {useInitializeMutation, useLogoutMutation} from "features/authPages/authApi";
-import {useApiErrorsHandler} from "common/hooks/hooks";
+import {useInitializeQuery, useLogoutMutation} from "features/authPages/authApi";
 import {SAvatarImg, SButtonWithIcon, SHoverModule} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
 
 export const Header =
     () => {
-        const [, {
-            isSuccess: showMode,
-            data,
-        }] = useInitializeMutation({
-            fixedCacheKey: 'shared-postMe-post',
-        })
+        const {
+            isSuccess: isLoggedIn,
+            data: currentUserData,
+        } = useInitializeQuery()
+
+        const [logOut, {
+            isLoading: isLogOutLoading, isSuccess
+        }] = useLogoutMutation()
 
         const nav = useNavigate()
-        const [logOut, {isLoading: isLogOutLoading, isSuccess}] = useLogoutMutation()
-        const onLogout = useApiErrorsHandler(logOut, true)
-        const singInButtonHandler = useCallback(() => nav(PATH.login),[nav])
+
+        const singInButtonHandler = useCallback(() => nav(PATH.login), [nav])
+
+        const profileButtonHandler = () => nav(PATH.profile);
+
+        const logOutButtonHandler = async () => await logOut()
+
         useEffect(() => {
             isSuccess && singInButtonHandler()
         }, [isSuccess, singInButtonHandler]);
-        const profileButtonHandler = () => nav(PATH.profile);
-        const logOutButtonHandler = async () => await onLogout()
+
         let controlSectionContent =
-            showMode
+            isLoggedIn
                 ? <Avatar>
-                    <b>{data?.name}</b>
-                    <SSAvatarImg src={data?.avatar} alt="avatarka"/>
+                    <b>{currentUserData?.name}</b>
+                    <SSAvatarImg src={currentUserData?.avatar} alt="avatarka"/>
                     <SSHoverModule>
                         <SButtonWithIcon
                             onClick={profileButtonHandler}>

@@ -5,20 +5,19 @@ import {PasswordRecovery} from "features/authPages/passwordRecovery/PasswordReco
 import {PasswordNew} from "features/authPages/passwordNew/PasswordNew";
 import {Profile} from "features/Profile/Profile";
 import React from "react";
-import {useInitializeMutation} from "features/authPages/authApi";
+import {useInitializeQuery} from "features/authPages/authApi";
 import {Packs} from "features/Packs/Packs/Packs";
 import {Cards} from "features/Packs/Cards/Cards";
 import {LearnPack} from "features/Packs/LearnPack/LearnPack";
 import {App} from "app/App";
 import {PageNotFound} from "common/components/PageNotFoung/PageNotFound";
 const PrivatePath = ({isLoggedIn}:{isLoggedIn?:boolean}) => {
-    const [, {
+    const {
         isUninitialized,
         isSuccess: isAppInitializedSuccessfully,
         isError: haveErrorWithLoggedIn
-    }] = useInitializeMutation({
-        fixedCacheKey: 'shared-postMe-post',
-    })
+    } = useInitializeQuery()
+
     return isLoggedIn
         ? isAppInitializedSuccessfully || isUninitialized ? <Outlet/> : <Navigate to={PATH.login}/>
         : haveErrorWithLoggedIn || isUninitialized ? <Outlet/> : <Navigate to={PATH.packs}/>

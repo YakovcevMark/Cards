@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
 import {SPagesContainer, STitle} from "common/components/CommonStyledComponents";
 import styled from "styled-components";
-import {Card, useGradeCardMutation, useLazyGetCardsQuery} from "features/Packs/packsApi";
+import {Card, useGetCardsQuery, useGradeCardMutation} from "features/Packs/packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {useParams} from "react-router-dom";
 import {Answer} from "features/Packs/LearnPack/Answer/Answer";
@@ -28,24 +28,20 @@ export const LearnPack = () => {
     const [grade, setGrade] = useState<1 | 2 | 3 | 4 | 5>(1)
 
     const setShowAnswerFalse = () => setShowAnswer(false)
-    const [fetchCards, {
+    const {
         data: packData,
         isFetching: isCardsFetching,
-    }] = useLazyGetCardsQuery({
+    } = useGetCardsQuery({
+        cardsPack_id,
+        pageCount: 100
+    }, {
         refetchOnReconnect: true,
+        refetchOnMountOrArgChange: true
     })
 
     const [gradeCard, {
         isLoading: isCardGrading,
     }] = useGradeCardMutation()
-
-
-    useEffect(() => {
-        fetchCards({
-            cardsPack_id,
-            pageCount: 100
-        })
-    }, [fetchCards, cardsPack_id]);
 
     const newCardSetter = useCallback(() => {
         setGrade(1)

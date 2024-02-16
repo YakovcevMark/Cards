@@ -10,7 +10,6 @@ import {NavLink} from "react-router-dom";
 import {useLoginMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginSchema} from "utils/YupValidators/Validators";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {
     SButtonControl,
     SControlSection, SForm,
@@ -35,10 +34,11 @@ export const Login = () => {
     } = useForm<LoginValues>({
         resolver: yupResolver(LoginSchema)
     })
+
     const [login, {isLoading}] = useLoginMutation()
-    const loginValidator = useApiErrorsHandler(login, true)
+
     const onSubmit: SubmitHandler<LoginValues> = async (data) => {
-        await loginValidator(data)
+        await login(data)
     }
     return (
         <SPagesContainer>

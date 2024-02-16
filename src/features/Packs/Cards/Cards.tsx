@@ -13,9 +13,9 @@ import {
 } from "../PacksStyledComponents";
 import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
-import {useInitializeMutation} from "../../authPages/authApi";
+import {useInitializeQuery} from "../../authPages/authApi";
 import {useAppSearchParams} from "common/hooks/hooks";
-import {useLazyGetCardsQuery} from "../packsApi";
+import {useGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
@@ -29,37 +29,34 @@ export const Cards = () => {
     const {cardsPack_id} = useParams()
     const [isOwner, setIsOwner] = useState(false)
     const nav = useNavigate()
-    const [, {data: userData}] = useInitializeMutation({
-        fixedCacheKey: 'shared-postMe-post',
-    })
 
-    const [fetchCards, {
-        data: packData,
-        isError: haveNotSuchPack,
-        isFetching: isCardsFetching
-    }] = useLazyGetCardsQuery({
-        refetchOnReconnect: true,
-    })
-
+    const {data: userData} = useInitializeQuery()
     const {searchParams, useMySetSearchParams} = useAppSearchParams();
-
     const fetchParams = useMemo(() => {
         return {
             cardQuestion: searchParams.get("cardQuestion") || undefined,
             sortCards: searchParams.get("sortCards") || "0grade",
-            pageCount: searchParams.get("pageCount") || "10",
-            page: searchParams.get("page") || "1",
+            pageCount: searchParams.get("pageCount") || 10,
+            page: searchParams.get("page") || 1,
         }
     }, [searchParams])
 
-    useEffect(() => {
-        fetchCards({
-            cardsPack_id,
-            ...fetchParams,
-            page: +fetchParams.page,
-            pageCount: +fetchParams.pageCount
-        })
-    }, [fetchCards, fetchParams, cardsPack_id]);
+    const {
+        data: packData,
+        isError: haveNotSuchPack,
+        isFetching: isCardsFetching
+    } = useGetCardsQuery({
+        cardsPack_id,
+        ...fetchParams,
+        page: +fetchParams.page,
+        pageCount: +fetchParams.pageCount
+    },{
+        refetchOnReconnect: true,
+    })
+
+
+
+
     useEffect(() => {
         packData
         && userData
@@ -133,9 +130,9 @@ export const Cards = () => {
                     <Pagination
                         disabled={isCardsFetching}
                         itemsName={"Cards"}
-                        currentPage={+packData.page}
+                        currentPage={packData.page}
                         totalItemsCount={packData.cardsTotalCount}
-                        pageSize={+packData.pageCount}
+                        pageSize={packData.pageCount}
                         pageChanged={setPageSearchParam}
                         pageSizeChanged={setPageCountSearchParam}/>
                 </>

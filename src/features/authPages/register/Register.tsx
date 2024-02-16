@@ -7,7 +7,6 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "utils/YupValidators/Validators";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {
     SForm,
     SInputsSection,
@@ -29,13 +28,12 @@ export const Register = () => {
     })
     const [getRegister, {isSuccess, isLoading}] = useRegisterMutation()
 
-    const getRegisterValidator = useApiErrorsHandler(getRegister)
     const cancelButtonHandler = () => {
         navigate(PATH.login);
     }
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const {email, password} = data
-        await getRegisterValidator({email, password})
+        await getRegister({email, password})
     }
 
     if (isSuccess) {

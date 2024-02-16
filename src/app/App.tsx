@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from "styled-components";
-import {useInitializeMutation} from "features/authPages/authApi";
+import {useInitializeQuery} from "features/authPages/authApi";
 import {Preloader} from "common/components/Preloader/Preloader";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {Message} from "common/components/Alert/Message";
 import {Header} from "app/Header/Header";
 import {Outlet} from "react-router-dom";
@@ -10,20 +9,10 @@ import {Outlet} from "react-router-dom";
 
 export function App() {
 
-    const [getInitialized, {
-        isLoading, isUninitialized
-    }] = useInitializeMutation({
-        fixedCacheKey: 'shared-postMe-post',
-    })
-
-    const onGetInitialized = useApiErrorsHandler(getInitialized)
-    useEffect(() => {
-        onGetInitialized()
-    }, [onGetInitialized])
+    const {isLoading} = useInitializeQuery()
 
 
-    return isUninitialized || isLoading ? <Preloader/> : (
-        // return (
+    return isLoading ? <Preloader/> : (
         <SContainer>
             <Header/>
             <SContent>
@@ -33,6 +22,7 @@ export function App() {
         </SContainer>
     );
 }
+
 const SContent = styled.section`
     display: grid;
     align-content: start;

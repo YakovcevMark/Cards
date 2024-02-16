@@ -143,7 +143,7 @@ export const SPagesContainer = styled.div`
     height: 65vh;
     background: white;
     @media (max-width: 526px) {
-        width: 100%;
+        width: 90%;
     }
 `
 export const SForm = styled.form`

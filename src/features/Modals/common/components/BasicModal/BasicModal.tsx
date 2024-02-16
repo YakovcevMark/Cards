@@ -45,13 +45,11 @@ export const BasicModal =
         useEffect(() => {
             viewMode && shouldModalClose && updateModalStateHandler()
         }, [viewMode, shouldModalClose, updateModalStateHandler]);
-
-        const switchViewMode = useCallback(() => setViewMode(viewMode => !viewMode), [setViewMode]);
-
-        useEscapeKey(switchViewMode)
+        const setViewModeFalse = useCallback(() => setViewMode(false),[setViewMode])
+        useEscapeKey(setViewModeFalse)
         return <>
             <Button
-                onClick={switchViewMode}
+                onClick={() => setViewMode(true)}
                 icon={isIcon}
                 className={className}>
                 {buttonContent}
@@ -60,7 +58,7 @@ export const BasicModal =
 
             {viewMode && <>
                 <SModalBackground
-                    onClick={switchViewMode}/>
+                    onClick={setViewModeFalse}/>
                 <SModalContent>
                     <SForm onSubmit={setFormSubmit}>
                         <STitle>
@@ -73,7 +71,7 @@ export const BasicModal =
                             <Button
                                 gray
                                 type={"button"}
-                                onClick={switchViewMode}>
+                                onClick={setViewModeFalse}>
                                 Cancel
                             </Button>
                             {controlChildrenSection}

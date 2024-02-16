@@ -23,18 +23,20 @@ export type UserDataResponse = {
     rememberMe: boolean;
 };
 export const authApi = createApi({
-    reducerPath:"auth",
+    reducerPath: "auth",
     baseQuery: fetchBaseQuery(
         {
-            baseUrl:  process.env.REACT_APP_BACK_URL,
+            baseUrl: process.env.REACT_APP_BACK_URL,
             credentials: "include"
         }),
+    tagTypes: ['Me'],
     endpoints: build => ({
-        initialize: build.mutation<UserDataResponse & Response, void>({
+        initialize: build.query<UserDataResponse & Response, void>({
             query: () => ({
                 url: 'auth/me',
-                method: 'POST'
+                method: 'POST',
             }),
+            providesTags: ['Me']
         }),
         register: build.mutation<Response, RegisterFormData>({
             query: (data) => ({
@@ -48,15 +50,20 @@ export const authApi = createApi({
                 url: 'auth/login',
                 method: 'POST',
                 body: data
-            })
+            }),
+            invalidatesTags: ['Me']
         }),
         logout: build.mutation<Response, void>({
             query: () => ({
                 url: 'auth/me',
                 method: 'DELETE',
-            })
+            }),
+            invalidatesTags: ['Me']
         }),
-        recoveryPassword: build.mutation<Response, Pick<RegisterFormData, 'email'> & { from?: string, message?: string }>({
+        recoveryPassword: build.mutation<Response, Pick<RegisterFormData, 'email'> & {
+            from?: string,
+            message?: string
+        }>({
             query: (data) => ({
                 url: 'auth/forgot',
                 method: 'POST',
@@ -85,12 +92,13 @@ export const authApi = createApi({
                 url: 'auth/me',
                 method: 'PUT',
                 body: data
-            })
+            }),
+            invalidatesTags: ['Me']
         }),
     }),
 })
 export const {
-    useInitializeMutation,
+    useInitializeQuery,
     useRegisterMutation,
     useLoginMutation,
     useLogoutMutation,

@@ -17,7 +17,6 @@ import {
     SPagesContainer,
     STitle
 } from "common/components/CommonStyledComponents";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 
 type RecoveryValues = { email: string }
 export const PasswordRecovery = () => {
@@ -33,9 +32,8 @@ export const PasswordRecovery = () => {
         resolver: yupResolver(EmailSchema)
 
     })
-    const recoveryPassportValidate = useApiErrorsHandler(recoveryPassport)
     const onSubmit: SubmitHandler<RecoveryValues> = async (data) => {
-        await recoveryPassportValidate(data)
+        await recoveryPassport(data)
         setEmail(data.email)
     }
 

@@ -15,8 +15,7 @@ type PT = Partial<EditCardModalPT> & Pick<BasicModalPT, "resetQuery" | "shouldMo
     cardsPack_id?: string
     id?: string
     type: "Edit" | "Create"
-    actionHandler: (value: AddAndEditCardModalFT &
-        { _id?: string, cardsPack_id?: string }) => Promise<void>
+    actionHandler: any
     isControlDisabled: boolean
 }
 export const CreateAndEditCardModal =

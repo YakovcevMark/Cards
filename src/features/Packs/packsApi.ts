@@ -190,17 +190,13 @@ export const packsApi = createApi({
     }),
 })
 export const {
-    useLazyGetPacksQuery,
+    useGetPacksQuery,
     useCreatePackMutation,
     useUpdatePackMutation,
     useDeletePackMutation,
-    useLazyGetCardsQuery,
+    useGetCardsQuery,
     useCreateCardMutation,
     useUpdateCardMutation,
     useDeleteCardMutation,
     useGradeCardMutation,
 } = packsApi
-// export const packsApiEndpoints = packsApi.endpopiont
-// export const fetchPacks = packsApi.endpoints?.getPacks.matchRejected
-//@ts-ignore
-window.packApi = packsApi

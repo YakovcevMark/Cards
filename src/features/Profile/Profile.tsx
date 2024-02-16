@@ -6,11 +6,10 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Input} from "common/components/Inputs/Input";
 import styled from "styled-components";
 import {Logout} from "@styled-icons/material";
-import {useInitializeMutation, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
+import {useInitializeQuery, useLogoutMutation, useUpdateProfileMutation} from "../authPages/authApi";
 import userPNG from "../../assets/img/user.png"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {NameSchema} from "utils/YupValidators/Validators";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {BackArrowBlock} from "common/components/BackArrowBlock/BackArrowBlock";
 import {
     SAvatarImg,
@@ -31,9 +30,7 @@ export const Profile = () => {
     const nav = useNavigate()
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    const [, {data, isLoading: loadingInit}] = useInitializeMutation({
-        fixedCacheKey: 'shared-postMe-post',
-    })
+    const {data, isLoading: loadingInit} = useInitializeQuery()
 
     const [updateProfile, {
         isLoading: loadingUpdate
@@ -57,13 +54,11 @@ export const Profile = () => {
         resolver: yupResolver(NameSchema)
     })
 
-    const onUpdateProfile = useApiErrorsHandler(updateProfile, true)
-    const onLogout = useApiErrorsHandler(logOut, true)
     const logoutHandler = async () => {
-        await onLogout()
+        await logOut()
     }
     const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
-        await onUpdateProfile({name: data.name})
+        await updateProfile({name: data.name})
         setEditMode(false)
     }
 
@@ -115,7 +110,7 @@ export const Profile = () => {
                     <ImageInput
                         isIcon
                         buttonBody={<PhotoCamera/>}
-                        imageHandler={(file) => onUpdateProfile({avatar: file})}/>
+                        imageHandler={(file) => updateProfile({avatar: file})}/>
                 </SAvatar>
                 <SNickName>
                     {content}

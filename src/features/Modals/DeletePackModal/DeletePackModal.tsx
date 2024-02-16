@@ -1,6 +1,5 @@
 import React from 'react';
 import {useDeletePackMutation} from "features/Packs/packsApi";
-import {useApiErrorsHandler} from "common/hooks/hooks";
 import {
     DeletePackAndCardModal,
     NeedsPropsToDeleteCardOrPack
@@ -13,10 +12,9 @@ export const DeletePackModal =
             isLoading: isDeletingPack,
             isSuccess: isPackDeleted,
         }] = useDeletePackMutation()
-        const deletePackValidator = useApiErrorsHandler(deletePack)
         return <DeletePackAndCardModal
             shouldModalClose={isPackDeleted}
             isControlDisabled={isDeletingPack}
-            actionHandler={deletePackValidator}
+            actionHandler={deletePack}
             {...props}/>
     }

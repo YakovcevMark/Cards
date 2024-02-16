@@ -1,4 +1,3 @@
-import noImage from "assets/img/noImage.svg";
 import styled from "styled-components";
 import {SCover} from "features/Packs/PacksStyledComponents";
 import {ImageInput, ImageInputPT} from "common/components/Inputs/ImageInput/ImageInput";
@@ -19,36 +18,36 @@ export const ShowImageInput =
          ...rest
      }: ShowImageInputPT) =>
         <SCoverBlock className={className}>
-            <SSCover src={image ? image : noImage} alt="img"/>
+            {image && <SSCover src={image} alt="img"/>}
             <SButtonBlock>
-                <Button
+                {image && <SButton
                     gray
-                    onClick={clearImageHandler}
-                    disabled={!image}>
+                    onClick={clearImageHandler}>
                     Clear
-                </Button>
+                </SButton>}
                 <ImageInput
-                    buttonBody={buttonBody}
+                    buttonBody={`${image ? 'Change' : 'Set'} ${buttonBody}`}
                     {...rest}>
                     {children}
                 </ImageInput>
             </SButtonBlock>
         </SCoverBlock>
 const SButtonBlock = styled.section`
-    justify-self: end;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-gap: 1vw;
+    grid-template-columns: auto 1fr;
+    justify-self: end;
+`
+const SButton = styled(Button)`
+    margin-right: 20px;
 `
 const SCoverBlock = styled.section`
     display: grid;
     padding-bottom: 1vh;
-
 `
 const SSCover = styled(SCover)`
-    width: 100%;
     height: auto;
-    justify-self: start;
+    max-height: 300px;
+    justify-self: center;
     margin-bottom: 1vh;
 `
 
