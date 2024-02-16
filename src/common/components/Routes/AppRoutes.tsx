@@ -5,22 +5,24 @@ import {PasswordRecovery} from "features/authPages/passwordRecovery/PasswordReco
 import {PasswordNew} from "features/authPages/passwordNew/PasswordNew";
 import {Profile} from "features/Profile/Profile";
 import React from "react";
-import {useInitializeQuery} from "features/authPages/authApi";
 import {Packs} from "features/Packs/Packs/Packs";
 import {Cards} from "features/Packs/Cards/Cards";
 import {LearnPack} from "features/Packs/LearnPack/LearnPack";
 import {App} from "app/App";
 import {PageNotFound} from "common/components/PageNotFoung/PageNotFound";
+import {useAppSelector} from "common/hooks/hooks";
+import {selectAppData} from "app/appSlice";
+
 const PrivatePath = ({isLoggedIn}:{isLoggedIn?:boolean}) => {
     const {
-        isUninitialized,
+        isAppInitialized,
         isSuccess: isAppInitializedSuccessfully,
         isError: haveErrorWithLoggedIn
-    } = useInitializeQuery()
+    } = useAppSelector(selectAppData)
 
     return isLoggedIn
-        ? isAppInitializedSuccessfully || isUninitialized ? <Outlet/> : <Navigate to={PATH.login}/>
-        : haveErrorWithLoggedIn || isUninitialized ? <Outlet/> : <Navigate to={PATH.packs}/>
+        ? isAppInitializedSuccessfully || !isAppInitialized ? <Outlet/> : <Navigate to={PATH.login}/>
+        : haveErrorWithLoggedIn || !isAppInitialized ? <Outlet/> : <Navigate to={PATH.packs}/>
 }
 export const PATH = {
     auth: "/auth",

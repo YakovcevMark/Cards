@@ -9,10 +9,10 @@ import {Outlet} from "react-router-dom";
 
 export function App() {
 
-    const {isLoading} = useInitializeQuery()
+    const {isLoading, isUninitialized} = useInitializeQuery()
 
 
-    return isLoading ? <Preloader/> : (
+    return isLoading || isUninitialized ? <Preloader/> : (
         <SContainer>
             <Header/>
             <SContent>

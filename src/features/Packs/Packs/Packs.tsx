@@ -11,16 +11,16 @@ import {
     SSettingsSection
 } from "../PacksStyledComponents";
 import {SIconButton, STitle} from "common/components/CommonStyledComponents";
-import {useInitializeQuery} from "../../authPages/authApi";
-import {useAppSearchParams} from "common/hooks/hooks";
+import {useAppSearchParams, useAppSelector} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {CreatePackModal} from "features/Modals/CreatePackModal/CreatePackModal";
 import {Switch} from "common/components/Switch/Switch";
 import {PacksTable} from "features/Packs/Packs/PacksTable/PacksTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
+import {selectAppData} from "app/appSlice";
 
 export const Packs = () => {
-    const {data: userData} = useInitializeQuery()
+    const {userData} = useAppSelector(selectAppData)
 
     const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();
     const fetchParams = useMemo(() => {

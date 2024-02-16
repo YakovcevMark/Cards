@@ -5,16 +5,18 @@ import {ReactComponent as RobotSVG} from '../../assets/img/robot.svg'
 import styled from "styled-components";
 import {secondColor} from "assets/stylesheets/colors";
 import {Logout, Person} from "@styled-icons/material";
-import {useInitializeQuery, useLogoutMutation} from "features/authPages/authApi";
+import {useLogoutMutation} from "features/authPages/authApi";
 import {SAvatarImg, SButtonWithIcon, SHoverModule} from "common/components/CommonStyledComponents";
 import {PATH} from "common/components/Routes/AppRoutes";
+import {useAppSelector} from "common/hooks/hooks";
+import {selectAppData} from "app/appSlice";
 
 export const Header =
     () => {
         const {
             isSuccess: isLoggedIn,
-            data: currentUserData,
-        } = useInitializeQuery()
+            userData,
+        } = useAppSelector(selectAppData)
 
         const [logOut, {
             isLoading: isLogOutLoading, isSuccess
@@ -35,8 +37,8 @@ export const Header =
         let controlSectionContent =
             isLoggedIn
                 ? <Avatar>
-                    <b>{currentUserData?.name}</b>
-                    <SSAvatarImg src={currentUserData?.avatar} alt="avatarka"/>
+                    <b>{userData?.name}</b>
+                    <SSAvatarImg src={userData?.avatar} alt="avatarka"/>
                     <SSHoverModule>
                         <SButtonWithIcon
                             onClick={profileButtonHandler}>

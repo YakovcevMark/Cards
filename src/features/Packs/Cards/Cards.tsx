@@ -13,8 +13,7 @@ import {
 } from "../PacksStyledComponents";
 import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
-import {useInitializeQuery} from "../../authPages/authApi";
-import {useAppSearchParams} from "common/hooks/hooks";
+import {useAppSearchParams, useAppSelector} from "common/hooks/hooks";
 import {useGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
@@ -24,13 +23,14 @@ import {PATH} from "common/components/Routes/AppRoutes";
 import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
 import {CardsTable} from "features/Packs/Cards/CardsTable/CardsTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
+import {selectAppData} from "app/appSlice";
 
 export const Cards = () => {
     const {cardsPack_id} = useParams()
     const [isOwner, setIsOwner] = useState(false)
     const nav = useNavigate()
 
-    const {data: userData} = useInitializeQuery()
+    const {userData} = useAppSelector(selectAppData)
     const {searchParams, useMySetSearchParams} = useAppSearchParams();
     const fetchParams = useMemo(() => {
         return {
@@ -50,11 +50,9 @@ export const Cards = () => {
         ...fetchParams,
         page: +fetchParams.page,
         pageCount: +fetchParams.pageCount
-    },{
+    }, {
         refetchOnReconnect: true,
     })
-
-
 
 
     useEffect(() => {
