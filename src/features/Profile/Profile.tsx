@@ -45,6 +45,10 @@ export const Profile = () => {
     }] = useLogoutMutation()
 
     const {
+        isError: isAppInitializedWithError
+    } = useAppSelector(selectAppData)
+
+    const {
         register,
         handleSubmit,
         formState: {
@@ -66,8 +70,8 @@ export const Profile = () => {
     }
 
     useEffect(() => {
-        isLogOutSuccess && nav(PATH.login)
-    }, [isLogOutSuccess, nav]);
+        isAppInitializedWithError && nav(PATH.login)
+    }, [isAppInitializedWithError, nav]);
 
     let content = editMode && userData
         ? (
@@ -122,7 +126,7 @@ export const Profile = () => {
                     {userData?.email}
                 </SHelperText>
                 <Button
-                    disabled={isLogOutLoading}
+                    disabled={isLogOutLoading || isLogOutSuccess}
                     onClick={logoutHandler}
                     gray>
                         <span>

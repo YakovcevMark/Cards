@@ -38,7 +38,6 @@ const appSlice = createSlice({
                     s.data.isAppInitialized = true;
                     s.data.isError = false
                     s.data.isSuccess = true
-                    console.log(a)
                     s.data.userData = a.payload
                 })
     }

@@ -1,18 +1,14 @@
 import React from 'react';
 import styled from "styled-components";
-import {useInitializeQuery} from "features/authPages/authApi";
-import {Preloader} from "common/components/Preloader/Preloader";
 import {Message} from "common/components/Alert/Message";
 import {Header} from "app/Header/Header";
 import {Outlet} from "react-router-dom";
+import {useInitializeQuery} from "features/authPages/authApi";
 
 
 export function App() {
-
-    const {isLoading, isUninitialized} = useInitializeQuery()
-
-
-    return isLoading || isUninitialized ? <Preloader/> : (
+    useInitializeQuery();
+    return (
         <SContainer>
             <Header/>
             <SContent>

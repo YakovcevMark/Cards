@@ -12,8 +12,8 @@ type CommonPackAndCardTypes = {
     shots: number
     rating: number
     user_id: string
-    created: string
-    updated: string
+    created: Date
+    updated: Date
     more_id: string
     __v: number
 

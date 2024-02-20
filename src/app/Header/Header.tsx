@@ -18,8 +18,13 @@ export const Header =
             userData,
         } = useAppSelector(selectAppData)
 
+        const {
+            isAppInitialized,
+            isError: isAppInitializedWithError
+        } = useAppSelector(selectAppData)
+
         const [logOut, {
-            isLoading: isLogOutLoading, isSuccess
+            isLoading: isLogOutLoading,
         }] = useLogoutMutation()
 
         const nav = useNavigate()
@@ -31,8 +36,8 @@ export const Header =
         const logOutButtonHandler = async () => await logOut()
 
         useEffect(() => {
-            isSuccess && singInButtonHandler()
-        }, [isSuccess, singInButtonHandler]);
+            isAppInitializedWithError && singInButtonHandler()
+        }, [isAppInitializedWithError, singInButtonHandler]);
 
         let controlSectionContent =
             isLoggedIn
@@ -54,7 +59,8 @@ export const Header =
                     </SSHoverModule>
                 </Avatar>
                 : <Button onClick={singInButtonHandler}>Sing In</Button>
-        return (
+
+        return isAppInitialized ? (
             <StyledHeader>
                 <SRobotSVG>
                     <RobotSVG/>
@@ -63,7 +69,7 @@ export const Header =
                     {controlSectionContent}
                 </ControlSection>
             </StyledHeader>
-        );
+        ) : null
     };
 
 const SSAvatarImg = styled(SAvatarImg)`

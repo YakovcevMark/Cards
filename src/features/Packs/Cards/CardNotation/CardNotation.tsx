@@ -1,6 +1,5 @@
 import React from 'react';
-import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
-import {SNotation, SNotationActionButtons} from "../../PacksStyledComponents";
+import {SCutString, SNotation, SNotationActionButtons} from "../../PacksStyledComponents";
 import {EditCardModal, EditCardModalPT} from "features/Modals/EditCardModal/EditCardModal";
 import {DeleteCardModal} from "features/Modals/DeleteCardModal/DeleteCardModal";
 import {NotationGrade} from "features/Packs/Cards/CardNotation/NotationGrade/NotationGrade";
@@ -8,7 +7,7 @@ import styled from "styled-components";
 import {IconButtonStyles} from "common/components/CommonStyledComponents";
 
 type PT = EditCardModalPT & {
-    updated: string
+    updated: Date
     grade: number
     isOwner: boolean
 }
@@ -29,16 +28,16 @@ export const CardNotation =
                 <td>
                     {questionImg
                         ? <SImage src={questionImg} alt={"questionImg"}/>
-                        : stringLengthHandler(question)
+                        : <SCutString>{question}</SCutString>
                     }
                 </td>
                 <td>
                     {answerImg
                         ? <SImage src={answerImg} alt={"answerImg"}/>
-                        : stringLengthHandler(answer)
+                        : <SCutString>{answer}</SCutString>
                     }
                 </td>
-                <td>{updated}</td>
+                <td>{new Date(updated).toLocaleString("en-US")}</td>
                 <td><NotationGrade grade={grade}/></td>
                 {isOwner && <SNotationActionButtons>
                     <SEditCardModal

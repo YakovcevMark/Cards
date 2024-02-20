@@ -68,7 +68,8 @@ export const STableSection = styled.section`
             }
 
             th:last-child {
-                width: 5vw;
+                text-align: center;
+                width: 7vw;
             }
         }
 
@@ -79,7 +80,6 @@ export const STableSection = styled.section`
 
         td {
             border-bottom: 1px solid rgba(0, 0, 0, 0.28);
-
         }
 
         thead, tbody, tr {
@@ -93,11 +93,13 @@ export const STableSection = styled.section`
             overflow: auto;
 
             td {
+               
                 width: 13.5vw;
             }
 
             td:last-child {
-                width: 5vw;
+                text-align: center;
+                width: 7vw;
             }
         }
 
@@ -115,13 +117,19 @@ export const STableSection = styled.section`
         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
 `
+export const SCutString = styled.p`
+        max-width: 13.5vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+`
 export const SImg = styled.img`
     width:80%;
     justify-self: center;
 `
 export const SNotationName = styled.td`
     justify-self: start;
-
+    max-width: 13.5vw;
     div {
         display: flex;
         align-items: center;
@@ -135,7 +143,7 @@ export const SNotationName = styled.td`
         border: none;
         font-weight: bold;
         cursor: pointer;
-        //background-color: inherit;
+        background-color: inherit;
 
         &:disabled {
             font-weight: bold;
@@ -144,7 +152,7 @@ export const SNotationName = styled.td`
     }
 `
 export const SNotationActionButtons = styled.td`
-    width: 16vh;
+    width: 20vh;
 
     button {
         margin: 0 5px;

@@ -3,7 +3,7 @@ import {BasicModal} from "features/Modals/common/components/BasicModal/BasicModa
 import {DeleteOutline} from "@styled-icons/material-outlined";
 import {Button} from "common/components/Button/Button";
 import styled from "styled-components";
-import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
+import {SCutString} from "features/Packs/PacksStyledComponents";
 
 export type NeedsPropsToDeleteCardOrPack = {
     id: string
@@ -41,7 +41,7 @@ export const DeletePackAndCardModal =
                     Do you really wanna to remove
                     {name
                         ? <>
-                            <b> {stringLengthHandler(name)} </b>
+                            <SSCutString>{name}</SSCutString>
                             Pack?
                             <br/>
                             All Cards will be deleted.
@@ -63,7 +63,11 @@ export const DeletePackAndCardModal =
             {children}
         </BasicModal>
     };
-
+const SSCutString = styled(SCutString)`
+    max-width: 300px;
+    margin:0;
+    font-weight: bold;
+`
 const SP = styled.p`
     justify-self: start;
     font-size: 18px;

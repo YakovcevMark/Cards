@@ -1,9 +1,8 @@
 import React from 'react';
 import {School} from "@styled-icons/material-outlined";
 import {useNavigate} from "react-router-dom";
-import {stringLengthHandler} from "utils/DataUtils/handleStringsUtils";
 import {PATH} from "common/components/Routes/AppRoutes";
-import {SCover, SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
+import {SCover, SCutString, SNotation, SNotationActionButtons, SNotationName} from "../../PacksStyledComponents";
 import {DeletePackModal} from "features/Modals/DeletePackModal/DeletePackModal";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
 import {IconButtonStyles, SIconButton} from "common/components/CommonStyledComponents";
@@ -11,7 +10,7 @@ import styled from "styled-components";
 
 type PT = {
     id: string
-    updated: string
+    updated: Date
     packName: string
     userName: string
     cardsCount: number
@@ -44,15 +43,15 @@ export const PackNotation =
                                 style={{backgroundImage:`${deckCover}`}}
                                 disabled={isNotationDisabled && !isOwner}
                                 onClick={showPackButtonHandler}>
-                                {stringLengthHandler(packName)}
+                                <SCutString>{packName}</SCutString>
                             </button>
                         </b>
                         {deckCover && <SCover src={deckCover} alt="deckCover"/>}
                     </div>
                 </SNotationName>
                 <td>{cardsCount}</td>
-                <td>{updated}</td>
-                <td>{stringLengthHandler(userName)}</td>
+                <td><SCutString>{new Date(updated).toLocaleString("en-US")}</SCutString></td>
+                <td><SCutString>{userName}</SCutString></td>
                 <SNotationActionButtons>
                     <SIconButton
                         disabled={isNotationDisabled}

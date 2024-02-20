@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button} from "common/components/Button/Button";
 import {PATH} from "common/components/Routes/AppRoutes";
 import {HelperLink} from "common/components/HelperLink/HelperLink";
@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {Input} from "common/components/Inputs/Input";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Checkbox} from "common/components/Checkbox/Checkbox";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useLoginMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginSchema} from "utils/YupValidators/Validators";
@@ -18,6 +18,8 @@ import {
     STitle
 } from "common/components/CommonStyledComponents";
 import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
+import {useAppSelector} from "common/hooks/hooks";
+import {selectAppData} from "app/appSlice";
 
 type LoginValues = {
     email: string
@@ -35,11 +37,23 @@ export const Login = () => {
         resolver: yupResolver(LoginSchema)
     })
 
-    const [login, {isLoading}] = useLoginMutation()
+    const nav = useNavigate()
+
+    const {
+        isSuccess: isAppInitializedSuccessfully,
+    } = useAppSelector(selectAppData)
+
+    const [login, {isLoading, isSuccess}] = useLoginMutation()
+    const shouldControlDisabled = isLoading || isSuccess
 
     const onSubmit: SubmitHandler<LoginValues> = async (data) => {
         await login(data)
     }
+
+    useEffect(() => {
+        isAppInitializedSuccessfully && nav(PATH.packs)
+    }, [isAppInitializedSuccessfully,nav]);
+
     return (
         <SPagesContainer>
             <SForm
@@ -47,16 +61,16 @@ export const Login = () => {
                 <STitle>Sing In</STitle>
                 <Input
                     placeholder={"Email"}
-                    disabled={isLoading}
+                    disabled={shouldControlDisabled}
                     error={errors.email?.message}
                     register={register}/>
                 <PasswordInput
                     placeholder={"Password"}
-                    disabled={isLoading}
+                    disabled={shouldControlDisabled}
                     error={errors.password?.message}
                     register={register}/>
                 <Checkbox
-                    disabled={isLoading}
+                    disabled={shouldControlDisabled}
                     register={register}
                     registrFieldName={'rememberMe'}>
                     Remember me
@@ -70,7 +84,7 @@ export const Login = () => {
                     <SButtonControl>
                         <Button
                             type={"submit"}
-                            disabled={isLoading}>
+                            disabled={shouldControlDisabled}>
                             Login
                         </Button>
                     </SButtonControl>
