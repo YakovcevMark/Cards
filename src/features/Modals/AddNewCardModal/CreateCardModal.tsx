@@ -1,6 +1,6 @@
 import React from 'react';
-import {useCreateCardMutation} from "features/Packs/packsApi";
 import {CreateAndEditCardModal} from "features/Modals/common/components/CreateAndEditCardModal/CreateAndEditCardModal";
+import {useCreateCardMutation} from "features/Packs/Cards/cardsApi";
 
 
 type PT = {

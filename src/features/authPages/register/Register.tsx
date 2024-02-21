@@ -7,12 +7,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useRegisterMutation} from "../authApi";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "utils/YupValidators/Validators";
-import {
-    SForm,
-    SInputsSection,
-    SPagesContainer,
-    STitle
-} from "common/components/CommonStyledComponents";
+import {SForm, SInputsSection, SPagesContainer, STitle} from "common/components/CommonStyledComponents";
 import {SModalControlSection} from "features/Modals/ModalsStyledComponents";
 import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInput";
 
@@ -21,7 +16,7 @@ type RegisterFormValues = {
     password: string
     confirmPassword: string
 }
-export const Register = () => {
+export default function Register() {
     const navigate = useNavigate()
     const {register, handleSubmit, formState: {errors}} = useForm<RegisterFormValues>({
         resolver: yupResolver(RegisterSchema)
@@ -62,15 +57,15 @@ export const Register = () => {
                         register={register}/>
                 </SInputsSection>
                 <SModalControlSection>
-                        <Button gray
-                                onClick={cancelButtonHandler}
-                                type={"button"}>
-                            Cancel
-                        </Button>
-                        <Button
-                            type={"submit"}>
-                            Register
-                        </Button>
+                    <Button gray
+                            onClick={cancelButtonHandler}
+                            type={"button"}>
+                        Cancel
+                    </Button>
+                    <Button
+                        type={"submit"}>
+                        Register
+                    </Button>
                 </SModalControlSection>
             </SForm>
         </SPagesContainer>

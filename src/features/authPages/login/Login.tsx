@@ -12,7 +12,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginSchema} from "utils/YupValidators/Validators";
 import {
     SButtonControl,
-    SControlSection, SForm,
+    SControlSection,
+    SForm,
     SHelperText,
     SPagesContainer,
     STitle
@@ -26,7 +27,7 @@ type LoginValues = {
     password: string
     rememberMe: boolean
 }
-export const Login = () => {
+export default function Login() {
     const {
         register,
         handleSubmit,
@@ -52,7 +53,7 @@ export const Login = () => {
 
     useEffect(() => {
         isAppInitializedSuccessfully && nav(PATH.packs)
-    }, [isAppInitializedSuccessfully,nav]);
+    }, [isAppInitializedSuccessfully, nav]);
 
     return (
         <SPagesContainer>

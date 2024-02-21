@@ -29,7 +29,7 @@ type ProfileFormValues = {
     name?: string
     avatar?: string
 }
-export const Profile = () => {
+export default function Profile() {
     const nav = useNavigate()
     const [editMode, setEditMode] = useState<boolean>(false)
 

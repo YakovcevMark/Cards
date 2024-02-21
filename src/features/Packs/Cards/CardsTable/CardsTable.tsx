@@ -2,16 +2,15 @@ import React from 'react';
 import {STableSection} from "features/Packs/PacksStyledComponents";
 import {Th} from "common/components/Th/Th";
 import {CardNotation} from "features/Packs/Cards/CardNotation/CardNotation";
-import {Card} from "features/Packs/packsApi";
 import {camelize} from "utils/DataUtils/handleStringsUtils";
 import {useAppSearchParams} from "common/hooks/hooks";
 import {Preloader} from "common/components/Preloader/Preloader";
+import {Card} from "features/Packs/Cards/cardsApi";
 
 const headers = ["Question", "Answer", "Updated", "Grade"]
 type PT = {
     isOwner: boolean
     cards?: Card[]
-
 }
 export const CardsTable =
     ({
@@ -24,8 +23,9 @@ export const CardsTable =
             <table>
                 <thead>
                 <tr>
-                    {headers.map(h =>
+                    {headers.map((h,i) =>
                         <Th
+                            key={i}
                             filterValue={camelize(h)}
                             onChange={setSortCardsSearchParam}
                             searchValue={searchParams.get("sortCards") || "0grade"}

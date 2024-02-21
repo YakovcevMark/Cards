@@ -57,6 +57,10 @@ export const CreateAndEditCardInputBlock =
     }
 
 const SQuestionAnswerInputBlock = styled.div`
+    span {
+        justify-self: start;
+    }
+
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;

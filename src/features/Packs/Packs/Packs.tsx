@@ -19,7 +19,7 @@ import {PacksTable} from "features/Packs/Packs/PacksTable/PacksTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 import {selectAppData} from "app/appSlice";
 
-export const Packs = () => {
+export default function Packs() {
     const {userData} = useAppSelector(selectAppData)
 
     const {searchParams, setSearchParams, useMySetSearchParams} = useAppSearchParams();

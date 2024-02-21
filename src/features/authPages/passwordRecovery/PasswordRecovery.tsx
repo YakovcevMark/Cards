@@ -19,7 +19,7 @@ import {
 } from "common/components/CommonStyledComponents";
 
 type RecoveryValues = { email: string }
-export const PasswordRecovery = () => {
+export default function PasswordRecovery() {
 
     const [recoveryPassport, {
         isLoading: isSendingInstructions,

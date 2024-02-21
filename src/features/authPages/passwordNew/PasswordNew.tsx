@@ -19,7 +19,7 @@ import {PasswordInput} from "common/components/Inputs/PasswordInput/PasswordInpu
 type NewPasswordValues = {
     password: string
 }
-export const PasswordNew = () => {
+export default function PasswordNew() {
 
     const {token} = useParams()
     const [setNewPassword, {

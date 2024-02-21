@@ -1,9 +1,9 @@
 import React from 'react';
-import {useDeleteCardMutation} from "features/Packs/packsApi";
 import {
     DeletePackAndCardModal,
     NeedsPropsToDeleteCardOrPack
 } from "features/Modals/common/components/DeletePackAndCardModal/DeletePackAndCardModal";
+import {useDeleteCardMutation} from "features/Packs/Cards/cardsApi";
 
 type PT = NeedsPropsToDeleteCardOrPack
 export const DeleteCardModal =

@@ -4,7 +4,7 @@ import {Button} from "common/components/Button/Button";
 import pageNotFoungSVG from "../../../assets/img/pageNotFoundSVG.svg";
 import styled from "styled-components";
 
-export const PageNotFound = () => {
+export default function PageNotFound(){
     const nav = useNavigate()
     return <SPageNotFound>
         <img src={pageNotFoungSVG} alt="pageNotFoundSVG"/>

@@ -1,18 +1,19 @@
-import {createHashRouter, Navigate, Outlet} from "react-router-dom";
-import {Login} from "features/authPages/login/Login";
-import {Register} from "features/authPages/register/Register";
-import {PasswordRecovery} from "features/authPages/passwordRecovery/PasswordRecovery";
-import {PasswordNew} from "features/authPages/passwordNew/PasswordNew";
-import {Profile} from "features/Profile/Profile";
-import React, {ReactNode} from "react";
-import {Packs} from "features/Packs/Packs/Packs";
-import {Cards} from "features/Packs/Cards/Cards";
-import {LearnPack} from "features/Packs/LearnPack/LearnPack";
+import React, {lazy, ReactNode, Suspense} from "react";
 import {App} from "app/App";
-import {PageNotFound} from "common/components/PageNotFoung/PageNotFound";
+import {createHashRouter, Navigate, Outlet} from "react-router-dom";
+import {Preloader} from "common/components/Preloader/Preloader";
 import {useAppSelector} from "common/hooks/hooks";
 import {selectAppData} from "app/appSlice";
-import {Preloader} from "common/components/Preloader/Preloader";
+
+const Packs = lazy(() => import( "features/Packs/Packs/Packs"));
+const Cards = lazy(() => import( "features/Packs/Cards/Cards"));
+const Login = lazy(() => import( "features/authPages/login/Login"));
+const Profile = lazy(() => import( "features/Profile/Profile"));
+const Register = lazy(() => import( "features/authPages/register/Register"));
+const LearnPack = lazy(() => import( "features/Packs/LearnPack/LearnPack"));
+const PasswordNew = lazy(() => import( "features/authPages/passwordNew/PasswordNew"));
+const PageNotFound = lazy(() => import( "common/components/PageNotFound/PageNotFound"));
+const PasswordRecovery = lazy(() => import( "features/authPages/passwordRecovery/PasswordRecovery"));
 
 const InitApp = ({children}: { children: ReactNode }) => {
     const {
@@ -20,9 +21,9 @@ const InitApp = ({children}: { children: ReactNode }) => {
     } = useAppSelector(selectAppData)
 
     return isAppInitialized
-        ? <>
+        ? <Suspense fallback={<Preloader/>}>
             {children}
-        </>
+        </Suspense>
         : <Preloader/>
 }
 

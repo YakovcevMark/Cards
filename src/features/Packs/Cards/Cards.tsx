@@ -14,7 +14,6 @@ import {
 import {ButtonWithIconStyles, SButtonWithIcon, SHoverModule, STitle} from "common/components/CommonStyledComponents";
 import {School, Tune} from "@styled-icons/material-outlined";
 import {useAppSearchParams, useAppSelector} from "common/hooks/hooks";
-import {useGetCardsQuery} from "../packsApi";
 import {Preloader} from "common/components/Preloader/Preloader";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {EditPackModal} from "features/Modals/EditPackModal/EditPackModal";
@@ -24,8 +23,9 @@ import {CreateCardModal} from "features/Modals/AddNewCardModal/CreateCardModal";
 import {CardsTable} from "features/Packs/Cards/CardsTable/CardsTable";
 import {SearchInput} from "common/components/Inputs/SearchInput/SearchInput";
 import {selectAppData} from "app/appSlice";
+import {useGetCardsQuery} from "features/Packs/Cards/cardsApi";
 
-export const Cards = () => {
+export default function Cards() {
     const {cardsPack_id} = useParams()
     const [isOwner, setIsOwner] = useState(false)
     const nav = useNavigate()
@@ -33,10 +33,11 @@ export const Cards = () => {
     const {userData} = useAppSelector(selectAppData)
     const {searchParams, useMySetSearchParams} = useAppSearchParams();
     const fetchParams = useMemo(() => {
+
         return {
             cardQuestion: searchParams.get("cardQuestion") || undefined,
             sortCards: searchParams.get("sortCards") || "0grade",
-            pageCount: searchParams.get("pageCount") || 10,
+            pageCount: searchParams.get("pageCount") || 50,
             page: searchParams.get("page") || 1,
         }
     }, [searchParams])
@@ -48,10 +49,10 @@ export const Cards = () => {
     } = useGetCardsQuery({
         cardsPack_id,
         ...fetchParams,
+        pageCount: +fetchParams.pageCount,
         page: +fetchParams.page,
-        pageCount: +fetchParams.pageCount
     }, {
-        refetchOnReconnect: true,
+        refetchOnMountOrArgChange: true,
     })
 
 

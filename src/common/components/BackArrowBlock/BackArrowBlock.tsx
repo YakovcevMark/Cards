@@ -5,21 +5,26 @@ import {useNavigate} from "react-router-dom";
 import {PATH} from "common/components/Routes/AppRoutes";
 
 
-type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+    path?: string
+    text?: string
+}
 export const BackArrowBlock = memo(
     ({
+         path = PATH.packs,
+         text = "Back to Packs List",
          ...props
      }: DefaultButtonPropsType) => {
 
         const nav = useNavigate()
-        const backButtonHandler = () => nav(PATH.packs)
+        const backButtonHandler = () => nav(path)
 
         return (
             <StyledBackArrowBlock
                 onClick={backButtonHandler}
                 {...props}>
                 <KeyboardBackspace/>
-                Back to Packs List
+                {text}
             </StyledBackArrowBlock>
         )
     }
@@ -27,18 +32,18 @@ export const BackArrowBlock = memo(
 
 
 const StyledBackArrowBlock = styled.button`
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
 
-  border: none;
-  width: 18vh;
-  height: 5vh;
-  background: transparent;
-  display: grid;
-  grid-template-columns: 2.5vh 1fr;
-  align-items: center;
-  cursor: pointer;
-  z-index: 2;
+    border: none;
+    width: 18vh;
+    height: 5vh;
+    background: transparent;
+    display: grid;
+    grid-template-columns: 2.5vh 1fr;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
 `
