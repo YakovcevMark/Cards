@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Cards/static/css/main.fdeb0249.css",
-    "main.js": "/Cards/static/js/main.1e403e90.js",
+    "main.js": "/Cards/static/js/main.d95609e8.js",
     "static/js/221.8d723dee.chunk.js": "/Cards/static/js/221.8d723dee.chunk.js",
     "static/js/418.de8588ff.chunk.js": "/Cards/static/js/418.de8588ff.chunk.js",
     "static/js/387.3b3c242e.chunk.js": "/Cards/static/js/387.3b3c242e.chunk.js",
     "static/js/190.833238a7.chunk.js": "/Cards/static/js/190.833238a7.chunk.js",
     "static/js/225.018c0ca9.chunk.js": "/Cards/static/js/225.018c0ca9.chunk.js",
-    "static/js/759.53e2c1d9.chunk.js": "/Cards/static/js/759.53e2c1d9.chunk.js",
+    "static/js/759.3c409566.chunk.js": "/Cards/static/js/759.3c409566.chunk.js",
     "static/js/640.69ff85af.chunk.js": "/Cards/static/js/640.69ff85af.chunk.js",
     "static/js/538.9cbf06ea.chunk.js": "/Cards/static/js/538.9cbf06ea.chunk.js",
     "static/js/857.74ddfaa1.chunk.js": "/Cards/static/js/857.74ddfaa1.chunk.js",
@@ -19,13 +19,13 @@
     "static/media/robot.svg": "/Cards/static/media/robot.781013dd6c9fb3c14af781381d6ad05f.svg",
     "index.html": "/Cards/index.html",
     "main.fdeb0249.css.map": "/Cards/static/css/main.fdeb0249.css.map",
-    "main.1e403e90.js.map": "/Cards/static/js/main.1e403e90.js.map",
+    "main.d95609e8.js.map": "/Cards/static/js/main.d95609e8.js.map",
     "221.8d723dee.chunk.js.map": "/Cards/static/js/221.8d723dee.chunk.js.map",
     "418.de8588ff.chunk.js.map": "/Cards/static/js/418.de8588ff.chunk.js.map",
     "387.3b3c242e.chunk.js.map": "/Cards/static/js/387.3b3c242e.chunk.js.map",
     "190.833238a7.chunk.js.map": "/Cards/static/js/190.833238a7.chunk.js.map",
     "225.018c0ca9.chunk.js.map": "/Cards/static/js/225.018c0ca9.chunk.js.map",
-    "759.53e2c1d9.chunk.js.map": "/Cards/static/js/759.53e2c1d9.chunk.js.map",
+    "759.3c409566.chunk.js.map": "/Cards/static/js/759.3c409566.chunk.js.map",
     "640.69ff85af.chunk.js.map": "/Cards/static/js/640.69ff85af.chunk.js.map",
     "538.9cbf06ea.chunk.js.map": "/Cards/static/js/538.9cbf06ea.chunk.js.map",
     "857.74ddfaa1.chunk.js.map": "/Cards/static/js/857.74ddfaa1.chunk.js.map",
@@ -35,6 +35,6 @@
   },
   "entrypoints": [
     "static/css/main.fdeb0249.css",
-    "static/js/main.1e403e90.js"
+    "static/js/main.d95609e8.js"
   ]
 }
