@@ -73,7 +73,7 @@ export default function Login() {
                 <Checkbox
                     disabled={shouldControlDisabled}
                     register={register}
-                    registrFieldName={'rememberMe'}>
+                    registerFieldName={'rememberMe'}>
                     Remember me
                 </Checkbox>
                 <FP>

@@ -24,12 +24,14 @@ export const Button: React.FC<ButtonPT> = memo(
         }
     ) => {
         const finalColor = color ? color : red ? 'rgba(255, 54, 54, 1)' : gray ? grayColor : secondColor;
-        return<SButton
+        return (
+            <SButton
                 type={"button"}
                 color={finalColor}
                 {...restProps}>
                 {children}
             </SButton>
+        )
     }
 )
 

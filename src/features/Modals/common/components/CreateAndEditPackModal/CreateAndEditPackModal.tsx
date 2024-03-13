@@ -88,7 +88,7 @@ export const CreateAndEditPackModal =
                         <Checkbox
                             register={register}
                             disabled={isControlDisabled}
-                            registrFieldName={"private"}>
+                            registerFieldName={"private"}>
                             Private pack?
                         </Checkbox>
                     </>

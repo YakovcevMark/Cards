@@ -2,24 +2,24 @@ import React, {DetailedHTMLProps, InputHTMLAttributes, memo} from 'react'
 import styled from "styled-components";
 import {UseFormRegister} from "react-hook-form";
 
-// тип пропсов обычного инпута
+
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 type SuperCheckboxPropsType = DefaultInputPropsType & {
     register?: UseFormRegister<any>
-    registrFieldName?: string
+    registerFieldName?: string
     onChangeChecked?: (checked: boolean) => void
     error?: string
 }
 
 export const Checkbox = memo(
     ({
-         type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
+         type,
          onChange, onChangeChecked,
          register,
-         registrFieldName,
-         children, // в эту переменную попадёт текст
-         ...restProps// все остальные пропсы попадут в объект restProps
+         registerFieldName,
+         children,
+         ...restProps
      }: SuperCheckboxPropsType) => {
         return (
             <SCheckbox>
@@ -27,7 +27,7 @@ export const Checkbox = memo(
                     <input
                         type={'checkbox'}
                         {...restProps}
-                        {...register && {...register(registrFieldName || "")} }
+                        {...register && {...register(registerFieldName || "")} }
                     />
                     {children && <span>{children}</span>}
                 </label>
@@ -63,3 +63,6 @@ const SCheckbox = styled.div`
         }
     }
 `
+
+
+

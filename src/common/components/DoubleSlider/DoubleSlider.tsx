@@ -7,7 +7,7 @@ type PT = {
     max: number,
     onMouseUpMin: (value: string) => void
     onMouseUpMax: (value: string) => void
-    disabled?:boolean
+    disabled?: boolean
 }
 export const DoubleSlider = memo(
     ({
@@ -29,7 +29,7 @@ export const DoubleSlider = memo(
         useEffect(() => {
             setMaxVal(max)
             setMinVal(min)
-        }, [max,min]);
+        }, [max, min]);
 
         useEffect(() => {
             const minPercent = getPercent(minVal);
@@ -49,13 +49,12 @@ export const DoubleSlider = memo(
         }, [maxVal, minVal, getPercent]);
 
 
-
         return (
-            <StyledSlider>
-                <div className="slider__left-value">
+            <SDoubleSlider>
+                <SSliderLeftValue>
                     {minVal}
-                </div>
-                <input
+                </SSliderLeftValue>
+                <SThumbLeft
                     type="range"
                     min={min}
                     max={max}
@@ -65,11 +64,10 @@ export const DoubleSlider = memo(
                         setMinVal(value);
                     }}
                     onMouseUp={e => onMouseUpMin(e.currentTarget.value)}
-                    className="thumb thumb--left"
                     style={{zIndex: 5}}
                     disabled={disabled}
                 />
-                <input
+                <SThumbRight
                     type="range"
                     min={min}
                     max={max}
@@ -79,124 +77,100 @@ export const DoubleSlider = memo(
                         setMaxVal(value);
                     }}
                     onMouseUp={e => onMouseUpMax(e.currentTarget.value)}
-                    className="thumb thumb--right"
                     disabled={disabled}
                 />
-                <div className="slider__right-value">
+                <SSliderRightValue>
                     <span>{maxVal}</span>
-                </div>
-                <div className="slider">
-                    <div className="slider__track"/>
-                    <div ref={range} className="slider__range"/>
-                </div>
-            </StyledSlider>
-        );
+                </SSliderRightValue>
+                <SSlider>
+                    <SSliderTrack/>
+                    <SSliderRange ref={range}/>
+                </SSlider>
+            </SDoubleSlider>
+        )
     }
 );
-const StyledSlider = styled.div`
+const SSliderLeftValue = styled.div`
+    position: absolute;
+    font-size: 24px;
+    margin-top: -35px;
+    left: 2px;
+`
+const SSliderRightValue = styled(SSliderLeftValue)`
+    left: unset;
+    right: -4px;
+`
+const SSlider = styled.div`
+    position: relative;
+    width: 96%;
+`
+const SSliderTrack = styled.div`
+    background-color: #ced4da;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    border-radius: 3px;
+    height: 5px;
+`
+const SSliderRange = styled(SSliderTrack)`
+    width: 90%;
+    background-color: ${secondColor};
+    z-index: 2;
+`
+const SThumb = styled.input`
+    pointer-events: none;
+    position: absolute;
+    height: 0;
+    width: 100%;
+    outline: none;
+
+    background-color: black;
+
+    &::-webkit-slider-thumb {
+
+        background-color: black;
+
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+
+        //background-color: rgb(192, 191, 191);
+        //border: none;
+        border-radius: 50%;
+        //background: red;
+        box-shadow: 0 0 1px 1px #ced4da;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+        margin-top: 4px;
+        pointer-events: all;
+        position: relative;
+    }
+
+    &::-moz-range-thumb {
+        //background-color: #f1f5f7;
+
+        background-color: black;
+
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 0 1px 1px #ced4da;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+        margin-top: 4px;
+        pointer-events: all;
+        position: relative;
+    }
+`
+const SThumbLeft = styled(SThumb)`
+    z-index: 3;
+`
+const SThumbRight = styled(SThumb)`
+    z-index: 4;
+`
+const SDoubleSlider = styled.div`
     align-self: center;
     position: relative;
     bottom: -9px;
-
-    .slider {
-        position: relative;
-        width: 96%;
-    }
-
-    .slider__track,
-    .slider__range {
-        position: absolute;
-        left: 0;
-    }
-
-    .slider__left-value,
-    .slider__right-value {
-        position: absolute;
-    }
-
-    .slider__track,
-    .slider__range {
-        border-radius: 3px;
-        height: 5px;
-    }
-
-    .slider__track {
-        background-color: #ced4da;
-        width: 100%;
-        z-index: 1;
-    }
-
-    .slider__range {
-        background-color: ${secondColor};
-        z-index: 2;
-    }
-
-    .slider__left-value,
-    .slider__right-value {
-        //color: #dee2e6;
-        font-size: 24px;
-        margin-top: -35px;
-    }
-
-    .slider__left-value {
-        left: 2px;
-    }
-
-    .slider__right-value {
-        right: -4px;
-    }
-
-    /* Removing the default appearance */
-
-    .thumb,
-    .thumb::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .thumb {
-        pointer-events: none;
-        position: absolute;
-        height: 0;
-        width: 100%;
-        outline: none;
-    }
-
-    .thumb--left {
-        z-index: 3;
-    }
-
-    .thumb--right {
-        z-index: 4;
-    }
-
-    /* For Chrome browsers */
-
-    .thumb::-webkit-slider-thumb {
-        background-color: rgb(192, 191, 191);
-        border: none;
-        border-radius: 50%;
-        box-shadow: 0 0 1px 1px #ced4da;
-        cursor: pointer;
-        height: 18px;
-        width: 18px;
-        margin-top: 4px;
-        pointer-events: all;
-        position: relative;
-    }
-
-    /* For Firefox browsers */
-
-    .thumb::-moz-range-thumb {
-        background-color: #f1f5f7;
-        border: none;
-        border-radius: 50%;
-        box-shadow: 0 0 1px 1px #ced4da;
-        cursor: pointer;
-        height: 18px;
-        width: 18px;
-        margin-top: 4px;
-        pointer-events: all;
-        position: relative;
-    }
 `

@@ -10,6 +10,7 @@ import {SAvatarImg, SButtonWithIcon, SHoverModule} from "common/components/Commo
 import {PATH} from "common/components/Routes/AppRoutes";
 import {useAppSelector} from "common/hooks/hooks";
 import {selectAppData} from "app/appSlice";
+import {SCutString} from "features/Packs/PacksStyledComponents";
 
 export const Header =
     () => {
@@ -42,7 +43,11 @@ export const Header =
         let controlSectionContent =
             isLoggedIn
                 ? <Avatar>
-                    <b>{userData?.name}</b>
+                    <SCutString>
+                        <b>
+                            {userData?.name}
+                        </b>
+                    </SCutString>
                     <SSAvatarImg src={userData?.avatar} alt="avatarka"/>
                     <SSHoverModule>
                         <SButtonWithIcon

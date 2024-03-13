@@ -22,7 +22,7 @@ export const Message = memo(
         return error ? <StyledMessage>
                 {error}
             </StyledMessage>
-            : <></>
+            : null
     }
 );
 const opacityKeyframe = keyframes`

@@ -27,7 +27,7 @@ export default function LearnPack() {
     const [showAnswer, setShowAnswer] = useState(false)
     const [grade, setGrade] = useState<1 | 2 | 3 | 4 | 5>(1)
 
-    const setShowAnswerFalse = () => setShowAnswer(false)
+    const setShowAnswerFalse = useCallback(() => setShowAnswer(false),[setShowAnswer])
 
     const {
         data: packData,
@@ -46,7 +46,7 @@ export default function LearnPack() {
         setGrade(1)
         setShowAnswerFalse();
         packData && setCard(getCard(packData.cards))
-    }, [packData])
+    }, [packData, setShowAnswerFalse])
 
     useLayoutEffect(() => {
         newCardSetter()
